@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>StarShop</title>
+    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         :root { --bg: #111; --text: #fff; --box: #222; }
         .light { --bg: #fff; --text: #000; --box: #eee; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background: var(--bg); color: var(--text); padding-top: 60px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; font-weight: 900; } /* Жирный шрифт */
+        body { background: var(--bg); color: var(--text); padding-top: 70px; }
         header { background: #000; color: #fff; padding: 15px; display: flex; justify-content: space-between; position: fixed; top: 0; width: 100%; z-index: 10; }
         button { background: #0088cc; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-left: 5px; }
-        .sec { max-width: 500px; margin: 40px auto; padding: 20px; background: var(--box); border-radius: 8px; display: none; }
+        .sec { max-width: 500px; margin: 40px auto; padding: 20px; background: var(--box); border-radius: 8px; display: none; text-align: center; }
         .active { display: block !important; }
-        #welcome { text-align: center; margin-top: 10vh; display: block; }
-        .rocket { width: 80px; height: 80px; background: #0088cc; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: 20px; cursor: pointer; }
-        .rocket svg { width: 40px; height: 40px; fill: #fff; transform: rotate(-45deg); }
+        #welcome { display: block; background: transparent; }
+        .w-title { background: #fff; color: #000; display: inline-block; padding: 10px 20px; border-radius: 5px; font-size: 2.2rem; }
+        .rocket-zone { margin: 25px 0; }
+        .tg-rocket { font-size: 80px; color: #24A1DE; transform: rotate(-45deg); display: inline-block; animation: fly 2s infinite ease-in-out; }
+        @keyframes fly { 0%, 100% { transform: rotate(-45deg) translateY(0); } 50% { transform: rotate(-45deg) translateY(-15px); } }
         input, select { width: 100%; padding: 10px; margin: 10px 0; background: #333; color: #fff; border: 1px solid #555; border-radius: 4px; }
         .light input, .light select { background: #fff; color: #000; border: 1px solid #ccc; }
-        .rep { display: flex; justify-content: space-between; background: #333; padding: 10px; margin: 5px 0; border-radius: 4px; }
+        .rep { display: flex; justify-content: space-between; background: #333; padding: 10px; margin: 5px 0; border-radius: 4px; text-align: left; }
     </style>
 </head>
 <body>
 
+    <!-- Черное меню -->
     <header>
         <div>⭐ StarShop</div>
         <div id="menu" style="display:none;">
@@ -32,19 +36,18 @@
             <button onclick="sc('prof')">👤 Профиль</button>
             <button onclick="sc('adm')" id="mAdm" style="display:none; background:#d9534f;">👨‍💻 Админка</button>
         </div>
+        <!-- В правом верхнем углу -->
         <div id="auth">
-            <button onclick="openAuth('reg')">Регистрация</button>
+            <button onclick="openAuth('reg')">Зарегаться</button>
             <button onclick="openAuth('log')">Войти</button>
         </div>
     </header>
 
+    <!-- По середине сайта приветствие и ракета -->
     <section id="welcome" class="sec active">
-        <h1 style="background:#fff; color:#000; display:inline-block; padding:10px 20px; border-radius:5px;">Добро пожаловать</h1>
-        <br>
-        <div class="rocket" onclick="sc('prof')">
-            <svg viewBox="0 0 24 24"><path d="M1.101,13.266 L21.721,1.155 C22.428,0.738 23.3,1.312 23.18,2.115 L19.467,22.155 C19.34,22.844 18.57,23.167 17.986,22.784 L12.164,18.966 L8.995,22.257 C8.629,22.637 8,22.378 8,21.854 L8,18.064 L19.141,5.321 L5.253,16.032 L1.11,14.618 C0.485,14.404 0.479,13.632 1.101,13.266 Z"></path></svg>
-        </div>
-        <br><button onclick="goNext()">Далее</button>
+        <h1 class="w-title">Добро пожаловать</h1>
+        <div class="rocket-zone"><i class="fa-solid fa-paper-plane tg-rocket"></i></div>
+        <button onclick="goNext()" style="padding:10px 30px;">Далее</button>
     </section>
 
     <section id="aForm" class="sec">
@@ -61,7 +64,7 @@
     </section>
 
     <section id="bal" class="sec">
-        <h2>Баланс</h2>
+        <h2>Пополнение баланса</h2>
         <select id="bSum">
             <option value="500">500 ₽</option><option value="1000">1000 ₽</option>
             <option value="1500">1500 ₽</option><option value="2000">2000 ₽</option>
@@ -83,23 +86,23 @@
     </section>
 
     <section id="prof" class="sec">
-        <h1 id="pAdm" style="color:red; display:none;">АДМИН</h1>
-        <h2>Профиль: <span id="pNick">User</span></h2>
-        <input type="text" id="nNick" placeholder="Новый ник"><input type="password" id="nPass" placeholder="Новый пароль">
-        <input type="email" id="nEmail" placeholder="Новая почта"><input type="text" id="nAva" placeholder="Ссылка на аватар">
+        <h1 id="pAdm" style="color:red; display:none; margin-bottom:10px;">АДМИН</h1>
+        <h2>Профиль: <span id="pNick" style="color:#0088cc;">User</span></h2>
+        <input type="text" id="nNick" placeholder="Сменить ник"><input type="password" id="nPass" placeholder="Сменить пароль">
+        <input type="email" id="nEmail" placeholder="Сменить почту"><input type="text" id="nAva" placeholder="Ссылка на аватар">
         <button onclick="saveP()">Сохранить</button>
         <button onclick="location.reload()" style="background:#d9534f;">Выйти</button>
     </section>
 
     <section id="adm" class="sec">
-        <h2 style="color:red;">Админ Панель</h2>
+        <h2 style="color:red; margin-bottom:10px;">Админ Панель xudex</h2>
         <div id="aReps"></div>
     </section>
 
     <script>
         let u = null, mode = 'reg', reps = [];
         function sc(id) { 
-            if(!u && id !== 'welcome' && id !== 'aForm') return alert('Нужна регистрация!');
+            if(!u && id !== 'welcome' && id !== 'aForm') return alert('Нужен вход!');
             document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
@@ -117,14 +120,11 @@
         function upd() { document.getElementById('mBal').innerText = u.bal; document.getElementById('pNick').innerText = u.nick; }
         function addB() { u.bal += parseInt(document.getElementById('bSum').value); upd(); alert('Баланс пополнен!'); }
         function buy() { document.getElementById('cOut').innerHTML += '<p style="color:#2ecc71; margin-top:5px;">✔ вы купили данный товар</p>'; }
-        function saveP() { 
-            let nn = document.getElementById('nNick').value; 
-            if(nn) u.nick = nn; upd(); alert('Сохранено!'); 
-        }
+        function saveP() { let nn = document.getElementById('nNick').value; if(nn) u.nick = nn; upd(); alert('Сохранено!'); }
         function sendR() {
             let m = document.getElementById('sMsg').value; if(!m) return;
             reps.push({n: u.nick, m: m}); document.getElementById('sMsg').value = ''; alert('Отправлено');
-            let out = ''; reps.forEach(r => out += `<div class="rep"><span>${r.m}</span><span style="color:#2ecc71; font-weight:bold;">Репорт [${r.n}]</span></div>`);
+            let out = ''; reps.forEach(r => out += `<div class="rep"><span>${r.m}</span><span style="color:#2ecc71;">зеленый Репорт [${r.n}]</span></div>`);
             document.getElementById('aReps').innerHTML = out;
         }
     </script>
