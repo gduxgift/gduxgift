@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GduxGift</title>
+    <style>
+        :root { --bg:#0d0e15; --menu:#161824; --text:#fff; --muted:#a4b0be; --orange:#ff7675; --blue:#0984e3; --border:#2f3542; }
+        .light-theme { --bg:#f1f2f6; --menu:#fff; --text:#2f3542; --muted:#747d8c; --border:#ced6e0; }
+        body { font-family: sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .menu { background: var(--menu); width: 90%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; position: relative; border: 1px solid var(--border); box-sizing: border-box; }
+        .auth-hd { position: absolute; top: 15px; right: 15px; display: none; gap: 10px; }
+        .btn-link { background: none; border: none; color: var(--blue); cursor: pointer; font-weight: 600; }
+        .btn-or { background: var(--orange); color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 15px; }
+        .screen { display: none; } .screen.active { display: block; }
+        .tabs { display: flex; justify-content: space-around; background: rgba(0,0,0,0.1); padding: 5px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
+        .tab-btn { background: none; border: none; color: var(--muted); padding: 6px 10px; cursor: pointer; font-weight: 600; border-radius: 8px; }
+        .tab-btn.active { background: var(--bg); color: var(--text); }
+        .tab-content { display: none; text-align: left; } .tab-content.active { display: block; }
+        .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .promo { background: rgba(9,132,227,0.1); border: 1px dashed var(--blue); padding: 12px; border-radius: 12px; text-align: center; margin-top: 15px; }
+        .btn-bl { background: var(--blue); color: #fff; padding: 8px 15px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: bold; font-size: 13px; }
+        .form { text-align: left; margin-bottom: 12px; }
+        .form input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); box-sizing: border-box; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .grid-btn { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 8px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="menu">
+        <div class="auth-hd" id="authHd">
+            <button class="btn-link" onclick="shScr('lScr')">Войти</button>
+            <button class="btn-link" onclick="shScr('rScr')">Регистрация</button>
+        </div>
+
+        <!-- 1. ПРИВЕТСТВИЕ -->
+        <div id="wScr" class="screen active">
+            <h2>Добро пожаловать</h2>
+            <p>Магазин звезд GduxGift. Управляйте личным кабинетом.</p>
+            <button class="btn-or" onclick="goDash()">Далее</button>
+        </div>
+
+        <!-- 2. ГЛАВНАЯ ПАНЕЛЬ -->
+        <div id="dash" class="screen">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="swTb('pTb', this)">Профиль</button>
+                <button class="tab-btn" onclick="swTb('bTb', this)">Баланс</button>
+                <button class="tab-btn" onclick="swTb('cTb', this)">Корзина</button>
+                <button class="tab-btn" onclick="swTb('sTb', this)">⚙️</button>
+            </div>
+
+            <div id="pTb" class="tab-content active">
+                <h3>Кабинет</h3>
+                <div class="row"><span>Баланс:</span><strong style="color:#2ed573;" id="bal">0.0 ₽</strong></div>
+                <div class="row"><span>Telegram:</span><button class="btn-link" onclick="alert('TG...')">Привязать</button></div>
+                <div class="row"><span>VK:</span><button class="btn-link" onclick="alert('VK...')">Привязать</button></div>
+                <div class="promo">
+                    <p style="margin:0 0 8px 0; font-size:13px;">Промокоды только тут:</p>
+                    <a href="https://t.me" target="_blank" class="btn-bl">Перейти в TG</a>
+                </div>
+            </div>
+
+            <div id="bTb" class="tab-content">
+                <h3>Пополнение счета</h3>
+                <div class="grid">
+                    <button class="grid-btn" onclick="addB(500)">500 ₽</button>
+                    <button class="grid-btn" onclick="addB(1000)">1000 ₽</button>
+                    <button class="grid-btn" onclick="addB(1500)">1500 ₽</button>
+                    <button class="grid-btn" onclick="addB(2500)">2500 ₽</button>
+                </div>
+            </div>
+
+            <div id="cTb" class="tab-content"><h3 style="margin-bottom:5px;">Корзина</h3><p>Купленные звезды идут сюда.</p></div>
+
+            <div id="sTb" class="tab-content">
+                <h3>Настройки</h3>
+                <div class="row"><span>Светлая тема:</span><input type="checkbox" id="tTgl" onchange="tTheme()" style="cursor:pointer;"></div>
+            </div>
+        </div>
+
+        <!-- 3. ВХОД -->
+        <div id="lScr" class="screen">
+            <h3>Вход</h3>
+            <div class="form"><input type="email" placeholder="Почта"></div>
+            <div class="form"><input type="password" placeholder="Пароль"></div>
+            <button class="btn-or" onclick="shScr('dash')">Войти</button>
+            <button class="btn-link" onclick="shScr('dash')" style="margin-top:10px;">❌ Отмена</button>
+        </div>
+
+        <!-- 4. РЕГИСТРАЦИЯ -->
+        <div id="rScr" class="screen">
+            <h3>Регистрация</h3>
+            <div class="form"><input type="email" placeholder="Почта"></div>
+            <div class="form"><input type="password" placeholder="Пароль"></div>
+            <button class="btn-or" onclick="shScr('dash')">Создать аккаунт</button>
+            <button class="btn-link" onclick="shScr('dash')" style="margin-top:10px;">❌ Отмена</button>
+        </div>
+    </div>
+
+    <script>
+        let b = 0.0;
+        function shScr(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+        function goDash() { shScr('dash'); document.getElementById('authHd').style.display = 'flex'; }
+        function swTb(id, btn) { document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); }
+        function tTheme() { document.body.classList.toggle('light-theme', document.getElementById('tTgl').checked); }
+        function addB(a) { b += a; document.getElementById('bal').innerText = b.toFixed(1) + ' ₽'; alert('Пополнено!'); }
+    </script>
+</body>
+</html>
