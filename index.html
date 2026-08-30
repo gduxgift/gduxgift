@@ -35,10 +35,8 @@
       background: linear-gradient(135deg, #ff8c00, #ff5722); color: #fff;
       border: none; border-radius: 50px; padding: 18px 70px; font-size: 1.5rem;
       font-weight: 700; cursor: pointer; box-shadow: 0 10px 30px rgba(255,140,0,0.4);
-      transition: transform 0.3s, box-shadow 0.3s;
     }
-    .btn-next:hover { transform: scale(1.08) translateY(-5px); box-shadow: 0 15px 40px rgba(255,140,0,0.6); }
-    .btn-next:active { transform: scale(0.95); }
+    .btn-next:hover { transform: scale(1.08); box-shadow: 0 15px 40px rgba(255,140,0,0.6); }
 
     .app { display: none; width: 100%; max-width: 1200px; margin: 20px; opacity: 0; transition: opacity 0.8s; }
     .app.visible { display: block; opacity: 1; }
@@ -76,11 +74,57 @@
     .view { display: none; }
     .view.active { display: block; }
 
-    .balance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; }
-    .bal-card { background: #1f1f1f; border-radius: 20px; padding: 20px; text-align: center; text-decoration: none; color: #fff; border: 2px solid rgba(255,255,255,0.05); }
-    .bal-card:hover { transform: scale(1.05); border-color: #ff8c00; }
-    .bal-card img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 10px; }
-    .bal-card span { display: block; font-weight: 700; font-size: 1.2rem; }
+    /* Новый блок пополнения */
+    .deposit-box {
+      background: #1a1a1a;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 400px;
+      margin: 20px auto;
+      text-align: center;
+    }
+    .deposit-box label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+    .deposit-box input {
+      width: 100%;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 30px;
+      padding: 14px 20px;
+      color: #fff;
+      font-size: 1.2rem;
+      outline: none;
+      text-align: center;
+    }
+    .deposit-box input:focus {
+      border-color: #2196F3;
+    }
+    .deposit-box .btn-blue {
+      display: inline-block;
+      margin-top: 15px;
+      background: #2196F3;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 14px 40px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .deposit-box .btn-blue:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(33,150,243,0.4);
+    }
+    .deposit-box .btn-blue.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
 
     .purchase-item { background: #1e1e1e; border-radius: 15px; padding: 12px 15px; margin: 8px 0; display: flex; justify-content: space-between; }
 
@@ -88,20 +132,33 @@
     .btn-orange { background: linear-gradient(135deg, #ff8c00, #ff5722); border: none; border-radius: 30px; padding: 14px 40px; font-weight: 700; cursor: pointer; color: #fff; }
     .btn-orange:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(255,140,0,0.4); }
 
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; }
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center;
+    }
     .modal-overlay.active { display: flex; }
-    .modal { background: #111; border-radius: 30px; padding: 30px 40px; max-width: 400px; width: 90%; animation: zoomIn 0.3s ease; }
+    .modal {
+      background: #111; border-radius: 30px; padding: 30px 40px;
+      max-width: 400px; width: 90%; animation: zoomIn 0.3s ease;
+    }
     @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
     .modal h2 { margin-bottom: 15px; background: linear-gradient(135deg, #ff8c00, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .modal input { width: 100%; background: #222; border: 1px solid #333; border-radius: 30px; padding: 14px 20px; color: #fff; margin: 8px 0; outline: none; }
+    .modal input {
+      width: 100%; background: #222; border: 1px solid #333; border-radius: 30px;
+      padding: 14px 20px; color: #fff; margin: 8px 0; outline: none;
+    }
     .modal input:focus { border-color: #ff8c00; }
-    .modal .btn-submit { width: 100%; background: linear-gradient(135deg, #ff8c00, #ff5722); border: none; border-radius: 30px; padding: 15px; font-size: 1.1rem; font-weight: 700; cursor: pointer; color: #fff; margin-top: 10px; }
+    .modal .btn-submit {
+      width: 100%; background: linear-gradient(135deg, #ff8c00, #ff5722);
+      border: none; border-radius: 30px; padding: 15px; font-size: 1.1rem;
+      font-weight: 700; cursor: pointer; color: #fff; margin-top: 10px;
+    }
     .tabs { display: flex; margin-bottom: 20px; background: #222; border-radius: 30px; overflow: hidden; }
     .tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; font-weight: 600; }
     .tab.active { background: linear-gradient(135deg, #ff8c00, #ff5722); color: #fff; }
     .tab-form { display: none; }
     .tab-form.active { display: block; }
-    .close-btn { float: right; background: none; border: none; color: #888; font-size: 2rem; cursor: pointer; }
+    .close-btn { display: none; float: right; background: none; border: none; color: #888; font-size: 2rem; cursor: pointer; }
     .close-btn:hover { color: #fff; }
 
     .complaint-box { background: #1e1e1e; border-left: 3px solid #ffd700; padding: 8px; margin: 5px 0; border-radius: 8px; }
@@ -164,30 +221,14 @@
       <button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button>
     </div>
 
+    <!-- НОВЫЙ БАЛАНС -->
     <div id="balanceView" class="view">
       <h2 style="margin-bottom:10px;">Пополнить баланс</h2>
       <p style="color:#aaa; margin-bottom:20px;">Текущий баланс: <span id="balanceAmount">0.0</span> ₽</p>
-      <div class="balance-grid">
-        <a class="bal-card" href="https://www.donationalerts.com/widget/goal/9879024?token=E8Us7slpd2sWTGgw7B3T" target="_blank">
-          <span>500 ₽</span>
-          <img src="https://emojiguide.org/images/emoji/p/🐻-emoji.png" alt="мишка">
-        </a>
-        <a class="bal-card" href="https://www.donationalerts.com/widget/goal/9879026?token=E8Us7slpd2sWTGgw7B3T" target="_blank">
-          <span>700 ₽</span>
-          <img src="https://emojiguide.org/images/emoji/p/🍭-emoji.png" alt="леденец">
-        </a>
-        <a class="bal-card" href="https://www.donationalerts.com/widget/goal/9879026?token=E8Us7slpd2sWTGgw7B3T" target="_blank">
-          <span>1000 ₽</span>
-          <img src="https://emojiguide.org/images/emoji/p/🚀-emoji.png" alt="ракета">
-        </a>
-        <a class="bal-card" href="https://www.donationalerts.com/widget/goal/9879026?token=E8Us7slpd2sWTGgw7B3T" target="_blank">
-          <span>1500 ₽</span>
-          <img src="https://emojiguide.org/images/emoji/p/❤️-emoji.png" alt="сердце">
-        </a>
-        <a class="bal-card" href="https://www.donationalerts.com/widget/goal/9879026?token=E8Us7slpd2sWTGgw7B3T" target="_blank">
-          <span>2000 ₽</span>
-          <img src="https://emojiguide.org/images/emoji/p/👑-emoji.png" alt="корона">
-        </a>
+      <div class="deposit-box">
+        <label for="depositAmount">Введите сумму в рублях</label>
+        <input type="number" id="depositAmount" placeholder="Например, 500" min="1" step="1">
+        <a id="depositBtn" class="btn-blue disabled" href="https://www.donationalerts.com/r/starsgift" target="_blank">Пополнить</a>
       </div>
       <br>
       <button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button>
@@ -216,9 +257,10 @@
   </div>
 </div>
 
+<!-- Модалка входа/регистрации -->
 <div class="modal-overlay" id="authModal">
   <div class="modal">
-    <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+    <span class="close-btn" id="closeAuthBtn">&times;</span>
     <h2 style="text-align:center;">Вход / Регистрация</h2>
     <div class="tabs">
       <div class="tab active" onclick="switchTab('login')">Вход</div>
@@ -257,11 +299,6 @@
 </div>
 
 <script>
-  // ===================== ПРИ ЗАГРУЗКЕ ОЧИСТКА СТАРЫХ ДАННЫХ =====================
-  // Удаляем всех пользователей, чтобы не было конфликтов
-  localStorage.removeItem('users');
-  localStorage.removeItem('complaints');
-
   // ===================== ДАННЫЕ =====================
   let users = JSON.parse(localStorage.getItem('users')) || {};
   let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
@@ -269,7 +306,7 @@
   let currentBalance = 0;
   let purchaseHistory = [];
 
-  // ===================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====================
+  // ===================== ВСПОМОГАТЕЛЬНЫЕ =====================
   function cleanNick(nick) {
     return nick.trim().toLowerCase().replace(/^@/, '');
   }
@@ -286,6 +323,7 @@
     document.getElementById('loginError').textContent = '';
     document.getElementById('regError').textContent = '';
   }
+
   function closeAuthModal() {
     document.getElementById('authModal').classList.remove('active');
   }
@@ -347,7 +385,8 @@
 
   function logout() {
     currentUser = null;
-    location.reload();
+    document.getElementById('app').classList.remove('visible');
+    document.getElementById('welcomeScreen').classList.remove('hidden');
   }
 
   function updateAfterLogin() {
@@ -362,6 +401,17 @@
     showView('mainMenu');
     renderCart();
     renderUserComplaints();
+    // Активация кнопки пополнения при вводе суммы
+    const depositInput = document.getElementById('depositAmount');
+    const depositBtn = document.getElementById('depositBtn');
+    depositInput.addEventListener('input', function() {
+      const val = parseFloat(this.value);
+      if (val > 0) {
+        depositBtn.classList.remove('disabled');
+      } else {
+        depositBtn.classList.add('disabled');
+      }
+    });
   }
 
   // ===================== ПЕРЕКЛЮЧЕНИЕ ВЬЮ =====================
@@ -444,10 +494,12 @@
     }
   }
 
-  // Закрытие модалок по клику на фон
+  // Закрытие модалок по клику на фон (кроме authModal)
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) overlay.classList.remove('active');
+      if (e.target === overlay && overlay.id !== 'authModal') {
+        overlay.classList.remove('active');
+      }
     });
   });
 </script>
