@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⭐ Магазин звёзд Telegram</title>
-  <style>
+```html
+
+
+
+  
+  
+  ⭐ Магазин звёзд Telegram
+  
     * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s cubic-bezier(.4,0,.2,1); }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -135,164 +136,164 @@
     .notification { background: #1e3a1e; border: 2px solid #4caf50; border-radius: 20px; padding: 10px 15px; margin-bottom: 15px; text-align: center; }
 
     @media (max-width: 700px) { .topbar { flex-direction: column; gap: 10px; } .main-frame { padding: 15px; } .welcome-title { font-size: 2rem; } }
-  </style>
-</head>
-<body>
+  
 
-<!-- Приветствие -->
-<div class="welcome" id="welcomeScreen">
-  <img src="https://avatars.mds.yandex.net/i?id=1464c9e382a7a07688d1fa8cc5de847a5f20b684-10640295-images-thumbs&n=13" alt="Rocket" class="rocket-img">
-  <h1 class="welcome-title">Добро пожаловать</h1>
-  <button class="btn-next" onclick="enterSite()">Далее</button>
-</div>
 
-<!-- Приложение -->
-<div class="app" id="app">
-  <div class="topbar">
-    <div class="menu-icons">
-      <div class="menu-item" onclick="showView('cart')"><i>🛒</i> Корзина</div>
-      <div class="menu-item" onclick="showView('support')"><i>✉️</i> Поддержка</div>
-      <div class="menu-item" onclick="showView('balance')"><i>💰</i> Баланс</div>
-      <div class="menu-item" onclick="showView('shop')"><i>⭐</i> Магазин</div>
-      <div class="menu-item" onclick="showView('settings')"><i>⚙️</i> Настройки</div>
-    </div>
-    <div class="user-area" id="userArea">
-      <!-- будет заполнено после входа -->
-    </div>
-  </div>
 
-  <div class="main-frame">
-    <div id="mainMenu" class="view active">
-      <h2 style="text-align:center; margin-bottom:20px;">Добро пожаловать!</h2>
-      <div class="big-menu">
-        <button onclick="showView('shop')">🛍️ Магазин</button>
-        <button onclick="showView('cart')">🛒 Корзина</button>
-        <button onclick="showView('balance')">💰 Баланс</button>
-        <button onclick="showView('support')">✉️ Поддержка</button>
-        <button onclick="showView('settings')">⚙️ Настройки</button>
-      </div>
-    </div>
 
-    <div id="shopView" class="view">
-      <h2 style="margin-bottom:20px;">Магазин звёзд</h2>
-      <p style="color:#aaa; text-align:center;">Товары временно недоступны</p>
-      <br>
-      <button class="btn-orange" onclick="showView('mainMenu')">⬅ Вернуться</button>
-    </div>
 
-    <div id="cartView" class="view">
-      <h2 style="margin-bottom:20px;">История покупок</h2>
-      <div id="cartList"></div>
-      <br>
-      <button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button>
-    </div>
+  
+  Добро пожаловать
+  Далее
 
-    <div id="balanceView" class="view">
-      <h2 style="margin-bottom:10px;">Пополнить баланс</h2>
-      <p style="color:#aaa; margin-bottom:20px;">Текущий баланс: <span id="balanceAmount">0.0</span> ₽</p>
-      <div class="deposit-box">
-        <label for="depositAmount">Введите сумму (от 10 ₽)</label>
-        <input type="number" id="depositAmount" placeholder="Например, 500" min="10" step="1">
-        <button class="btn-blue disabled" id="depositBtn">Пополнить</button>
-      </div>
-      <br>
-      <button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button>
-    </div>
 
-    <div id="supportView" class="view">
-      <h2 style="margin-bottom:20px;">Поддержка</h2>
-      <textarea id="complaintText" rows="4" placeholder="Опишите проблему..."></textarea>
-      <button class="btn-orange" onclick="sendComplaint()">Отправить</button>
-      <br><br>
-      <div id="userComplaints"></div>
-      <br>
-      <button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button>
-    </div>
 
-    <div id="settingsView" class="view">
-      <h2 style="margin-bottom:20px;">Настройки</h2>
-      <p style="margin-bottom:10px;">Цвет темы:</p>
-      <div>
-        <span style="display:inline-block;width:40px;height:40px;border-radius:50%;background:#000;border:2px solid #ff8c00;cursor:pointer;" onclick="setTheme('black')"></span>
-        <span style="display:inline-block;width:40px;height:40px;border-radius:50%;background:#fff;border:2px solid #ff8c00;cursor:pointer;margin-left:10px;" onclick="setTheme('white')"></span>
-      </div>
-      <br>
-      <button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button>
-    </div>
-  </div>
-</div>
 
-<!-- Модалка входа/регистрации -->
-<div class="modal-overlay" id="authModal">
-  <div class="modal">
-    <span class="close-btn" onclick="closeAuthModal()">&times;</span>
-    <h2 style="text-align:center;">Вход / Регистрация</h2>
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab('login')">Вход</div>
-      <div class="tab" onclick="switchTab('register')">Регистрация</div>
-    </div>
-    <div id="loginTab" class="tab-form active">
-      <label>Ваш ник (без @)</label>
-      <input type="text" id="loginNick" placeholder="username">
-      <label>Пароль</label>
-      <input type="password" id="loginPass" placeholder="••••••••">
-      <button class="btn-submit" onclick="loginUser()">Войти</button>
-      <p id="loginError" style="color:#ff6b6b;margin-top:10px;"></p>
-    </div>
-    <div id="registerTab" class="tab-form">
-      <label>Ваш ник (без @)</label>
-      <input type="text" id="regNick" placeholder="username">
-      <label>Пароль</label>
-      <input type="password" id="regPass" placeholder="••••••••">
-      <label>Повторите пароль</label>
-      <input type="password" id="regPass2" placeholder="••••••••">
-      <button class="btn-submit" onclick="registerUser()">Зарегистрироваться</button>
-      <p id="regError" style="color:#ff6b6b;margin-top:10px;"></p>
-    </div>
-  </div>
-</div>
+  
+    
+      🛒 Корзина
+      ✉️ Поддержка
+      💰 Баланс
+      ⭐ Магазин
+      ⚙️ Настройки
+    
+    
+      
+    
+  
 
-<!-- Модалка ожидания оплаты -->
-<div class="modal-overlay" id="waitModal">
-  <div class="modal">
-    <h2 style="text-align:center;">⏳ Ожидание оплаты</h2>
-    <p style="text-align:center; margin:20px 0;">Дождитесь подтверждения оплаты</p>
-    <p style="text-align:center; color:#aaa;">Занимает около 10-15 минут</p>
-    <button class="btn-submit" onclick="document.getElementById('waitModal').classList.remove('active')">OK</button>
-  </div>
-</div>
+  
+    
+      Добро пожаловать!
+      
+        🛍️ Магазин
+        🛒 Корзина
+        💰 Баланс
+        ✉️ Поддержка
+        ⚙️ Настройки
+      
+    
 
-<!-- Модалка админ-панели -->
-<div class="modal-overlay" id="adminModal">
-  <div class="modal" style="max-width:500px;">
-    <span class="close-btn" onclick="document.getElementById('adminModal').classList.remove('active')">&times;</span>
-    <h2 style="text-align:center;">🔐 Админ-панель</h2>
-    <div id="adminContent">
-      <label>Пароль</label>
-      <input type="password" id="adminPass" placeholder="Пароль">
-      <button class="btn-submit" onclick="adminLogin()">Войти</button>
-    </div>
-    <div id="adminPanel" style="display:none;">
-      <div class="admin-panel">
-        <button onclick="showAdminSection('complaints')">✉️ Жалобы (письмо)</button>
-        <button onclick="showAdminSection('donations')">✅ Подтвердить донаты (галочка)</button>
-      </div>
-      <div id="adminComplaints" style="margin-top:20px; display:none;"></div>
-      <div id="adminDonations" style="margin-top:20px; display:none;"></div>
-    </div>
-  </div>
-</div>
+    
+      Магазин звёзд
+      Товары временно недоступны
+      
+      ⬅ Вернуться
+    
 
-<!-- Модалка уведомления о звёздах -->
-<div class="modal-overlay" id="starModal">
-  <div class="modal">
-    <h2 style="text-align:center;">⭐ Получение звёзд</h2>
-    <p style="text-align:center; margin:20px 0;">Напишите <strong>xudex999</strong> чтобы получить свои звёзды</p>
-    <button class="btn-submit" onclick="document.getElementById('starModal').classList.remove('active')">OK</button>
-  </div>
-</div>
+    
+      История покупок
+      
+      
+      ⬅ Назад
+    
 
-<script>
+    
+      Пополнить баланс
+      Текущий баланс: 0.0 ₽
+      
+        Введите сумму (от 10 ₽)
+        
+        Пополнить
+      
+      
+      ⬅ Назад
+    
+
+    
+      Поддержка
+      
+      Отправить
+      
+      
+      
+      ⬅ Назад
+    
+
+    
+      Настройки
+      Цвет темы:
+      
+        
+        
+      
+      
+      ⬅ Назад
+    
+  
+
+
+
+
+  
+    &times;
+    Вход / Регистрация
+    
+      Вход
+      Регистрация
+    
+    
+      Ваш ник (без @)
+      
+      Пароль
+      
+      Войти
+      
+    
+    
+      Ваш ник (без @)
+      
+      Пароль
+      
+      Повторите пароль
+      
+      Зарегистрироваться
+      
+    
+  
+
+
+
+
+  
+    ⏳ Ожидание оплаты
+    Дождитесь подтверждения оплаты
+    Занимает около 10-15 минут
+    OK
+  
+
+
+
+
+  
+    &times;
+    🔐 Админ-панель
+    
+      Пароль
+      
+      Войти
+    
+    
+      
+        ✉️ Жалобы (письмо)
+        ✅ Подтвердить донаты (галочка)
+      
+      
+      
+    
+  
+
+
+
+
+  
+    ⭐ Получение звёзд
+    Напишите xudex999 чтобы получить свои звёзды
+    OK
+  
+
+
+
   // ===================== ДАННЫЕ =====================
   let users = JSON.parse(localStorage.getItem('users')) || {};
   let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
@@ -344,29 +345,7 @@
     depositBtn.addEventListener('click', function(e) {
       if (this.classList.contains('disabled')) return;
       const amount = parseFloat(depositInput.value);
-      if (amount < 10) return;
-      // добавляем запись о донате (неподтверждённый)
-      donations.push({ user: currentUser, amount: amount, date: new Date().toLocaleString(), confirmed: false });
-      localStorage.setItem('donations', JSON.stringify(donations));
-      // показываем модалку ожидания
-      document.getElementById('waitModal').classList.add('active');
-      // открываем ссылку на донат в новой вкладке
-      window.open('https://www.donationalerts.com/r/starsgift', '_blank');
-    });
-  }
-
-  function openAuthModal() {
-    document.getElementById('authModal').classList.add('active');
-    document.getElementById('loginError').textContent = '';
-    document.getElementById('regError').textContent = '';
-  }
-
-  function closeAuthModal() {
-    document.getElementById('authModal').classList.remove('active');
-  }
-
-  function switchTab(tab) {
-    document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+      if (amount  el.classList.remove('active'));
     document.querySelectorAll('.tab-form').forEach(el => el.classList.remove('active'));
     if (tab === 'login') {
       document.getElementById('loginTab').classList.add('active');
@@ -439,9 +418,9 @@
 
   function updateAfterLogin() {
     document.getElementById('userArea').innerHTML = `
-      <span style="font-weight:600;">@${currentUser}</span>
-      <span class="balance-pill" onclick="showView('balance')">💰 ${currentBalance.toFixed(1)} ₽</span>
-      <button class="logout-btn" onclick="logout()">Выйти</button>
+      @${currentUser}
+      💰 ${currentBalance.toFixed(1)} ₽
+      Выйти
     `;
     document.getElementById('balanceAmount').textContent = currentBalance.toFixed(1);
     showView('mainMenu');
@@ -465,9 +444,9 @@
   function renderCart() {
     const list = document.getElementById('cartList');
     if (!purchaseHistory || purchaseHistory.length === 0) {
-      list.innerHTML = '<p style="color:#aaa;">Покупок нет.</p>';
+      list.innerHTML = 'Покупок нет.';
     } else {
-      list.innerHTML = purchaseHistory.map(item => `<div class="purchase-item"><span>${item.name}</span><span>${item.price} ₽</span></div>`).join('');
+      list.innerHTML = purchaseHistory.map(item => `${item.name}${item.price} ₽`).join('');
     }
   }
 
@@ -486,21 +465,21 @@
     const container = document.getElementById('userComplaints');
     const userComps = complaints.filter(c => c.user === currentUser);
     if (userComps.length === 0) {
-      container.innerHTML = '<p style="color:#aaa;">Вы ещё не отправляли жалоб.</p>';
+      container.innerHTML = 'Вы ещё не отправляли жалоб.';
     } else {
       container.innerHTML = userComps.map(c => `
-        <div class="complaint-box">
-          <div>${c.text}</div>
-          <small>${c.date}</small>
-          ${c.answer ? `<div style="margin-top:8px; border-top:1px solid #333; padding-top:8px; color:#8bc34a;">Ответ: ${c.answer}</div>` : ''}
-        </div>
+        
+          ${c.text}
+          ${c.date}
+          ${c.answer ? `Ответ: ${c.answer}` : ''}
+        
       `).join('');
     }
   }
 
-  // ===================== АДМИН =====================
+  // ===================== АДМИН (исправлено: Ctrl+Shift+A) =====================
   document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
       e.preventDefault();
       document.getElementById('adminModal').classList.add('active');
       document.getElementById('adminContent').style.display = 'block';
@@ -524,17 +503,17 @@
       document.getElementById('adminDonations').style.display = 'none';
       const container = document.getElementById('adminComplaints');
       if (complaints.length === 0) {
-        container.innerHTML = '<p>Жалоб нет</p>';
+        container.innerHTML = 'Жалоб нет';
       } else {
         container.innerHTML = complaints.map((c, idx) => `
-          <div class="complaint-box">
-            <div><b>@${c.user}:</b> ${c.text}</div>
-            <small>${c.date}</small>
-            ${c.answer ? `<div style="color:#8bc34a;">Ответ: ${c.answer}</div>` : `
-              <textarea id="answerInput${idx}" rows="2" placeholder="Ответ..." style="width:100%; margin-top:8px;"></textarea>
-              <button class="btn-orange" style="padding:8px 20px; font-size:0.9rem;" onclick="answerComplaint(${idx})">Ответить</button>
+          
+            @${c.user}: ${c.text}
+            ${c.date}
+            ${c.answer ? `Ответ: ${c.answer}` : `
+              
+              Ответить
             `}
-          </div>
+          
         `).join('');
       }
     } else {
@@ -543,14 +522,14 @@
       const container = document.getElementById('adminDonations');
       const pending = donations.filter(d => !d.confirmed);
       if (pending.length === 0) {
-        container.innerHTML = '<p>Нет неподтверждённых донатов</p>';
+        container.innerHTML = 'Нет неподтверждённых донатов';
       } else {
         container.innerHTML = pending.map((d, idx) => `
-          <div class="complaint-box">
-            <div><b>@${d.user}</b> — ${d.amount} ₽</div>
-            <small>${d.date}</small>
-            <button class="btn-orange" style="padding:8px 20px; font-size:0.9rem; margin-top:8px;" onclick="confirmDonation(${idx})">✅ Подтвердить</button>
-          </div>
+          
+            @${d.user} — ${d.amount} ₽
+            ${d.date}
+            ✅ Подтвердить
+          
         `).join('');
       }
     }
@@ -593,6 +572,7 @@
       document.querySelectorAll('.menu-item, .big-menu button, .admin-panel button, .tab').forEach(el => el.style.background = '#222');
     }
   }
-</script>
-</body>
-</html>
+
+
+
+```
