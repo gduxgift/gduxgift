@@ -9,37 +9,38 @@
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #000; color: #fff; min-height: 100vh; overflow-x: hidden;
-      display: flex; justify-content: center; align-items: center;
+      position: relative;
     }
-    .welcome {
-      position: fixed; inset: 0; display: flex; flex-direction: column;
-      justify-content: center; align-items: center; background: #000; z-index: 1000;
-      opacity: 1; transition: opacity 0.6s, transform 0.6s;
+    /* Ракета — анимация запуска (без белого фона) */
+    .rocket-wrapper {
+      position: fixed; inset: 0; z-index: 9999;
+      pointer-events: none; display: flex; justify-content: center; align-items: center;
     }
-    .welcome.hidden { opacity: 0; transform: scale(0.9); pointer-events: none; }
-    .rocket-img {
-      width: 220px; height: auto; animation: rocketFloat 2s ease-in-out infinite;
-      filter: drop-shadow(0 0 40px rgba(255,150,0,0.5));
+    .rocket-wrapper img {
+      width: 300px; animation: launch 2.5s ease-in forwards;
+      filter: drop-shadow(0 0 80px rgba(255,150,0,0.7));
     }
-    @keyframes rocketFloat {
-      0%, 100% { transform: translateY(0) rotate(-3deg); }
-      50% { transform: translateY(-25px) rotate(3deg); }
+    @keyframes launch {
+      0% { transform: translateY(0) rotate(-5deg); opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(10deg); opacity: 0; }
     }
-    .welcome-title {
-      font-size: 3.2rem; font-weight: 800; margin: 30px 0;
-      background: linear-gradient(135deg, #ff8c00, #ffd700);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      text-align: center; letter-spacing: 2px;
+    /* Боковая панель промокода (единственная рамка) */
+    .promo-side {
+      position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+      width: 200px; background: #1a1a1a; border: 2px solid #ff8c00; border-radius: 20px;
+      padding: 20px 15px; text-align: center; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
-    .btn-next {
-      background: linear-gradient(135deg, #ff8c00, #ff5722); color: #fff;
-      border: none; border-radius: 50px; padding: 18px 70px; font-size: 1.5rem;
-      font-weight: 700; cursor: pointer; box-shadow: 0 10px 30px rgba(255,140,0,0.4);
+    .promo-side p { margin-bottom: 15px; font-size: 0.95rem; line-height: 1.4; color: #ddd; }
+    .promo-side .btn-promo {
+      background: linear-gradient(135deg, #ff8c00, #ff5722);
+      border: none; border-radius: 30px; padding: 12px 25px; font-size: 1rem;
+      font-weight: 700; cursor: pointer; color: #fff; text-decoration: none; display: inline-block;
     }
-    .btn-next:hover { transform: scale(1.08); box-shadow: 0 15px 40px rgba(255,140,0,0.6); }
+    .promo-side .btn-promo:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(255,140,0,0.5); }
 
-    .app { display: none; width: 100%; max-width: 1200px; margin: 20px; opacity: 0; transition: opacity 0.8s; }
-    .app.visible { display: block; opacity: 1; }
+    .app { width: 100%; max-width: 1200px; margin: 20px auto; padding-left: 240px; opacity: 1; }
+    @media (max-width: 900px) { .promo-side { display: none; } .app { padding-left: 20px; } }
 
     .topbar {
       display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
@@ -64,8 +65,7 @@
     }
     .logout-btn:hover { background: rgba(255,80,80,0.4); }
 
-    .main-frame { background: #111; border-radius: 30px; padding: 30px; min-height: 400px; animation: fadeIn 0.5s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .main-frame { background: #111; border-radius: 30px; padding: 30px; min-height: 400px; }
 
     .big-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; margin-bottom: 20px; }
     .big-menu button { background: #222; border: none; border-radius: 20px; padding: 25px 10px; color: #fff; font-size: 1.1rem; cursor: pointer; }
@@ -132,18 +132,27 @@
     .admin-panel button { background: #333; border: none; border-radius: 30px; padding: 15px; color: #fff; font-size: 1.2rem; cursor: pointer; }
     .admin-panel button:hover { background: #444; }
 
-    .notification { background: #1e3a1e; border: 2px solid #4caf50; border-radius: 20px; padding: 10px 15px; margin-bottom: 15px; text-align: center; }
-
-    @media (max-width: 700px) { .topbar { flex-direction: column; gap: 10px; } .main-frame { padding: 15px; } .welcome-title { font-size: 2rem; } }
+    .admin-trigger {
+      position: fixed; bottom: 20px; right: 20px; background: rgba(255,140,0,0.3);
+      border: 2px solid #ff8c00; border-radius: 50%; width: 50px; height: 50px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1500;
+      font-size: 1.5rem; backdrop-filter: blur(4px);
+    }
+    .admin-trigger:hover { background: rgba(255,140,0,0.6); }
   </style>
 </head>
 <body>
 
-<!-- Приветствие -->
-<div class="welcome" id="welcomeScreen">
-  <img src="https://avatars.mds.yandex.net/i?id=1464c9e382a7a07688d1fa8cc5de847a5f20b684-10640295-images-thumbs&n=13" alt="Rocket" class="rocket-img">
-  <h1 class="welcome-title">Добро пожаловать</h1>
-  <button class="btn-next" onclick="enterSite()">Далее</button>
+<!-- Ракета (запуск при загрузке, без белого фона) -->
+<div class="rocket-wrapper" id="rocketWrapper">
+  <img src="https://cdn-icons-png.flaticon.com/512/2965/2965358.png" alt="Rocket">
+</div>
+
+<!-- Боковая панель промокода (одна рамка) -->
+<div class="promo-side">
+  <p>Промокод на наши товары</p>
+  <p style="margin-bottom:20px;">вы получите</p>
+  <a href="https://t.me/gduxgift" target="_blank" class="btn-promo">Далее</a>
 </div>
 
 <!-- Приложение -->
@@ -258,7 +267,7 @@
     <h2 style="text-align:center;">⏳ Ожидание оплаты</h2>
     <p style="text-align:center; margin:20px 0;">Дождитесь подтверждения оплаты</p>
     <p style="text-align:center; color:#aaa;">Занимает около 10-15 минут</p>
-    <button class="btn-submit" onclick="document.getElementById('waitModal').classList.remove('active')">OK</button>
+    <button class="btn-submit" onclick="closeWaitModal()">OK</button>
   </div>
 </div>
 
@@ -287,8 +296,8 @@
 <div class="modal-overlay" id="starModal">
   <div class="modal">
     <h2 style="text-align:center;">⭐ Получение звёзд</h2>
-    <p style="text-align:center; margin:20px 0;">Напишите <strong>xudex999</strong> чтобы получить свои звёзды</p>
-    <button class="btn-submit" onclick="document.getElementById('starModal').classList.remove('active')">OK</button>
+    <p style="text-align:center; margin:20px 0;">Напишите <strong>xudex</strong> чтобы получить свои звёзды</p>
+    <button class="btn-submit" onclick="closeStarModal()">OK</button>
   </div>
 </div>
 
@@ -301,9 +310,25 @@
   let currentBalance = 0;
   let purchaseHistory = [];
 
+  // ===================== ЗАПУСК РАКЕТЫ ПРИ ЗАГРУЗКЕ =====================
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('rocketWrapper').style.display = 'none';
+    }, 2800);
+  });
+
   // ===================== ВСПОМОГАТЕЛЬНЫЕ =====================
   function cleanNick(nick) {
     return nick.trim().toLowerCase().replace(/^@/, '');
+  }
+
+  // ===================== ПРОВЕРКА STAR MESSAGE =====================
+  function checkStarMessage() {
+    if (currentUser && users[currentUser] && users[currentUser].starMessage) {
+      document.getElementById('starModal').classList.add('active');
+      users[currentUser].starMessage = false;
+      localStorage.setItem('users', JSON.stringify(users));
+    }
   }
 
   // ===================== АВТОМАТИЧЕСКИЙ ВХОД =====================
@@ -312,27 +337,18 @@
       currentBalance = users[currentUser].balance || 0;
       purchaseHistory = users[currentUser].history || [];
       updateAfterLogin();
-      // проверяем, есть ли сообщение о звёздах
-      if (users[currentUser].starMessage) {
-        setTimeout(() => {
-          document.getElementById('starModal').classList.add('active');
-        }, 500);
-        users[currentUser].starMessage = false;
-        localStorage.setItem('users', JSON.stringify(users));
-      }
+      checkStarMessage();
       return true;
     }
     return false;
   }
 
   // ===================== СТАРТ =====================
-  function enterSite() {
-    document.getElementById('welcomeScreen').classList.add('hidden');
-    document.getElementById('app').classList.add('visible');
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('app').style.display = 'block';
     if (!autoLogin()) {
       openAuthModal();
     }
-    // активация кнопки пополнения
     const depositInput = document.getElementById('depositAmount');
     const depositBtn = document.getElementById('depositBtn');
     depositInput.addEventListener('input', function() {
@@ -340,20 +356,16 @@
       if (val >= 10) depositBtn.classList.remove('disabled');
       else depositBtn.classList.add('disabled');
     });
-    // при клике на кнопку пополнения - показываем модалку ожидания и добавляем donation
     depositBtn.addEventListener('click', function(e) {
       if (this.classList.contains('disabled')) return;
       const amount = parseFloat(depositInput.value);
       if (amount < 10) return;
-      // добавляем запись о донате (неподтверждённый)
       donations.push({ user: currentUser, amount: amount, date: new Date().toLocaleString(), confirmed: false });
       localStorage.setItem('donations', JSON.stringify(donations));
-      // показываем модалку ожидания
       document.getElementById('waitModal').classList.add('active');
-      // открываем ссылку на донат в новой вкладке
       window.open('https://www.donationalerts.com/r/starsgift', '_blank');
     });
-  }
+  });
 
   function openAuthModal() {
     document.getElementById('authModal').classList.add('active');
@@ -377,20 +389,16 @@
     }
   }
 
-  // ===================== РЕГИСТРАЦИЯ =====================
   function registerUser() {
     const nick = cleanNick(document.getElementById('regNick').value);
     const pass = document.getElementById('regPass').value;
     const pass2 = document.getElementById('regPass2').value;
     const err = document.getElementById('regError');
-
     if (!nick || !pass) { err.textContent = 'Заполните все поля.'; return; }
     if (pass !== pass2) { err.textContent = 'Пароли не совпадают.'; return; }
     if (users[nick]) { err.textContent = 'Такой ник уже существует.'; return; }
-
     users[nick] = { password: pass, balance: 0, history: [], starMessage: false };
     localStorage.setItem('users', JSON.stringify(users));
-
     currentUser = nick;
     localStorage.setItem('currentUser', currentUser);
     currentBalance = 0;
@@ -398,21 +406,16 @@
     err.textContent = '';
     closeAuthModal();
     updateAfterLogin();
+    checkStarMessage();
   }
 
-  // ===================== ВХОД =====================
   function loginUser() {
     const nick = cleanNick(document.getElementById('loginNick').value);
     const pass = document.getElementById('loginPass').value;
     const err = document.getElementById('loginError');
-
     if (!nick || !pass) { err.textContent = 'Заполните все поля.'; return; }
-    if (!users[nick]) {
-      err.textContent = 'Пользователь не найден. Проверьте ник (без @).';
-      return;
-    }
+    if (!users[nick]) { err.textContent = 'Пользователь не найден.'; return; }
     if (users[nick].password !== pass) { err.textContent = 'Неверный пароль.'; return; }
-
     currentUser = nick;
     localStorage.setItem('currentUser', currentUser);
     currentBalance = users[nick].balance || 0;
@@ -420,21 +423,13 @@
     err.textContent = '';
     closeAuthModal();
     updateAfterLogin();
-    // проверяем сообщение о звёздах
-    if (users[nick].starMessage) {
-      setTimeout(() => {
-        document.getElementById('starModal').classList.add('active');
-      }, 500);
-      users[nick].starMessage = false;
-      localStorage.setItem('users', JSON.stringify(users));
-    }
+    checkStarMessage();
   }
 
   function logout() {
     currentUser = null;
     localStorage.removeItem('currentUser');
-    document.getElementById('app').classList.remove('visible');
-    document.getElementById('welcomeScreen').classList.remove('hidden');
+    location.reload();
   }
 
   function updateAfterLogin() {
@@ -449,19 +444,19 @@
     renderUserComplaints();
   }
 
-  // ===================== ПЕРЕКЛЮЧЕНИЕ ВЬЮ =====================
   function showView(viewName) {
     if (!currentUser) { openAuthModal(); return; }
     document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-    if (viewName === 'mainMenu') document.getElementById('mainMenu').classList.add('active');
-    else if (viewName === 'cart') { document.getElementById('cartView').classList.add('active'); renderCart(); }
+    if (viewName === 'mainMenu') {
+      document.getElementById('mainMenu').classList.add('active');
+      checkStarMessage();
+    } else if (viewName === 'cart') { document.getElementById('cartView').classList.add('active'); renderCart(); }
     else if (viewName === 'support') { document.getElementById('supportView').classList.add('active'); renderUserComplaints(); }
     else if (viewName === 'balance') { document.getElementById('balanceView').classList.add('active'); document.getElementById('balanceAmount').textContent = currentBalance.toFixed(1); }
     else if (viewName === 'shop') document.getElementById('shopView').classList.add('active');
     else if (viewName === 'settings') document.getElementById('settingsView').classList.add('active');
   }
 
-  // ===================== ПОКУПКИ (история) =====================
   function renderCart() {
     const list = document.getElementById('cartList');
     if (!purchaseHistory || purchaseHistory.length === 0) {
@@ -471,7 +466,6 @@
     }
   }
 
-  // ===================== ПОДДЕРЖКА =====================
   function sendComplaint() {
     const text = document.getElementById('complaintText').value.trim();
     if (!text) { alert('Напишите текст жалобы.'); return; }
@@ -498,21 +492,33 @@
     }
   }
 
-  // ===================== АДМИН (исправлено: Ctrl+Shift+A) =====================
+  function closeWaitModal() {
+    document.getElementById('waitModal').classList.remove('active');
+    checkStarMessage();
+  }
+
+  function closeStarModal() {
+    document.getElementById('starModal').classList.remove('active');
+  }
+
+  // ===================== АДМИН ====================
+  function openAdminPanel() {
+    document.getElementById('adminModal').classList.add('active');
+    document.getElementById('adminContent').style.display = 'block';
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('adminComplaints').style.display = 'none';
+    document.getElementById('adminDonations').style.display = 'none';
+    document.getElementById('adminPass').value = '';
+  }
   document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'а')) {
       e.preventDefault();
-      document.getElementById('adminModal').classList.add('active');
-      document.getElementById('adminContent').style.display = 'block';
-      document.getElementById('adminPanel').style.display = 'none';
-      document.getElementById('adminComplaints').style.display = 'none';
-      document.getElementById('adminDonations').style.display = 'none';
+      openAdminPanel();
     }
   });
-
   function adminLogin() {
     const pass = document.getElementById('adminPass').value;
-    if (pass !== 'Xudex01') { alert('Неверный пароль'); return; }
+    if (pass !== 'xudex') { alert('Неверный пароль'); return; }
     document.getElementById('adminContent').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('adminPass').value = '';
@@ -527,7 +533,7 @@
         container.innerHTML = '<p>Жалоб нет</p>';
       } else {
         container.innerHTML = complaints.map((c, idx) => `
-          <div class="complaint-box">
+          <div class"complaint-box">
             <div><b>@${c.user}:</b> ${c.text}</div>
             <small>${c.date}</small>
             ${c.answer ? `<div style="color:#8bc34a;">Ответ: ${c.answer}</div>` : `
@@ -541,7 +547,7 @@
       document.getElementById('adminComplaints').style.display = 'none';
       document.getElementById('adminDonations').style.display = 'block';
       const container = document.getElementById('adminDonations');
-      const pending = donations.filter(d => !d.confirmed);
+      const pnding = donations.filter(d => !d.confirmed);
       if (pending.length === 0) {
         container.innerHTML = '<p>Нет неподтверждённых донатов</p>';
       } else {
@@ -549,7 +555,7 @@
           <div class="complaint-box">
             <div><b>@${d.user}</b> — ${d.amount} ₽</div>
             <small>${d.date}</small>
-            <button class="btn-orange" style="padding:8px 20px; font-size:0.9rem; margin-top:8px;" onclick="confirmDonation(${idx})">✅ Подтвердить</button>
+            <button class="btn-orange" style="padding:8px 20px; font-size:0.9rem;" onclick="confirmDonation(${idx})">✅ Подтвердить</button>
           </div>
         `).join('');
       }
@@ -565,33 +571,16 @@
   }
 
   function confirmDonation(idx) {
-    // Находим неподтверждённый донат по индексу в отфильтрованном массиве
     const pending = donations.filter(d => !d.confirmed);
     const donation = pending[idx];
     if (!donation) return;
     donation.confirmed = true;
     localStorage.setItem('donations', JSON.stringify(donations));
-    // Помечаем пользователю, что нужно показать сообщение о звёздах
     if (users[donation.user]) {
       users[donation.user].starMessage = true;
       localStorage.setItem('users', JSON.stringify(users));
     }
     showAdminSection('donations');
-  }
-
-  // ===================== НАСТРОЙКИ =====================
-  function setTheme(color) {
-    if (color === 'white') {
-      document.body.style.background = '#fff';
-      document.body.style.color = '#111';
-      document.querySelectorAll('.main-frame, .topbar, .modal, .deposit-box, .complaint-box, .purchase-item').forEach(el => el.style.background = '#eee');
-      document.querySelectorAll('.menu-item, .big-menu button, .admin-panel button, .tab').forEach(el => el.style.background = '#ddd');
-    } else {
-      document.body.style.background = '#000';
-      document.body.style.color = '#fff';
-      document.querySelectorAll('.main-frame, .topbar, .modal, .deposit-box, .complaint-box, .purchase-item').forEach(el => el.style.background = '#111');
-      document.querySelectorAll('.menu-item, .big-menu button, .admin-panel button, .tab').forEach(el => el.style.background = '#222');
-    }
   }
 </script>
 </body>
