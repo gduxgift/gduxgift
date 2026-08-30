@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Магазин звёзд</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --menu-bg: #000000;
+      --text-main: #ffffff;
+      --accent-yellow: #ffd700;
+      --btn-orange: #ff6b00;
+      --btn-soft: #2b2b2b;
+      --border: #333333;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); }
+
+    /* Верхняя жёлтая полоса */
+    .top-banner {
+      background-color: var(--accent-yellow);
+      color: #000;
+      padding: 10px 0;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* Чёрное меню на весь экран */
+    header {
+      background-color: var(--menu-bg);
+      padding: 20px 40px;
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .welcome-text {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .promo-side {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    /* Кнопка «Далее» — оранжевая, мягкая */
+    .next-btn {
+      margin-top: 30px;
+      padding: 16px 32px;
+      background-color: var(--btn-orange);
+      color: white;
+      border: none;
+      border-radius: 12px; /* мягкие углы */
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform 0.15s, background-color 0.2s;
+    }
+    .next-btn:hover { background-color: #e65c00; transform: scale(1.02); }
+
+    /* Секция с ракетой и переходом */
+    #section-rocket {
+      position: relative;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .rocket-icon {
+      width: 150px;
+      height: 150px;
+      margin: 20px auto;
+      /* Простая SVG-ракета (стилизованная) */
+      fill: #fff;
+    }
+
+    /* Панель после «Далее»: профиль, баланс, поддержка, корзина */
+    #panel-after-next {
+      display: none; /* скрыта по умолчанию */
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+
+    /* Левая колонка: вход/регистрация */
+    .auth-panel {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .auth-panel h3 { margin-bottom: 15px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: #ccc; }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      background: #2b2b2b;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: white;
+    }
+    .auth-buttons button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: var(--btn-soft);
+      color: white;
+      cursor: pointer;
+    }
+    .auth-buttons .login-btn { background: #3a3a3a; }
+    .auth-buttons .register-btn { background: var(--btn-orange); }
+
+    /* Правая часть: профиль, баланс, поддержка, корзина */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    .feature-card {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .feature-card h3 { margin-bottom: 8px; }
+    .balance-value { color: var(--btn-orange); font-weight: bold; font-size: 1.2em; }
+
+    /* Блоки «только после регистрации» */
+    .locked-content {
+      opacity: 0.5;
+      pointer-events: none;
+      filter: grayscale(1);
+    }
+    .unlocked-content {
+      opacity: 1;
+      pointer-events: auto;
+      filter: grayscale(0);
+    }
+
+    /* Корзина */
+    .cart-block {
+      margin-top: 20px;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .cart-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #333; }
+
+    /* Адаптив */
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; gap: 15px; text-align: center; }
+      .panel-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Жёлтая полоса сверху -->
+  <div class="top-banner">Лучшие цены на звёзды только на нашем сайте</div>
+
+  <!-- Чёрное меню и приветствие -->
+  <header>
+    <div class="header-content">
+      <div class="welcome-text">Добро пожаловать</div>
+      <div class="promo-side">Промокоды найдёте на нашем сайте</div>
+    </div>
+  </header>
+
+  <!-- Секция с ракетой -->
+  <section id="section-rocket">
+    <h2>Готовы к старту?</h2>
+    <svg class="rocket-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2L2 12h4v8h12v-8h4L12 2zm0 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+    </svg>
+    <button class="next-btn" onclick="showPanel()">Далее</button>
+  </section>
+
+  <!-- Панель после нажатия «Далее» -->
+  <section id="panel-after-next">
+    <div class="panel-grid">
+      <!-- Левая колонка: вход и регистрация -->
+      <div class="auth-panel">
+        <h3>Вход / Регистрация</h3>
+        <div class="form-group">
+          <label>Почта</label>
+          <input type="email" placeholder="name@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <input type="password" placeholder="••••••••" />
+        </div>
+        <div class="auth-buttons">
+          <button class="login-btn">Войти</button>
+          <button class="register-btn">Зарегистрироваться</button>
+        </div>
+      </div>
+
+      <!-- Правая часть: функции -->
+      <div>
+        <!-- Профиль, баланс, поддержка (заблокированы без регистрации) -->
+        <div class="features-grid">
+          <div class="feature-card locked-content" id="card-profile">
+            <h3>Профиль</h3>
+            <p>Доступно после регистрации</p>
+          </div>
+          <div class="feature-card locked-content" id="card-balance">
+            <h3>Баланс</h3>
+            <div class="balance-value">0 ₽</div>
+            <p>Пополнение доступно после входа</p>
+          </div>
+          <div class="feature-card locked-content" id="card-support">
+            <h3>Поддержка</h3>
+            <p>Доступ после регистрации</p>
+          </div>
+        </div>
+
+        <!-- Корзина -->
+        <div class="cart-block">
+          <h3>Корзина</h3>
+          <div class="cart-item">
+            <span>Товар 1</span>
+            <span>199 ₽</span>
+          </div>
+          <div class="cart-item">
+            <span>Товар 2</span>
+            <span>299 ₽</span>
+          </div>
+          <div style="margin-top:15px; display:flex; justify-content:space-between;">
+            <span>Итого:</span>
+            <span style="font-weight:bold;">498 ₽</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function showPanel() {
+      document.getElementById('section-rocket').style.display = 'none';
+      document.getElementById('panel-after-next').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    // Имитация «входа» для демонстрации разблокировки
+    document.querySelector('.login-btn').addEventListener('click', () => {
+      const cards = document.querySelectorAll('.locked-content');
+      cards.forEach(card => {
+        card.classList.remove('locked-content');
+        card.classList.add('unlocked-content');
+      });
+      alert('Вход выполнен (демонстрация) — теперь доступны профиль, баланс и поддержка.');
+    });
+
+    document.querySelector('.register-btn').addEventListener('click', () => {
+      alert('Регистрация (демонстрация) — форма отправляется на сервер.');
+    });
+  </script>
+</body>
+</html>
