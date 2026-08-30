@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>⭐ Магазин звёзд Telegram</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s cubic-bezier(.4,0,.2,1); }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #000; color: #fff; min-height: 100vh; overflow-x: hidden;
-      position: relative;
     }
-    /* Ракета — анимация запуска (без белого фона) */
+    /* Ракета без фона */
     .rocket-wrapper {
       position: fixed; inset: 0; z-index: 9999;
       pointer-events: none; display: flex; justify-content: center; align-items: center;
@@ -25,6 +24,7 @@
       80% { opacity: 1; }
       100% { transform: translateY(-120vh) rotate(10deg); opacity: 0; }
     }
+
     /* Боковая панель промокода (единственная рамка) */
     .promo-side {
       position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
@@ -39,7 +39,7 @@
     }
     .promo-side .btn-promo:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(255,140,0,0.5); }
 
-    .app { width: 100%; max-width: 1200px; margin: 20px auto; padding-left: 240px; opacity: 1; }
+    .app { width: 100%; max-width: 1200px; margin: 20px auto; padding-left: 240px; }
     @media (max-width: 900px) { .promo-side { display: none; } .app { padding-left: 20px; } }
 
     .topbar {
@@ -87,7 +87,7 @@
     .deposit-box .btn-blue {
       display: inline-block; margin-top: 15px; background: #2196F3; color: #fff;
       border: none; border-radius: 30px; padding: 14px 40px; font-size: 1.2rem;
-      font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.3s;
+      font-weight: 700; cursor: pointer; text-decoration: none;
     }
     .deposit-box .btn-blue:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(33,150,243,0.4); }
     .deposit-box .btn-blue.disabled { opacity: 0.4; pointer-events: none; }
@@ -148,7 +148,7 @@
   <img src="https://cdn-icons-png.flaticon.com/512/2965/2965358.png" alt="Rocket">
 </div>
 
-<!-- Боковая панель промокода (одна рамка) -->
+<!-- Боковая панель промокода (единственная рамка слева) -->
 <div class="promo-side">
   <p>Промокод на наши товары</p>
   <p style="margin-bottom:20px;">вы получите</p>
@@ -310,7 +310,7 @@
   let currentBalance = 0;
   let purchaseHistory = [];
 
-  // ===================== ЗАПУСК РАКЕТЫ ПРИ ЗАГРУЗКЕ =====================
+  // ===================== ЗАПУСК РАКЕТЫ =====================
   window.addEventListener('load', () => {
     setTimeout(() => {
       document.getElementById('rocketWrapper').style.display = 'none';
@@ -322,7 +322,6 @@
     return nick.trim().toLowerCase().replace(/^@/, '');
   }
 
-  // ===================== ПРОВЕРКА STAR MESSAGE =====================
   function checkStarMessage() {
     if (currentUser && users[currentUser] && users[currentUser].starMessage) {
       document.getElementById('starModal').classList.add('active');
@@ -331,7 +330,6 @@
     }
   }
 
-  // ===================== АВТОМАТИЧЕСКИЙ ВХОД =====================
   function autoLogin() {
     if (currentUser && users[currentUser]) {
       currentBalance = users[currentUser].balance || 0;
@@ -343,7 +341,6 @@
     return false;
   }
 
-  // ===================== СТАРТ =====================
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('app').style.display = 'block';
     if (!autoLogin()) {
@@ -501,7 +498,7 @@
     document.getElementById('starModal').classList.remove('active');
   }
 
-  // ===================== АДМИН ====================
+  // ===================== АДМИН =====================
   function openAdminPanel() {
     document.getElementById('adminModal').classList.add('active');
     document.getElementById('adminContent').style.display = 'block';
@@ -523,7 +520,6 @@
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('adminPass').value = '';
   }
-
   function showAdminSection(section) {
     if (section === 'complaints') {
       document.getElementById('adminComplaints').style.display = 'block';
@@ -533,7 +529,7 @@
         container.innerHTML = '<p>Жалоб нет</p>';
       } else {
         container.innerHTML = complaints.map((c, idx) => `
-          <div class"complaint-box">
+          <div class="complaint-box">
             <div><b>@${c.user}:</b> ${c.text}</div>
             <small>${c.date}</small>
             ${c.answer ? `<div style="color:#8bc34a;">Ответ: ${c.answer}</div>` : `
@@ -547,7 +543,7 @@
       document.getElementById('adminComplaints').style.display = 'none';
       document.getElementById('adminDonations').style.display = 'block';
       const container = document.getElementById('adminDonations');
-      const pnding = donations.filter(d => !d.confirmed);
+      const pending = donations.filter(d => !d.confirmed);
       if (pending.length === 0) {
         container.innerHTML = '<p>Нет неподтверждённых донатов</p>';
       } else {
@@ -555,13 +551,12 @@
           <div class="complaint-box">
             <div><b>@${d.user}</b> — ${d.amount} ₽</div>
             <small>${d.date}</small>
-            <button class="btn-orange" style="padding:8px 20px; font-size:0.9rem;" onclick="confirmDonation(${idx})">✅ Подтвердить</button>
+            <button class="btn-orange" style="padding:8px 20px; font-size:0.9rem; margin-top:8px;" onclick="confirmDonation(${idx})">✅ Подтвердить</button>
           </div>
         `).join('');
       }
     }
   }
-
   function answerComplaint(idx) {
     const answer = document.getElementById(`answerInput${idx}`).value.trim();
     if (!answer) { alert('Введите ответ'); return; }
@@ -569,7 +564,6 @@
     localStorage.setItem('complaints', JSON.stringify(complaints));
     showAdminSection('complaints');
   }
-
   function confirmDonation(idx) {
     const pending = donations.filter(d => !d.confirmed);
     const donation = pending[idx];
@@ -581,6 +575,19 @@
       localStorage.setItem('users', JSON.stringify(users));
     }
     showAdminSection('donations');
+  }
+  function setTheme(color) {
+    if (color === 'white') {
+      document.body.style.background = '#fff';
+      document.body.style.color = '#111';
+      document.querySelectorAll('.main-frame, .topbar, .modal, .deposit-box, .complaint-box, .purchase-item').forEach(el => el.style.background = '#eee');
+      document.querySelectorAll('.menu-item, .big-menu button, .admin-panel button, .tab').forEach(el => el.style.background = '#ddd');
+    } else {
+      document.body.style.background = '#000';
+      document.body.style.color = '#fff';
+      document.querySelectorAll('.main-frame, .topbar, .modal, .deposit-box, .complaint-box, .purchase-item').forEach(el => el.style.background = '#111');
+      document.querySelectorAll('.menu-item, .big-menu button, .admin-panel button, .tab').forEach(el => el.style.background = '#222');
+    }
   }
 </script>
 </body>
