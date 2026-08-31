@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авторизация</title>
+    <title>Личный кабинет</title>
     <style>
-        /* Обнуление отступов */
+        /* Сброс базовых отступов */
         * {
             margin: 0;
             padding: 0;
@@ -13,42 +13,41 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Мягкий, не яркий белый фон (матовый светло-серый оттенок) */
+        /* Мягкий неяркий белый фон */
         body {
-            background-color: #f4f5f7;
+            background-color: #f4f6f9;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
             min-height: 100vh;
             padding: 40px 20px;
-            color: #333333;
+            color: #2d3748;
         }
 
-        /* Заголовок в самом верху */
+        /* Заголовок сверху */
         .top-title {
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             font-weight: 700;
             margin-top: 10px;
             margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #2c3e50;
+            color: #1a202c;
             text-align: center;
         }
 
-        /* Основной контейнер формы */
+        /* Блок регистрации */
         .auth-container {
             background: #ffffff;
             max-width: 400px;
             width: 100%;
             padding: 35px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid #eef2f5;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
         }
 
-        /* Заголовки внутри подблоков */
         .form-title {
             font-size: 1.4rem;
             margin-bottom: 20px;
@@ -57,7 +56,6 @@
             font-weight: 600;
         }
 
-        /* Стили полей ввода */
         .input-group {
             margin-bottom: 16px;
         }
@@ -77,19 +75,17 @@
             border-radius: 8px;
             font-size: 1rem;
             background-color: #f8fafc;
-            color: #2d3748;
-            transition: all 0.2s ease;
             outline: none;
+            transition: all 0.2s ease;
         }
 
-        /* Фокус на поле ввода */
         .input-group input:focus {
             border-color: #ff6a00;
             background-color: #ffffff;
             box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15);
         }
 
-        /* Главная кнопка отправки формы внутри блоков */
+        /* Оранжевая кнопка регистрации */
         .submit-btn {
             width: 100%;
             padding: 14px;
@@ -101,181 +97,199 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s ease;
-            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .submit-btn:hover {
             background: #e65c00;
         }
 
-        /* Панель с двумя оранжевыми кнопками переключения внизу */
-        .switch-tabs {
-            display: flex;
-            gap: 12px;
-            margin-top: 25px;
+        /* --- ИНТЕРФЕЙС САЙТА ПОСЛЕ ВХОДА (по умолчанию скрыт) --- */
+        .main-dashboard {
+            display: none; /* Скрипт переключит на block */
             width: 100%;
+            max-width: 800px;
+            animation: fadeIn 0.5s ease forwards;
         }
 
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            background: none;
+        /* Верхняя панель: Аватарка из ТГ и ссылка на Профиль */
+        .user-profile-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            width: fit-content; /* Ширина по контенту */
+        }
+
+        /* Круглый аватар из Telegram */
+        .tg-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
             border: 2px solid #ff6a00;
-            color: #ff6a00;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            background-color: #cbd5e0;
+        }
+
+        .profile-link {
+            font-size: 1.1rem;
             font-weight: 600;
+            color: #ff6a00;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .profile-link:hover {
+            color: #e65c00;
+            text-decoration: underline;
+        }
+
+        /* Длинная рамка-меню (без профиля и аватарки внутри) */
+        .long-menu-frame {
+            background: #ffffff;
+            width: 100%;
+            padding: 25px 35px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            display: flex;
+            justify-content: space-between; /* Элементы растянуты по ширине рамки */
+            align-items: center;
+        }
+
+        /* Элементы внутри длинной рамки */
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a5568;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
+            transition: color 0.2s ease;
+            padding: 10px 15px;
+            border-radius: 8px;
         }
 
-        /* Стиль для активной кнопки переключения */
-        .tab-btn.active {
-            background: #ff6a00;
-            color: #ffffff;
+        .menu-item:hover {
+            color: #ff6a00;
+            background: #fffaf0;
         }
 
-        .tab-btn:hover {
-            background: #ff6a00;
-            color: #ffffff;
+        .menu-item span.icon {
+            font-size: 1.3rem;
         }
 
-        /* Скрытие неактивной формы по умолчанию */
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
+        /* Анимация плавного появления личного кабинета */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Вверху «Добро пожаловать» -->
-    <h1 class="top-title">Добро пожаловать</h1>
+    <!-- Шапка сайта -->
+    <h1 class="top-title" id="siteTitle">Добро пожаловать</h1>
 
-    <div class="auth-container">
-        
-        <!-- ФОРМА РЕГИСТРАЦИИ (Активна при первом входе) -->
-        <form id="registerForm" class="auth-form active" onsubmit="handleRegister(event)">
-            <div class="form-title">Регистрация</div>
+    <!-- 1. ФОРМА РЕГИСТРАЦИИ -->
+    <div class="auth-container" id="authBlock">
+        <form onsubmit="handleFastRegister(event)">
+            <div class="form-title">Регистрация аккаунта</div>
             
             <div class="input-group">
-                <label>Юзернейм Telegram</label>
-                <input type="text" id="regUser" placeholder="@username" required>
+                <label>Юзернейм Telegram (без знака @)</label>
+                <input type="text" id="tgUser" placeholder="durov" required>
             </div>
             
             <div class="input-group">
                 <label>Электронная почта</label>
-                <input type="email" id="regEmail" placeholder="example@mail.com" required>
+                <input type="email" placeholder="example@mail.com" required>
             </div>
             
             <div class="input-group">
                 <label>Придумайте пароль</label>
-                <input type="password" id="regPass" placeholder="Минимум 6 символов" required>
+                <input type="password" id="pass1" placeholder="Введите пароль" required>
             </div>
             
             <div class="input-group">
                 <label>Подтвердите пароль</label>
-                <input type="password" id="regPassConfirm" placeholder="Повторите пароль" required>
+                <input type="password" id="pass2" placeholder="Повторите пароль" required>
             </div>
             
-            <button type="submit" class="submit-btn">Создать аккаунт</button>
+            <button type="submit" class="submit-btn">Зарегистрироваться</button>
         </form>
+    </div>
 
-        <!-- ФОРМА ВХОДА -->
-        <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
-            <div class="form-title">Войти в аккаунт</div>
-            
-            <div class="input-group">
-                <label>Юзернейм Telegram</label>
-                <input type="text" id="logUser" placeholder="@username" required>
-            </div>
-            
-            <div class="input-group">
-                <label>Пароль</label>
-                <input type="password" id="logPass" placeholder="Введите ваш пароль" required>
-            </div>
-            
-            <button type="submit" class="submit-btn">Войти</button>
-        </form>
+    <!-- 2. ИНТЕРФЕЙС ПОСЛЕ РЕГИСТРАЦИИ (Длинная рамка и аватар) -->
+    <div class="main-dashboard" id="dashboardBlock">
+        
+        <!-- Аватарка и ссылка «Профиль» находятся РЯДОМ снаружи рамки -->
+        <div class="user-profile-bar">
+            <img src="" alt="Avatar" class="tg-avatar" id="userAvatar">
+            <a href="#" class="profile-link" id="profileName">Профиль (@username)</a>
+        </div>
 
-        <!-- Внизу две оранжевые кнопки переключения -->
-        <div class="switch-tabs">
-            <button type="button" class="tab-btn active" id="tabReg" onclick="switchForm('register')">Зарегистрироваться</button>
-            <button type="button" class="tab-btn" id="tabLog" onclick="switchForm('login')">Войти</button>
+        <!-- Длинная рамка меню: Корзина, Поддержка, Баланс -->
+        <div class="long-menu-frame">
+            <div class="menu-item">
+                <span class="icon">🛒</span>
+                <span>Корзина</span>
+            </div>
+            <div class="menu-item">
+                <span class="icon">🎧</span>
+                <span>Поддержка</span>
+            </div>
+            <div class="menu-item">
+                <span class="icon">💰</span>
+                <span>Баланс: 0 ₽</span>
+            </div>
         </div>
 
     </div>
 
-    <!-- Простая логика работы полей и сохранения паролей -->
     <script>
-        // Переключение между вкладками Войти / Зарегистрироваться
-        function switchForm(type) {
-            const regForm = document.getElementById('registerForm');
-            const loginForm = document.getElementById('loginForm');
-            const tabReg = document.getElementById('tabReg');
-            const tabLog = document.getElementById('tabLog');
+        function handleFastRegister(event) {
+            event.preventDefault(); // Защита от перезагрузки страницы
 
-            if (type === 'register') {
-                regForm.classList.add('active');
-                loginForm.classList.remove('active');
-                tabReg.classList.add('active');
-                tabLog.classList.remove('active');
-            } else {
-                loginForm.classList.add('active');
-                regForm.classList.remove('active');
-                tabLog.classList.add('active');
-                tabReg.classList.remove('active');
+            const username = document.getElementById('tgUser').value.trim();
+            const p1 = document.getElementById('pass1').value;
+            const p2 = document.getElementById('pass2').value;
+
+            // Сверка паролей
+            if (p1 !== p2) {
+                alert("Ошибка: Введенные пароли не совпадают!");
+                return;
             }
-        }
 
-        // Временная база данных в памяти браузера
-        let savedUser = "";
-        let savedPassword = "";
-
-        // Обработка регистрации
-        function handleRegister(event) {
-            event.preventDefault();
+            // Убираем форму регистрации
+            document.getElementById('authBlock').style.display = 'none';
             
-            const user = document.getElementById('regUser').value.trim();
-            const pass = document.getElementById('regPass').value;
-            const passConfirm = document.getElementById('regPassConfirm').value;
+            // Динамически меняем аватарку, используя юзернейм Telegram
+            // unavatar.io автоматически парсит открытые аватарки из соцсетей напрямую в тег img
+            const avatarUrl = `https://unavatar.io{username}`;
+            const avatarImg = document.getElementById('userAvatar');
+            avatarImg.src = avatarUrl;
 
-            if (pass !== passConfirm) {
-                alert("Ошибка: Пароли не совпадают!");
-                return;
-            }
+            // Если у пользователя скрыта аватарка в ТГ, ставим стандартный заглушечный аватар
+            avatarImg.onerror = function() {
+                this.src = 'https://dicebear.com' + username;
+            };
 
-            // Сохраняем данные локально
-            savedUser = user;
-            savedPassword = pass;
+            // Обновляем текст ссылки профиля под введенный логин
+            document.getElementById('profileName').innerText = `Профиль (@${username})`;
+            
+            // Меняем заголовок сайта
+            document.getElementById('siteTitle').innerText = "Личный кабинет";
 
-            alert("Регистрация успешна! Теперь вы можете войти, используя свой Telegram и пароль.");
-            switchForm('login'); // Автоматически переключаем на форму Входа
-            document.getElementById('logUser').value = savedUser; // Сразу подставляем логин
-        }
-
-        // Обработка входа
-        function handleLogin(event) {
-            event.preventDefault();
-
-            const user = document.getElementById('logUser').value.trim();
-            const pass = document.getElementById('logPass').value;
-
-            if (!savedUser) {
-                alert("Ошибка: Сначала пройдите регистрацию!");
-                return;
-            }
-
-            // Проверка введенных данных с теми, что придумали при регистрации
-            if (user === savedUser && pass === savedPassword) {
-                alert("Успешный вход! Добро пожаловать на сайт.");
-            } else {
-                alert("Неверный юзернейм Telegram или пароль!");
-            }
+            // Мгновенно отображаем длинную рамку и профиль
+            document.getElementById('dashboardBlock').style.style.display = 'block';
+            document.getElementById('dashboardBlock').style.display = 'block';
         }
     </script>
 
