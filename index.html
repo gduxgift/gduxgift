@@ -12,9 +12,9 @@
             box-sizing: border-box;
         }
 
-        /* Настройки фона */
+        /* Настройки нового фона с черной волной */
         body {
-            background-image: url('https://yandex.net');
+            background-image: url('https://aedcpr.com');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -23,21 +23,22 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #ffffff;
             display: flex;
-            flex-direction: column; /* Размещаем элементы вертикально друг за другом */
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start; /* Выравнивание контента от самого верха */
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px; /* Отступы по краям экрана */
         }
 
-        /* Заголовок в самом верху страницы */
+        /* Заголовок поднят максимально наверх */
         .top-title {
             font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-top: 10px; /* Минимальный отступ от верхнего края */
+            margin-bottom: 40px; /* Отступ до центрального блока */
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
             text-align: center;
         }
 
@@ -46,43 +47,43 @@
             max-width: 600px;
             width: 100%;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.4); /* Чуть затемнили подложку для читаемости на новом фоне */
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 50px;
         }
 
         p {
             font-size: 1.1rem;
-            color: #b3b3b3;
+            color: #e0e0e0;
             line-height: 1.6;
         }
 
         /* Анимированная оранжевая кнопка «Далее» */
         .btn-next {
             display: inline-block;
-            padding: 15px 45px;
-            background: linear-gradient(135deg, #ff6a00, #ee0979); /* Красивый оранжево-розовый градиент */
+            padding: 15px 50px;
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
             color: #ffffff;
             text-decoration: none;
             font-weight: bold;
             font-size: 1.2rem;
-            border-radius: 50px; /* Округлая форма */
+            border-radius: 50px;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
-            box-shadow: 0 0 0 0 rgba(238, 9, 121, 0.7);
-            animation: pulse 2s infinite; /* Подключение бесконечной анимации пульсации */
+            box-shadow: 0 0 0 0 rgba(255, 106, 0, 0.7);
+            animation: pulse 2s infinite;
         }
 
         /* Эффект при наведении мыши */
         .btn-next:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(255, 106, 0, 0.4);
-            animation: none; /* Останавливаем пульсацию при наведении */
+            box-shadow: 0 8px 25px rgba(255, 106, 0, 0.5);
+            animation: none;
         }
 
         /* Нажатие кнопки */
@@ -109,7 +110,7 @@
 </head>
 <body>
 
-    <!-- Заголовок вверху -->
+    <!-- Заголовок поднят в самый верх -->
     <h1 class="top-title">Добро пожаловать</h1>
 
     <!-- Центральный блок с текстом -->
