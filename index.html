@@ -37,10 +37,6 @@
         .btn { width: 100%; padding: 14px; background: #ff6a00; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: background 0.2s; }
         .btn:hover { background: #e65c00; }
         
-        /* Кнопка сброса для тестов */
-        .test-reset-btn { width: 100%; margin-top: 25px; padding: 10px; background: #edf2f7; color: #718096; border: 1px dashed #cbd5e0; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .test-reset-btn:hover { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
-        
         #content { display: none; margin-top: 60px; text-align: center; }
     </style>
 </head>
@@ -97,9 +93,6 @@
                 <button type="button" class="btn" onclick="handleAuth('log')">Войти</button>
             </div>
 
-            <!-- Кнопка быстрой очистки памяти (видна только на экране входа/регистрации) -->
-            <button type="button" class="test-reset-btn" onclick="logout()">Сбросить сессию (Тест)</button>
-
         </div>
     </main>
 
@@ -110,11 +103,11 @@
     </div>
 
     <script>
-        // Жёсткая проверка наличия сессии при входе на сайт
+        // Проверка при загрузке страницы: залогинен ли юзер сейчас
         window.onload = function() {
-            const savedUser = localStorage.getItem('gdux_user');
-            if (savedUser) {
-                showSite(savedUser);
+            const currentSession = localStorage.getItem('gdux_current_session');
+            if (currentSession) {
+                showSite(currentSession);
             }
         };
 
@@ -133,8 +126,11 @@
             }
         }
 
-        // Обработка кликов по кнопкам авторизации (без перезагрузки страницы)
+        // Обработка кликов по кнопкам авторизации
         function handleAuth(mode) {
+            // Получаем или создаем базу данных зарегистрированных пользователей
+            let usersDatabase = JSON.parse(localStorage.getItem('gdux_users_db')) || {};
+
             if (mode === 'reg') {
                 const username = document.getElementById('reg-tg').value.trim();
                 const email = document.getElementById('reg-email').value.trim();
@@ -144,9 +140,20 @@
                 if (!username || !email || !p1 || !p2) return alert("Заполните все поля!");
                 if (p1 !== p2) return alert("Ошибка: Пароли не совпадают!");
 
-                // Запись в память браузера
-                localStorage.setItem('gdux_user', username);
-                localStorage.setItem('gdux_pass', p1);
+                // КЛЮЧЕВАЯ ПРОВЕРКА: Существует ли уже этот юзернейм в ядре?
+                if (usersDatabase[username]) {
+                    return alert("Данный аккаунт уже зарегистрирован! Пожалуйста, войдите во вкладке «Войти»");
+                }
+
+                // Сохраняем нового игрока в базу данных (в ядро)
+                usersDatabase[username] = {
+                    email: email,
+                    password: p1
+                };
+                localStorage.setItem('gdux_users_db', JSON.stringify(usersDatabase));
+                
+                // Создаем активную сессию для текущего входа
+                localStorage.setItem('gdux_current_session', username);
                 
                 showSite(username);
             } 
@@ -154,16 +161,16 @@
             if (mode === 'log') {
                 const username = document.getElementById('log-tg').value.trim();
                 const password = document.getElementById('log-p').value;
-                
-                const localUser = localStorage.getItem('gdux_user');
-                const localPass = localStorage.getItem('gdux_pass');
 
                 if (!username || !password) return alert("Заполните поля для входа!");
 
-                if (username === localUser && password === localPass) {
+                // Проверяем аккаунт в базе данных ядра
+                if (usersDatabase[username] && usersDatabase[username].password === password) {
+                    // Обновляем текущую сессию
+                    localStorage.setItem('gdux_current_session', username);
                     showSite(username);
                 } else {
-                    alert("Неверный юзернейм или пароль! Убедитесь, что аккаунт зарегистрирован.");
+                    alert("Неверный юзернейм или пароль! Или аккаунт еще не зарегистрирован.");
                 }
             }
         }
@@ -173,20 +180,19 @@
             document.getElementById('welcomeSection').style.display = 'none';
             document.getElementById('user').innerText = `@${username}`;
 
-            // Сверхстабильный генератор аватаров на основе юзернейма
+            // Стабильный генератор аватарок
             const img = document.getElementById('avatar');
             img.src = `https://robohash.org{username}.png?set=set4`;
 
-            // Активация верхней панели навигации
+            // Показываем меню
             document.getElementById('navbar').style.display = 'flex';
             document.getElementById('content').style.display = 'block';
         }
 
-        // Полное логаутирование и очистка кэша сессии
+        // Выход из аккаунта (Сессия удаляется, но ядро базы данных остается целым)
         function logout() {
-            localStorage.removeItem('gdux_user');
-            localStorage.removeItem('gdux_pass');
-            window.location.reload();
+            localStorage.removeItem('gdux_current_session'); // Сбрасываем только статус "активен"
+            window.location.reload(); // Возвращаем на форму
         }
     </script>
 </body>
