@@ -3,221 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой сайт на GitHub Pages</title>
+    <title>Авторизация</title>
     <style>
-        /* Обнуляем отступы по умолчанию */
+        /* Обнуление отступов */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Жесткая привязка выбранного фона с черной волной */
+        /* Мягкий, не яркий белый фон (матовый светло-серый оттенок) */
         body {
-            background-image: url('https://aedcpr.com') !important;
-            background-size: cover !important;
-            background-position: center center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-            background-color: #0a0a0c;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #ffffff;
+            background-color: #f4f5f7;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
             min-height: 100vh;
-            padding: 20px 20px 80px 20px; /* Отступы со всех сторон экрана */
-            overflow-x: hidden;
+            padding: 40px 20px;
+            color: #333333;
         }
 
-        /* Заголовок поднят к самому верхнему краю */
+        /* Заголовок в самом верху */
         .top-title {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-top: 15px;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
-            text-align: center;
-        }
-
-        /* Центральный полупрозрачный контейнер */
-        .container {
-            max-width: 650px;
-            width: 100%;
-            padding: 35px;
-            background: rgba(15, 15, 20, 0.6); /* Полупрозрачный темный для контраста с волной */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
-            margin-bottom: 35px;
-        }
-
-        p {
-            font-size: 1.15rem;
-            color: #e2e8f0;
-            line-height: 1.6;
-        }
-
-        /* Анимированная оранжевая кнопка «Далее» */
-        .btn-next {
-            display: inline-block;
-            padding: 16px 55px;
-            background: linear-gradient(135deg, #ff6a00, #ff4500); /* Огненно-оранжевый */
-            color: #ffffff;
-            text-decoration: none;
+            font-size: 2.5rem;
             font-weight: 700;
-            font-size: 1.25rem;
-            border-radius: 50px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 0 0 rgba(255, 106, 0, 0.6);
-            animation: pulse 2s infinite;
-            margin-bottom: 60px; /* Отступ до секции под кнопкой */
-        }
-
-        .btn-next:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(255, 106, 0, 0.4);
-            animation: none;
-        }
-
-        /* Анимация пульсации кнопки */
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 106, 0, 0.7);
-            }
-            70% {
-                transform: scale(1.03);
-                box-shadow: 0 0 0 18px rgba(255, 106, 0, 0);
-            }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 106, 0, 0);
-            }
-        }
-
-        /* --- Секция с карточками после кнопки Далее --- */
-        .stickers-section {
-            max-width: 900px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 25px;
+            margin-top: 10px;
+            margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #f1f5f9;
+            color: #2c3e50;
+            text-align: center;
         }
 
-        /* Сетка для квадратов в стиле Kupikod */
-        .stickers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+        /* Основной контейнер формы */
+        .auth-container {
+            background: #ffffff;
+            max-width: 400px;
+            width: 100%;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eef2f5;
+        }
+
+        /* Заголовки внутри подблоков */
+        .form-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #4a5568;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Стили полей ввода */
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #f8fafc;
+            color: #2d3748;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        /* Фокус на поле ввода */
+        .input-group input:focus {
+            border-color: #ff6a00;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15);
+        }
+
+        /* Главная кнопка отправки формы внутри блоков */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #ff6a00;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #e65c00;
+        }
+
+        /* Панель с двумя оранжевыми кнопками переключения внизу */
+        .switch-tabs {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
             width: 100%;
         }
 
-        /* Квадратные карточки в стиле товаров со скрина */
-        .sticker-card {
-            background: #18181c; /* Темный цвет ячеек как на Kupikod */
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 14px;
-            padding: 25px 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .sticker-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.15);
-            background: #1f1f24;
-        }
-
-        /* Контейнер для иконки стикера */
-        .sticker-icon {
-            font-size: 4rem; /* Размер эмодзи-стикеров */
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
-            transition: transform 0.3s ease;
-        }
-
-        .sticker-card:hover .sticker-icon {
-            transform: scale(1.15) rotate(5deg); /* Эффект анимации стикера при наведении */
-        }
-
-        /* Текст внутри карточек */
-        .sticker-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .sticker-price {
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: 2px solid #ff6a00;
+            color: #ff6a00;
+            border-radius: 8px;
             font-size: 0.95rem;
-            color: #a1a1aa;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
         }
 
-        /* Кастомные неоновые рамки/свечения для изменения цвета карточек */
-        .card-rocket { border-bottom: 3px solid #00d2ff; }   /* Голубая тема */
-        .card-bear { border-bottom: 3px solid #ff9f43; }     /* Медвежья коричнево-оранжевая тема */
-        .card-lollipop { border-bottom: 3px solid #ff416c; } /* Розово-леденцовая тема */
+        /* Стиль для активной кнопки переключения */
+        .tab-btn.active {
+            background: #ff6a00;
+            color: #ffffff;
+        }
+
+        .tab-btn:hover {
+            background: #ff6a00;
+            color: #ffffff;
+        }
+
+        /* Скрытие неактивной формы по умолчанию */
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Заголовок в самом верху -->
+    <!-- Вверху «Добро пожаловать» -->
     <h1 class="top-title">Добро пожаловать</h1>
 
-    <!-- Центральный блок -->
-    <div class="container">
-        <p>Мой будущий крутой сайт, который я создаю и размещаю с помощью GitHub Pages. Скоро здесь появится больше интересного контента!</p>
-    </div>
-
-    <!-- Анимированная кнопка «Далее» -->
-    <a href="#store" class="btn-next">Далее</a>
-
-    <!-- Новая секция ПОСЛЕ кнопки «Далее» -->
-    <div class="stickers-section" id="store">
-        <h2 class="section-title">Витрина Стикеров</h2>
+    <div class="auth-container">
         
-        <div class="stickers-grid">
-            <!-- Карточка 1: Ракета -->
-            <div class="sticker-card card-rocket">
-                <div class="sticker-icon">🚀</div>
-                <div class="sticker-name">Ракета ТГ</div>
-                <div class="sticker-price">150 Звёзд</div>
+        <!-- ФОРМА РЕГИСТРАЦИИ (Активна при первом входе) -->
+        <form id="registerForm" class="auth-form active" onsubmit="handleRegister(event)">
+            <div class="form-title">Регистрация</div>
+            
+            <div class="input-group">
+                <label>Юзернейм Telegram</label>
+                <input type="text" id="regUser" placeholder="@username" required>
             </div>
+            
+            <div class="input-group">
+                <label>Электронная почта</label>
+                <input type="email" id="regEmail" placeholder="example@mail.com" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Придумайте пароль</label>
+                <input type="password" id="regPass" placeholder="Минимум 6 символов" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Подтвердите пароль</label>
+                <input type="password" id="regPassConfirm" placeholder="Повторите пароль" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">Создать аккаунт</button>
+        </form>
 
-            <!-- Карточка 2: Мишка -->
-            <div class="sticker-card card-bear">
-                <div class="sticker-icon">🧸</div>
-                <div class="sticker-name">Мишка Milk</div>
-                <div class="sticker-price">250 Звёзд</div>
+        <!-- ФОРМА ВХОДА -->
+        <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+            <div class="form-title">Войти в аккаунт</div>
+            
+            <div class="input-group">
+                <label>Юзернейм Telegram</label>
+                <input type="text" id="logUser" placeholder="@username" required>
             </div>
+            
+            <div class="input-group">
+                <label>Пароль</label>
+                <input type="password" id="logPass" placeholder="Введите ваш пароль" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">Войти</button>
+        </form>
 
-            <!-- Карточка 3: Леденец -->
-            <div class="sticker-card card-lollipop">
-                <div class="sticker-icon">🍭</div>
-                <div class="sticker-name">Леденец</div>
-                <div class="sticker-price">500 Звёзд</div>
-            </div>
+        <!-- Внизу две оранжевые кнопки переключения -->
+        <div class="switch-tabs">
+            <button type="button" class="tab-btn active" id="tabReg" onclick="switchForm('register')">Зарегистрироваться</button>
+            <button type="button" class="tab-btn" id="tabLog" onclick="switchForm('login')">Войти</button>
         </div>
+
     </div>
+
+    <!-- Простая логика работы полей и сохранения паролей -->
+    <script>
+        // Переключение между вкладками Войти / Зарегистрироваться
+        function switchForm(type) {
+            const regForm = document.getElementById('registerForm');
+            const loginForm = document.getElementById('loginForm');
+            const tabReg = document.getElementById('tabReg');
+            const tabLog = document.getElementById('tabLog');
+
+            if (type === 'register') {
+                regForm.classList.add('active');
+                loginForm.classList.remove('active');
+                tabReg.classList.add('active');
+                tabLog.classList.remove('active');
+            } else {
+                loginForm.classList.add('active');
+                regForm.classList.remove('active');
+                tabLog.classList.add('active');
+                tabReg.classList.remove('active');
+            }
+        }
+
+        // Временная база данных в памяти браузера
+        let savedUser = "";
+        let savedPassword = "";
+
+        // Обработка регистрации
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            const user = document.getElementById('regUser').value.trim();
+            const pass = document.getElementById('regPass').value;
+            const passConfirm = document.getElementById('regPassConfirm').value;
+
+            if (pass !== passConfirm) {
+                alert("Ошибка: Пароли не совпадают!");
+                return;
+            }
+
+            // Сохраняем данные локально
+            savedUser = user;
+            savedPassword = pass;
+
+            alert("Регистрация успешна! Теперь вы можете войти, используя свой Telegram и пароль.");
+            switchForm('login'); // Автоматически переключаем на форму Входа
+            document.getElementById('logUser').value = savedUser; // Сразу подставляем логин
+        }
+
+        // Обработка входа
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const user = document.getElementById('logUser').value.trim();
+            const pass = document.getElementById('logPass').value;
+
+            if (!savedUser) {
+                alert("Ошибка: Сначала пройдите регистрацию!");
+                return;
+            }
+
+            // Проверка введенных данных с теми, что придумали при регистрации
+            if (user === savedUser && pass === savedPassword) {
+                alert("Успешный вход! Добро пожаловать на сайт.");
+            } else {
+                alert("Неверный юзернейм Telegram или пароль!");
+            }
+        }
+    </script>
 
 </body>
 </html>
