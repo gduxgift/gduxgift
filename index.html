@@ -8,41 +8,39 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background: #f4f6f9; color: #2d3748; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
-        /* Верхняя зафиксированная рамка-меню */
-        .navbar { display: none; width: 100%; background: #fff; padding: 15px 30px; border-bottom: 1px solid #e2e8f0; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        /* Красная вылетающая табличка */
+        .toast { position: fixed; top: -60px; background: #ff4d4d; color: #fff; padding: 12px 25px; border-radius: 6px; font-weight: 600; z-index: 1000; transition: top 0.3s; }
+        .toast.show { top: 20px; }
+
+        /* Шапка */
+        .navbar { display: none; width: 100%; background: #fff; padding: 15px 30px; border-bottom: 1px solid #e2e8f0; justify-content: space-between; align-items: center; position: sticky; top: 0; }
         .logo { font-size: 1.6rem; font-weight: 900; background: linear-gradient(135deg, #ff6a00, #ee0979); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .menu { display: flex; gap: 20px; font-weight: 600; cursor: pointer; }
         .profile { display: flex; align-items: center; gap: 10px; border-left: 1px solid #e2e8f0; padding-left: 15px; }
-        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ff6a00; object-fit: cover; background: #e2e8f0; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ff6a00; object-fit: cover; }
         .logout { font-size: 0.75rem; color: #a0aec0; cursor: pointer; background: none; border: none; font-weight: bold; }
-        .logout:hover { color: #e53e3e; text-decoration: underline; }
 
-        /* Окно авторизации */
-        .welcome { text-align: center; margin-top: 60px; width: 100%; max-width: 380px; padding: 0 10px; }
-        h1 { margin-bottom: 20px; text-transform: uppercase; font-size: 1.8rem; letter-spacing: 1px; }
-        .box { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
-        
-        /* Вкладки Войти / Регистрация */
+        /* Окна входа/регистрации */
+        .welcome { text-align: center; margin-top: 60px; width: 100%; max-width: 360px; }
+        h1 { margin-bottom: 20px; text-transform: uppercase; font-size: 1.6rem; }
+        .box { background: #fff; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: left; }
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; padding: 10px; background: none; border: 2px solid #ff6a00; color: #ff6a00; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .tab-btn { flex: 1; padding: 10px; background: none; border: 2px solid #ff6a00; color: #ff6a00; border-radius: 6px; font-weight: 600; cursor: pointer; }
         .tab-btn.active { background: #ff6a00; color: #fff; }
-        
         .form-block { display: none; }
         .form-block.active { display: block; }
-
-        label { display: block; font-size: 0.9rem; font-weight: 600; color: #4a5568; margin-top: 12px; }
-        input { width: 100%; padding: 12px; margin: 6px 0 12px; border: 1px solid #cbd5e0; border-radius: 6px; outline: none; background: #f8fafc; }
-        input:focus { border-color: #ff6a00; background: #fff; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-top: 10px; }
+        input { width: 100%; padding: 10px; margin: 5px 0 10px; border: 1px solid #cbd5e0; border-radius: 6px; outline: none; }
+        .btn { width: 100%; padding: 12px; background: #ff6a00; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; text-transform: uppercase; margin-top: 5px; }
+        .forgot { display: inline-block; margin-top: 10px; font-size: 0.8rem; color: #ff6a00; text-decoration: none; font-weight: 600; }
         
-        .btn { width: 100%; padding: 14px; background: #ff6a00; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: background 0.2s; }
-        .btn:hover { background: #e65c00; }
-        
-        #content { display: none; margin-top: 60px; text-align: center; }
+        #content { display: none; margin-top: 50px; }
     </style>
 </head>
 <body>
 
-    <!-- Шапка (появляется при входе и остается после обновления страницы) -->
+    <div class="toast" id="toast"></div>
+
     <header class="navbar" id="navbar">
         <div class="logo">gduxgift</div>
         <nav class="menu">
@@ -52,147 +50,107 @@
             <div>⚙️ Настройки</div>
         </nav>
         <div class="profile">
-            <img src="" class="avatar" id="avatar" alt="Avatar">
-            <div>
-                <b id="user"></b><br>
-                <button class="logout" onclick="logout()">Выйти</button>
-            </div>
+            <img src="" class="avatar" id="avatar" alt="pic">
+            <div><b id="user"></b><br><button class="logout" onclick="logout()">Выйти</button></div>
         </div>
     </header>
 
-    <!-- Экраны авторизации -->
-    <main class="welcome" id="welcomeSection">
+    <main class="welcome" id="welcome">
         <h1>Добро пожаловать</h1>
         <div class="box">
-            
-            <!-- Переключатель вкладок -->
             <div class="tabs">
                 <button class="tab-btn active" id="t-reg" onclick="switchTab('reg')">Регистрация</button>
                 <button class="tab-btn" id="t-log" onclick="switchTab('log')">Войти</button>
             </div>
 
-            <!-- БЛОК 1: РЕГИСТРАЦИЯ -->
             <div id="block-reg" class="form-block active">
-                <label>Telegram юзернейм (без @)</label>
-                <input type="text" id="reg-tg" placeholder="durov">
-                <label>Электронная почта</label>
-                <input type="email" id="reg-email" placeholder="example@mail.com">
-                <label>Придумайте пароль</label>
-                <input type="password" id="reg-p1">
-                <label>Подтвердите пароль</label>
-                <input type="password" id="reg-p2">
-                <button type="button" class="btn" onclick="handleAuth('reg')">Создать аккаунт</button>
+                <label>Telegram (без @)</label><input type="text" id="reg-tg" placeholder="durov">
+                <label>Почта</label><input type="email" id="reg-email" placeholder="mail@mail.com">
+                <label>Пароль</label><input type="password" id="reg-p1">
+                <label>Повтор пароль</label><input type="password" id="reg-p2">
+                <button class="btn" onclick="auth('reg')">Создать аккаунт</button>
             </div>
 
-            <!-- БЛОК 2: ВХОД -->
             <div id="block-log" class="form-block">
-                <label>Telegram юзернейм (без @)</label>
-                <input type="text" id="log-tg" placeholder="durov">
-                <label>Пароль</label>
-                <input type="password" id="log-p">
-                <button type="button" class="btn" onclick="handleAuth('log')">Войти</button>
+                <label>Telegram (без @)</label><input type="text" id="log-tg" placeholder="durov">
+                <label>Пароль</label><input type="password" id="log-p">
+                <button class="btn" onclick="auth('log')">Войти</button>
+                <a href="#" class="forgot" onclick="forgot(event)">Забыли пароль?</a>
             </div>
-
         </div>
     </main>
 
-    <!-- Контент авторизованной зоны -->
-    <div id="content">
-        <h2>🎉 Авторизация выполнена успешно! Вы вошли в gduxgift.</h2>
-        <p style="color: #718096; margin-top: 10px;">Все данные сохранены, можете обновлять страницу.</p>
-    </div>
+    <div id="content"><h2>🎉 Вы успешно зашли в gduxgift!</h2></div>
 
     <script>
-        // Проверка при загрузке страницы: залогинен ли юзер сейчас
         window.onload = function() {
-            const currentSession = localStorage.getItem('gdux_current_session');
-            if (currentSession) {
-                showSite(currentSession);
-            }
+            const session = localStorage.getItem('gdux_session');
+            if (session) show(session);
         };
 
-        // Логика переключения между вкладками "Войти" и "Регистрация"
-        function switchTab(type) {
-            if (type === 'reg') {
-                document.getElementById('block-reg').classList.add('active');
-                document.getElementById('block-log').classList.remove('active');
-                document.getElementById('t-reg').classList.add('active');
-                document.getElementById('t-log').classList.remove('active');
-            } else {
-                document.getElementById('block-log').classList.add('active');
-                document.getElementById('block-reg').classList.remove('active');
-                document.getElementById('t-log').classList.add('active');
-                document.getElementById('t-reg').classList.remove('active');
-            }
+        function toast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // Обработка кликов по кнопкам авторизации
-        function handleAuth(mode) {
-            // Получаем или создаем базу данных зарегистрированных пользователей
-            let usersDatabase = JSON.parse(localStorage.getItem('gdux_users_db')) || {};
+        function forgot(e) {
+            e.preventDefault();
+            const user = document.getElementById('log-tg').value.trim();
+            let db = JSON.parse(localStorage.getItem('gdux_db')) || {};
+            if (!user) return toast("Введите Telegram юзернейм!");
+            if (db[user]) alert(`Ваш пароль: ${db[user].password}`);
+            else toast("Аккаунт не найден!");
+        }
+
+        function switchTab(type) {
+            document.getElementById('block-reg').classList.toggle('active', type === 'reg');
+            document.getElementById('block-log').classList.toggle('active', type === 'log');
+            document.getElementById('t-reg').classList.toggle('active', type === 'reg');
+            document.getElementById('t-log').classList.toggle('active', type === 'log');
+        }
+
+        function auth(mode) {
+            let db = JSON.parse(localStorage.getItem('gdux_db')) || {};
 
             if (mode === 'reg') {
-                const username = document.getElementById('reg-tg').value.trim();
-                const email = document.getElementById('reg-email').value.trim();
+                const u = document.getElementById('reg-tg').value.trim();
+                const e = document.getElementById('reg-email').value.trim();
                 const p1 = document.getElementById('reg-p1').value;
                 const p2 = document.getElementById('reg-p2').value;
 
-                if (!username || !email || !p1 || !p2) return alert("Заполните все поля!");
-                if (p1 !== p2) return alert("Ошибка: Пароли не совпадают!");
+                if (!u || !e || !p1 || !p2) return toast("Заполните все поля!");
+                if (p1 !== p2) return toast("Пароли не совпадают!");
+                if (db[u]) return toast("Этот аккаунт уже зарегистрирован!");
 
-                // КЛЮЧЕВАЯ ПРОВЕРКА: Существует ли уже этот юзернейм в ядре?
-                if (usersDatabase[username]) {
-                    return alert("Данный аккаунт уже зарегистрирован! Пожалуйста, войдите во вкладке «Войти»");
-                }
+                db[u] = { password: p1 };
+                localStorage.setItem('gdux_db', JSON.stringify(db));
+                localStorage.setItem('gdux_session', u);
+                show(u);
+            } else {
+                const u = document.getElementById('log-tg').value.trim();
+                const p = document.getElementById('log-p').value;
 
-                // Сохраняем нового игрока в базу данных (в ядро)
-                usersDatabase[username] = {
-                    email: email,
-                    password: p1
-                };
-                localStorage.setItem('gdux_users_db', JSON.stringify(usersDatabase));
-                
-                // Создаем активную сессию для текущего входа
-                localStorage.setItem('gdux_current_session', username);
-                
-                showSite(username);
-            } 
-            
-            if (mode === 'log') {
-                const username = document.getElementById('log-tg').value.trim();
-                const password = document.getElementById('log-p').value;
-
-                if (!username || !password) return alert("Заполните поля для входа!");
-
-                // Проверяем аккаунт в базе данных ядра
-                if (usersDatabase[username] && usersDatabase[username].password === password) {
-                    // Обновляем текущую сессию
-                    localStorage.setItem('gdux_current_session', username);
-                    showSite(username);
+                if (db[u] && db[u].password === p) {
+                    localStorage.setItem('gdux_session', u);
+                    show(u);
                 } else {
-                    alert("Неверный юзернейм или пароль! Или аккаунт еще не зарегистрирован.");
+                    toast("Неверный логин или пароль!");
                 }
             }
         }
 
-        // Показ верхней рамки и сайта
-        function showSite(username) {
-            document.getElementById('welcomeSection').style.display = 'none';
-            document.getElementById('user').innerText = `@${username}`;
-
-            // Стабильный генератор аватарок
-            const img = document.getElementById('avatar');
-            img.src = `https://robohash.org{username}.png?set=set4`;
-
-            // Показываем меню
+        function show(u) {
+            document.getElementById('welcome').style.display = 'none';
+            document.getElementById('user').innerText = `@${u}`;
+            document.getElementById('avatar').src = `https://robohash.org{u}.png?set=set4`;
             document.getElementById('navbar').style.display = 'flex';
             document.getElementById('content').style.display = 'block';
         }
 
-        // Выход из аккаунта (Сессия удаляется, но ядро базы данных остается целым)
         function logout() {
-            localStorage.removeItem('gdux_current_session'); // Сбрасываем только статус "активен"
-            window.location.reload(); // Возвращаем на форму
+            localStorage.removeItem('gdux_session');
+            window.location.reload();
         }
     </script>
 </body>
