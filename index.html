@@ -5,93 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мой сайт на GitHub Pages</title>
     <style>
-        /* Обнуляем отступы */
+        /* Обнуляем отступы по умолчанию */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Настройки нового фона с черной волной */
+        /* Жесткая привязка выбранного фона с черной волной */
         body {
-            background-image: url('https://aedcpr.com');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-color: #0c0c0c;
+            background-image: url('https://aedcpr.com') !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
+            background-color: #0a0a0c;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #ffffff;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Выравнивание контента от самого верха */
+            justify-content: flex-start;
             align-items: center;
             min-height: 100vh;
-            padding: 40px 20px; /* Отступы по краям экрана */
+            padding: 20px 20px 80px 20px; /* Отступы со всех сторон экрана */
+            overflow-x: hidden;
         }
 
-        /* Заголовок поднят максимально наверх */
+        /* Заголовок поднят к самому верхнему краю */
         .top-title {
             font-size: 3rem;
-            font-weight: 700;
-            margin-top: 10px; /* Минимальный отступ от верхнего края */
-            margin-bottom: 40px; /* Отступ до центрального блока */
+            font-weight: 800;
+            margin-top: 15px;
+            margin-bottom: 30px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
             text-align: center;
         }
 
-        /* Контейнер для контента */
+        /* Центральный полупрозрачный контейнер */
         .container {
-            max-width: 600px;
+            max-width: 650px;
             width: 100%;
-            padding: 40px;
-            background: rgba(0, 0, 0, 0.4); /* Чуть затемнили подложку для читаемости на новом фоне */
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+            padding: 35px;
+            background: rgba(15, 15, 20, 0.6); /* Полупрозрачный темный для контраста с волной */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            margin-bottom: 50px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            margin-bottom: 35px;
         }
 
         p {
-            font-size: 1.1rem;
-            color: #e0e0e0;
+            font-size: 1.15rem;
+            color: #e2e8f0;
             line-height: 1.6;
         }
 
         /* Анимированная оранжевая кнопка «Далее» */
         .btn-next {
             display: inline-block;
-            padding: 15px 50px;
-            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            padding: 16px 55px;
+            background: linear-gradient(135deg, #ff6a00, #ff4500); /* Огненно-оранжевый */
             color: #ffffff;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.25rem;
             border-radius: 50px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 0 0 rgba(255, 106, 0, 0.7);
+            letter-spacing: 1.5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 0 0 rgba(255, 106, 0, 0.6);
             animation: pulse 2s infinite;
+            margin-bottom: 60px; /* Отступ до секции под кнопкой */
         }
 
-        /* Эффект при наведении мыши */
         .btn-next:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(255, 106, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(255, 106, 0, 0.4);
             animation: none;
         }
 
-        /* Нажатие кнопки */
-        .btn-next:active {
-            transform: scale(0.98);
-        }
-
-        /* Ключевые кадры для анимации пульсации кнопки */
+        /* Анимация пульсации кнопки */
         @keyframes pulse {
             0% {
                 transform: scale(1);
@@ -99,27 +96,128 @@
             }
             70% {
                 transform: scale(1.03);
-                box-shadow: 0 0 0 15px rgba(255, 106, 0, 0);
+                box-shadow: 0 0 0 18px rgba(255, 106, 0, 0);
             }
             100% {
                 transform: scale(1);
                 box-shadow: 0 0 0 0 rgba(255, 106, 0, 0);
             }
         }
+
+        /* --- Секция с карточками после кнопки Далее --- */
+        .stickers-section {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #f1f5f9;
+        }
+
+        /* Сетка для квадратов в стиле Kupikod */
+        .stickers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        /* Квадратные карточки в стиле товаров со скрина */
+        .sticker-card {
+            background: #18181c; /* Темный цвет ячеек как на Kupikod */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .sticker-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+            background: #1f1f24;
+        }
+
+        /* Контейнер для иконки стикера */
+        .sticker-icon {
+            font-size: 4rem; /* Размер эмодзи-стикеров */
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .sticker-card:hover .sticker-icon {
+            transform: scale(1.15) rotate(5deg); /* Эффект анимации стикера при наведении */
+        }
+
+        /* Текст внутри карточек */
+        .sticker-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sticker-price {
+            font-size: 0.95rem;
+            color: #a1a1aa;
+        }
+
+        /* Кастомные неоновые рамки/свечения для изменения цвета карточек */
+        .card-rocket { border-bottom: 3px solid #00d2ff; }   /* Голубая тема */
+        .card-bear { border-bottom: 3px solid #ff9f43; }     /* Медвежья коричнево-оранжевая тема */
+        .card-lollipop { border-bottom: 3px solid #ff416c; } /* Розово-леденцовая тема */
     </style>
 </head>
 <body>
 
-    <!-- Заголовок поднят в самый верх -->
+    <!-- Заголовок в самом верху -->
     <h1 class="top-title">Добро пожаловать</h1>
 
-    <!-- Центральный блок с текстом -->
+    <!-- Центральный блок -->
     <div class="container">
         <p>Мой будущий крутой сайт, который я создаю и размещаю с помощью GitHub Pages. Скоро здесь появится больше интересного контента!</p>
     </div>
 
-    <!-- Анимированная кнопка внизу -->
-    <a href="#" class="btn-next">Далее</a>
+    <!-- Анимированная кнопка «Далее» -->
+    <a href="#store" class="btn-next">Далее</a>
+
+    <!-- Новая секция ПОСЛЕ кнопки «Далее» -->
+    <div class="stickers-section" id="store">
+        <h2 class="section-title">Витрина Стикеров</h2>
+        
+        <div class="stickers-grid">
+            <!-- Карточка 1: Ракета -->
+            <div class="sticker-card card-rocket">
+                <div class="sticker-icon">🚀</div>
+                <div class="sticker-name">Ракета ТГ</div>
+                <div class="sticker-price">150 Звёзд</div>
+            </div>
+
+            <!-- Карточка 2: Мишка -->
+            <div class="sticker-card card-bear">
+                <div class="sticker-icon">🧸</div>
+                <div class="sticker-name">Мишка Milk</div>
+                <div class="sticker-price">250 Звёзд</div>
+            </div>
+
+            <!-- Карточка 3: Леденец -->
+            <div class="sticker-card card-lollipop">
+                <div class="sticker-icon">🍭</div>
+                <div class="sticker-name">Леденец</div>
+                <div class="sticker-price">500 Звёзд</div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
