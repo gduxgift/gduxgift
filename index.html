@@ -33,8 +33,13 @@
         label { display: block; font-size: 0.9rem; font-weight: 600; color: #4a5568; margin-top: 12px; }
         input { width: 100%; padding: 12px; margin: 6px 0 12px; border: 1px solid #cbd5e0; border-radius: 6px; outline: none; background: #f8fafc; }
         input:focus { border-color: #ff6a00; background: #fff; }
+        
         .btn { width: 100%; padding: 14px; background: #ff6a00; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: background 0.2s; }
         .btn:hover { background: #e65c00; }
+        
+        /* Кнопка сброса для тестов */
+        .test-reset-btn { width: 100%; margin-top: 25px; padding: 10px; background: #edf2f7; color: #718096; border: 1px dashed #cbd5e0; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .test-reset-btn:hover { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
         
         #content { display: none; margin-top: 60px; text-align: center; }
     </style>
@@ -92,6 +97,9 @@
                 <button type="button" class="btn" onclick="handleAuth('log')">Войти</button>
             </div>
 
+            <!-- Кнопка быстрой очистки памяти (видна только на экране входа/регистрации) -->
+            <button type="button" class="test-reset-btn" onclick="logout()">Сбросить сессию (Тест)</button>
+
         </div>
     </main>
 
@@ -121,9 +129,7 @@
                 document.getElementById('block-log').classList.add('active');
                 document.getElementById('block-reg').classList.remove('active');
                 document.getElementById('t-log').classList.add('active');
-                document.getElementById('t-reg').classList.add('active');
                 document.getElementById('t-reg').classList.remove('active');
-                document.getElementById('t-log').classList.add('active');
             }
         }
 
