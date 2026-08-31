@@ -8,29 +8,39 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background: #f4f6f9; color: #2d3748; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
-        /* Верхняя рамка-меню */
-        .navbar { display: none; width: 100%; background: #fff; padding: 15px 30px; border-bottom: 1px solid #e2e8f0; justify-content: space-between; align-items: center; position: sticky; top: 0; }
+        /* Шапка сайта */
+        .navbar { display: none; width: 100%; background: #fff; padding: 15px 30px; border-bottom: 1px solid #e2e8f0; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
         .logo { font-size: 1.6rem; font-weight: 900; background: linear-gradient(135deg, #ff6a00, #ee0979); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .menu { display: flex; gap: 20px; font-weight: 600; cursor: pointer; }
         .profile { display: flex; align-items: center; gap: 10px; border-left: 1px solid #e2e8f0; padding-left: 15px; }
-        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ff6a00; object-fit: cover; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ff6a00; object-fit: cover; background: #cbd5e0; }
         .logout { font-size: 0.75rem; color: #a0aec0; cursor: pointer; background: none; border: none; }
         .logout:hover { color: #e53e3e; }
 
-        /* Форма регистрации */
-        .welcome { text-align: center; margin-top: 80px; width: 100%; max-width: 360px; padding: 0 10px; }
-        h1 { margin-bottom: 25px; text-transform: uppercase; }
-        .form { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: left; }
-        input { width: 100%; padding: 12px; margin: 8px 0 16px; border: 1px solid #cbd5e0; border-radius: 6px; outline: none; }
+        /* Окно авторизации */
+        .welcome { text-align: center; margin-top: 60px; width: 100%; max-width: 380px; padding: 0 10px; }
+        h1 { margin-bottom: 20px; text-transform: uppercase; font-size: 1.8rem; }
+        .box { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        
+        /* Вкладки Войти/Регистрация */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 10px; background: none; border: 2px solid #ff6a00; color: #ff6a00; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .tab-btn.active { background: #ff6a00; color: #fff; }
+        
+        .form-block { display: none; }
+        .form-block.active { display: block; }
+
+        label { display: block; font-size: 0.9rem; font-weight: 600; color: #4a5568; margin-top: 12px; }
+        input { width: 100%; padding: 12px; margin: 6px 0 12px; border: 1px solid #cbd5e0; border-radius: 6px; outline: none; }
         input:focus { border-color: #ff6a00; }
-        button.btn { width: 100%; padding: 12px; background: #ff6a00; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn { width: 100%; padding: 12px; background: #ff6a00; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
         
         #content { display: none; margin-top: 50px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- Меню на самом верху -->
+    <!-- Шапка (появляется только после входа) -->
     <header class="navbar" id="navbar">
         <div class="logo">gduxgift</div>
         <nav class="menu">
@@ -40,7 +50,8 @@
             <div>⚙️ Настройки</div>
         </nav>
         <div class="profile">
-            <img src="" class="avatar" id="avatar">
+            <!-- Скрипт напрямую тащит аватарку по юзернейму -->
+            <img src="" class="avatar" id="avatar" alt="pic">
             <div>
                 <b id="user"></b><br>
                 <button class="logout" onclick="logout()">Выйти</button>
@@ -48,56 +59,130 @@
         </div>
     </header>
 
-    <!-- Экран регистрации -->
-    <main class="welcome" id="welcome">
+    <!-- Окна авторизации -->
+    <main class="welcome" id="welcomeSection">
         <h1>Добро пожаловать</h1>
-        <form class="form" onsubmit="register(event)">
-            <label>Твой Telegram (без @)</label>
-            <input type="text" id="tg" placeholder="durov" required>
-            <label>Почта</label>
-            <input type="email" required>
-            <label>Пароль</label>
-            <input type="password" id="p1" required>
-            <label>Повтор пароля</label>
-            <input type="password" id="p2" required>
-            <button type="submit" class="btn">Зарегистрироваться</button>
-        </form>
+        <div class="box">
+            
+            <!-- Переключатель вкладок -->
+            <div class="tabs">
+                <button class="tab-btn active" id="t-reg" onclick="switchTab('reg')">Регистрация</button>
+                <button class="tab-btn" id="t-log" onclick="switchTab('log')">Войти</button>
+            </div>
+
+            <!-- БЛОК 1: РЕГИСТРАЦИЯ -->
+            <div id="block-reg" class="form-block active">
+                <form onsubmit="handleAuth(event, 'reg')">
+                    <label>Telegram юзернейм (без @)</label>
+                    <input type="text" id="reg-tg" placeholder="durov" required>
+                    <label>Электронная почта</label>
+                    <input type="email" required>
+                    <label>Придумайте пароль</label>
+                    <input type="password" id="reg-p1" required>
+                    <label>Подтвердите пароль</label>
+                    <input type="password" id="reg-p2" required>
+                    <button type="submit" class="btn">Создать аккаунт</button>
+                </form>
+            </div>
+
+            <!-- БЛОК 2: ВХОД -->
+            <div id="block-log" class="form-block">
+                <form onsubmit="handleAuth(event, 'log')">
+                    <label>Telegram юзернейм (без @)</label>
+                    <input type="text" id="log-tg" placeholder="durov" required>
+                    <label>Пароль</label>
+                    <input type="password" id="log-p" required>
+                    <button type="submit" class="btn">Войти</button>
+                </form>
+            </div>
+
+        </div>
     </main>
 
-    <!-- Контент после входа -->
+    <!-- Главная страница сайта -->
     <div id="content">
-        <h2>🎉 Успешный вход в gduxgift!</h2>
+        <h2>🎉 Вы успешно авторизованы в системе gduxgift!</h2>
     </div>
 
     <script>
+        // Проверка авторизации ПРИ КАЖДОЙ загрузке страницы
         window.onload = function() {
-            const user = localStorage.getItem('tg_user');
-            if (user) show(user);
+            const savedUser = localStorage.getItem('gdux_user');
+            if (savedUser) {
+                showSite(savedUser);
+            }
         };
 
-        function register(event) {
-            event.preventDefault();
-            const name = document.getElementById('tg').value.trim();
-            if (document.getElementById('p1').value !== document.getElementById('p2').value) return alert("Пароли не совпадают");
-            
-            localStorage.setItem('tg_user', name);
-            show(name);
+        // Переключение между вкладками Войти и Регистрация
+        function switchTab(type) {
+            if (type === 'reg') {
+                document.getElementById('block-reg').classList.add('active');
+                document.getElementById('block-log').classList.remove('active');
+                document.getElementById('t-reg').classList.add('active');
+                document.getElementById('t-log').classList.remove('active');
+            } else {
+                document.getElementById('block-log').classList.add('active');
+                document.getElementById('block-reg').classList.remove('active');
+                document.getElementById('t-log').classList.add('active');
+                document.getElementById('t-reg').classList.remove('active');
+            }
         }
 
-        function show(name) {
-            document.getElementById('welcome').style.display = 'none';
-            document.getElementById('user').innerText = `@${name}`;
-            
-            const img = document.getElementById('avatar');
-            img.src = `https://unavatar.io{name}`;
-            img.onerror = () => img.src = `https://dicebear.com{name}`;
+        // Логика отправки форм
+        function handleAuth(event, mode) {
+            event.preventDefault(); // Стоп перезагрузка страницы!
 
+            if (mode === 'reg') {
+                const username = document.getElementById('reg-tg').value.trim();
+                const p1 = document.getElementById('reg-p1').value;
+                const p2 = document.getElementById('reg-p2').value;
+
+                if (p1 !== p2) return alert("Ошибка: Пароли не совпадают!");
+
+                // Сохраняем логин и пароль в постоянную память браузера
+                localStorage.setItem('gdux_user', username);
+                localStorage.setItem('gdux_pass', p1);
+                showSite(username);
+            } 
+            
+            if (mode === 'log') {
+                const username = document.getElementById('log-tg').value.trim();
+                const password = document.getElementById('log-p').value;
+                
+                const localUser = localStorage.getItem('gdux_user');
+                const localPass = localStorage.getItem('gdux_pass');
+
+                if (username === localUser && password === localPass) {
+                    showSite(username);
+                } else {
+                    alert("Неверный юзернейм или пароль! Или аккаунт ещё не создан.");
+                }
+            }
+        }
+
+        // Показ основного сайта и генерация аватарки
+        function showSite(username) {
+            document.getElementById('welcomeSection').style.display = 'none';
+            document.getElementById('user').innerText = `@${username}`;
+
+            // Починил отображение аватарок Telegram
+            const img = document.getElementById('avatar');
+            img.src = `https://unavatar.io{username}`;
+            
+            // Если ТГ скрывает аватарку настройками приватности, генерируем красивого робота под никнейм
+            img.onerror = function() {
+                this.src = `https://dicebear.com{username}`;
+            };
+
+            // Включаем шапку и контент
             document.getElementById('navbar').style.display = 'flex';
             document.getElementById('content').style.display = 'block';
         }
 
+        // Полный выход и очистка памяти
         function logout() {
-            localStorage.removeItem('tg_user');
+            localStorage.removeItem('gdux_user');
+            localStorage.removeItem('gdux_pass');
             window.location.reload();
         }
     </script>
@@ -113,29 +198,39 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background: #f4f6f9; color: #2d3748; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
-        /* Верхняя рамка-меню */
-        .navbar { display: none; width: 100%; background: #fff; padding: 15px 30px; border-bottom: 1px solid #e2e8f0; justify-content: space-between; align-items: center; position: sticky; top: 0; }
+        /* Шапка сайта */
+        .navbar { display: none; width: 100%; background: #fff; padding: 15px 30px; border-bottom: 1px solid #e2e8f0; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
         .logo { font-size: 1.6rem; font-weight: 900; background: linear-gradient(135deg, #ff6a00, #ee0979); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .menu { display: flex; gap: 20px; font-weight: 600; cursor: pointer; }
         .profile { display: flex; align-items: center; gap: 10px; border-left: 1px solid #e2e8f0; padding-left: 15px; }
-        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ff6a00; object-fit: cover; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ff6a00; object-fit: cover; background: #cbd5e0; }
         .logout { font-size: 0.75rem; color: #a0aec0; cursor: pointer; background: none; border: none; }
         .logout:hover { color: #e53e3e; }
 
-        /* Форма регистрации */
-        .welcome { text-align: center; margin-top: 80px; width: 100%; max-width: 360px; padding: 0 10px; }
-        h1 { margin-bottom: 25px; text-transform: uppercase; }
-        .form { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: left; }
-        input { width: 100%; padding: 12px; margin: 8px 0 16px; border: 1px solid #cbd5e0; border-radius: 6px; outline: none; }
+        /* Окно авторизации */
+        .welcome { text-align: center; margin-top: 60px; width: 100%; max-width: 380px; padding: 0 10px; }
+        h1 { margin-bottom: 20px; text-transform: uppercase; font-size: 1.8rem; }
+        .box { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        
+        /* Вкладки Войти/Регистрация */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 10px; background: none; border: 2px solid #ff6a00; color: #ff6a00; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .tab-btn.active { background: #ff6a00; color: #fff; }
+        
+        .form-block { display: none; }
+        .form-block.active { display: block; }
+
+        label { display: block; font-size: 0.9rem; font-weight: 600; color: #4a5568; margin-top: 12px; }
+        input { width: 100%; padding: 12px; margin: 6px 0 12px; border: 1px solid #cbd5e0; border-radius: 6px; outline: none; }
         input:focus { border-color: #ff6a00; }
-        button.btn { width: 100%; padding: 12px; background: #ff6a00; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn { width: 100%; padding: 12px; background: #ff6a00; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
         
         #content { display: none; margin-top: 50px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- Меню на самом верху -->
+    <!-- Шапка (появляется только после входа) -->
     <header class="navbar" id="navbar">
         <div class="logo">gduxgift</div>
         <nav class="menu">
@@ -145,7 +240,8 @@
             <div>⚙️ Настройки</div>
         </nav>
         <div class="profile">
-            <img src="" class="avatar" id="avatar">
+            <!-- Скрипт напрямую тащит аватарку по юзернейму -->
+            <img src="" class="avatar" id="avatar" alt="pic">
             <div>
                 <b id="user"></b><br>
                 <button class="logout" onclick="logout()">Выйти</button>
@@ -153,56 +249,130 @@
         </div>
     </header>
 
-    <!-- Экран регистрации -->
-    <main class="welcome" id="welcome">
+    <!-- Окна авторизации -->
+    <main class="welcome" id="welcomeSection">
         <h1>Добро пожаловать</h1>
-        <form class="form" onsubmit="register(event)">
-            <label>Твой Telegram (без @)</label>
-            <input type="text" id="tg" placeholder="durov" required>
-            <label>Почта</label>
-            <input type="email" required>
-            <label>Пароль</label>
-            <input type="password" id="p1" required>
-            <label>Повтор пароля</label>
-            <input type="password" id="p2" required>
-            <button type="submit" class="btn">Зарегистрироваться</button>
-        </form>
+        <div class="box">
+            
+            <!-- Переключатель вкладок -->
+            <div class="tabs">
+                <button class="tab-btn active" id="t-reg" onclick="switchTab('reg')">Регистрация</button>
+                <button class="tab-btn" id="t-log" onclick="switchTab('log')">Войти</button>
+            </div>
+
+            <!-- БЛОК 1: РЕГИСТРАЦИЯ -->
+            <div id="block-reg" class="form-block active">
+                <form onsubmit="handleAuth(event, 'reg')">
+                    <label>Telegram юзернейм (без @)</label>
+                    <input type="text" id="reg-tg" placeholder="durov" required>
+                    <label>Электронная почта</label>
+                    <input type="email" required>
+                    <label>Придумайте пароль</label>
+                    <input type="password" id="reg-p1" required>
+                    <label>Подтвердите пароль</label>
+                    <input type="password" id="reg-p2" required>
+                    <button type="submit" class="btn">Создать аккаунт</button>
+                </form>
+            </div>
+
+            <!-- БЛОК 2: ВХОД -->
+            <div id="block-log" class="form-block">
+                <form onsubmit="handleAuth(event, 'log')">
+                    <label>Telegram юзернейм (без @)</label>
+                    <input type="text" id="log-tg" placeholder="durov" required>
+                    <label>Пароль</label>
+                    <input type="password" id="log-p" required>
+                    <button type="submit" class="btn">Войти</button>
+                </form>
+            </div>
+
+        </div>
     </main>
 
-    <!-- Контент после входа -->
+    <!-- Главная страница сайта -->
     <div id="content">
-        <h2>🎉 Успешный вход в gduxgift!</h2>
+        <h2>🎉 Вы успешно авторизованы в системе gduxgift!</h2>
     </div>
 
     <script>
+        // Проверка авторизации ПРИ КАЖДОЙ загрузке страницы
         window.onload = function() {
-            const user = localStorage.getItem('tg_user');
-            if (user) show(user);
+            const savedUser = localStorage.getItem('gdux_user');
+            if (savedUser) {
+                showSite(savedUser);
+            }
         };
 
-        function register(event) {
-            event.preventDefault();
-            const name = document.getElementById('tg').value.trim();
-            if (document.getElementById('p1').value !== document.getElementById('p2').value) return alert("Пароли не совпадают");
-            
-            localStorage.setItem('tg_user', name);
-            show(name);
+        // Переключение между вкладками Войти и Регистрация
+        function switchTab(type) {
+            if (type === 'reg') {
+                document.getElementById('block-reg').classList.add('active');
+                document.getElementById('block-log').classList.remove('active');
+                document.getElementById('t-reg').classList.add('active');
+                document.getElementById('t-log').classList.remove('active');
+            } else {
+                document.getElementById('block-log').classList.add('active');
+                document.getElementById('block-reg').classList.remove('active');
+                document.getElementById('t-log').classList.add('active');
+                document.getElementById('t-reg').classList.remove('active');
+            }
         }
 
-        function show(name) {
-            document.getElementById('welcome').style.display = 'none';
-            document.getElementById('user').innerText = `@${name}`;
-            
-            const img = document.getElementById('avatar');
-            img.src = `https://unavatar.io{name}`;
-            img.onerror = () => img.src = `https://dicebear.com{name}`;
+        // Логика отправки форм
+        function handleAuth(event, mode) {
+            event.preventDefault(); // Стоп перезагрузка страницы!
 
+            if (mode === 'reg') {
+                const username = document.getElementById('reg-tg').value.trim();
+                const p1 = document.getElementById('reg-p1').value;
+                const p2 = document.getElementById('reg-p2').value;
+
+                if (p1 !== p2) return alert("Ошибка: Пароли не совпадают!");
+
+                // Сохраняем логин и пароль в постоянную память браузера
+                localStorage.setItem('gdux_user', username);
+                localStorage.setItem('gdux_pass', p1);
+                showSite(username);
+            } 
+            
+            if (mode === 'log') {
+                const username = document.getElementById('log-tg').value.trim();
+                const password = document.getElementById('log-p').value;
+                
+                const localUser = localStorage.getItem('gdux_user');
+                const localPass = localStorage.getItem('gdux_pass');
+
+                if (username === localUser && password === localPass) {
+                    showSite(username);
+                } else {
+                    alert("Неверный юзернейм или пароль! Или аккаунт ещё не создан.");
+                }
+            }
+        }
+
+        // Показ основного сайта и генерация аватарки
+        function showSite(username) {
+            document.getElementById('welcomeSection').style.display = 'none';
+            document.getElementById('user').innerText = `@${username}`;
+
+            // Починил отображение аватарок Telegram
+            const img = document.getElementById('avatar');
+            img.src = `https://unavatar.io{username}`;
+            
+            // Если ТГ скрывает аватарку настройками приватности, генерируем красивого робота под никнейм
+            img.onerror = function() {
+                this.src = `https://dicebear.com{username}`;
+            };
+
+            // Включаем шапку и контент
             document.getElementById('navbar').style.display = 'flex';
             document.getElementById('content').style.display = 'block';
         }
 
+        // Полный выход и очистка памяти
         function logout() {
-            localStorage.removeItem('tg_user');
+            localStorage.removeItem('gdux_user');
+            localStorage.removeItem('gdux_pass');
             window.location.reload();
         }
     </script>
