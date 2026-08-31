@@ -82,6 +82,9 @@
 
     <div id="content"><h2>🎉 Вы успешно зашли в gduxgift!</h2></div>
 
+    <!-- Подключаем библиотеку EmailJS -->
+    <script src="https://jsdelivr.net"></script>
+
     <script>
         window.onload = function() {
             const session = localStorage.getItem('gdux_session');
@@ -94,13 +97,42 @@
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
+        // Измененная функция восстановления пароля через EmailJS
         function forgot(e) {
             e.preventDefault();
             const user = document.getElementById('log-tg').value.trim();
             let db = JSON.parse(localStorage.getItem('gdux_db')) || {};
-            if (!user) return toast("Введите Telegram юзернейм!");
-            if (db[user]) alert(`Ваш пароль: ${db[user].password}`);
-            else toast("Аккаунт не найден!");
+            
+            if (!user) return toast("Введите Telegram юзернейм в поле ввода!");
+            if (!db[user]) return toast("Аккаунт не найден!");
+
+            const userEmail = db[user].email;
+            const userPassword = db[user].password;
+
+            if (!userEmail) return toast("У этого аккаунта не указана почта!");
+
+            toast("Отправляем пароль на вашу почту...");
+
+            // НАСТРОЙКА EMAILJS (Замени значения в кавычках на свои)
+            const SERVICE_ID = 'service_mkyq5cl'; // Твой ID со скриншота
+            const TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // Создай шаблон в панели EmailJS
+            const PUBLIC_KEY = 'YOUR_PUBLIC_KEY'; // Из раздела Account -> API Keys
+
+            emailjs.init(PUBLIC_KEY);
+
+            // Передаем переменные в шаблон письма EmailJS
+            const templateParams = {
+                to_email: userEmail,
+                telegram_user: user,
+                user_password: userPassword
+            };
+
+            emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+                .then(function() {
+                    alert(`Пароль успешно отправлен на почту ${userEmail}!`);
+                }, function(error) {
+                    toast("Ошибка отправки: " + JSON.stringify(error));
+                });
         }
 
         function switchTab(type) {
@@ -123,7 +155,8 @@
                 if (p1 !== p2) return toast("Пароли не совпадают!");
                 if (db[u]) return toast("Этот аккаунт уже зарегистрирован!");
 
-                db[u] = { password: p1 };
+                // ТЕПЕРЬ СОХРАНЯЕМ И ПАРОЛЬ, И ПОЧТУ
+                db[u] = { password: p1, email: e };
                 localStorage.setItem('gdux_db', JSON.stringify(db));
                 localStorage.setItem('gdux_session', u);
                 show(u);
