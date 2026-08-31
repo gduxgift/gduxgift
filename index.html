@@ -1,257 +1,124 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⭐ Магазин звёзд Telegram</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: #fff; min-height: 100vh; overflow-x: hidden; }
-    .rocket-wrapper { position: fixed; inset: 0; z-index: 9999; pointer-events: none; display: flex; justify-content: center; align-items: center; }
-    .rocket-wrapper img { width: 300px; animation: launch 2.5s ease-in forwards; filter: drop-shadow(0 0 80px rgba(255,150,0,0.7)); }
-    @keyframes launch { 0% { transform: translateY(0) rotate(-5deg); opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(-120vh) rotate(10deg); opacity: 0; } }
-    .promo-side { position: fixed; left: 20px; top: 50%; transform: translateY(-50%); width: 200px; background: #1a1a1a; border: 2px solid #ff8c00; border-radius: 20px; padding: 20px 15px; text-align: center; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-    .promo-side p { margin-bottom: 15px; font-size: 0.95rem; line-height: 1.4; color: #ddd; }
-    .promo-side .btn-promo { background: linear-gradient(135deg, #ff8c00, #ff5722); border: none; border-radius: 30px; padding: 12px 25px; font-size: 1rem; font-weight: 700; cursor: pointer; color: #fff; text-decoration: none; display: inline-block; }
-    .promo-side .btn-promo:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(255,140,0,0.5); }
-    .app { width: 100%; max-width: 1200px; margin: 20px auto; padding-left: 240px; }
-    @media (max-width: 900px) { .promo-side { display: none; } .app { padding-left: 20px; } }
-    .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: #1a1a1a; border-radius: 30px; padding: 15px 25px; margin-bottom: 25px; }
-    .menu-icons { display: flex; flex-wrap: wrap; gap: 15px; }
-    .menu-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border-radius: 30px; padding: 12px 20px; cursor: pointer; }
-    .menu-item:hover { background: rgba(255,255,255,0.15); transform: translateY(-3px); }
-    .user-area { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-    .balance-pill { background: rgba(0,255,150,0.1); border: 2px solid rgba(0,255,150,0.3); border-radius: 50px; padding: 10px 22px; font-weight: 700; cursor: pointer; }
-    .balance-pill:hover { background: rgba(0,255,150,0.2); }
-    .logout-btn { background: rgba(255,80,80,0.2); border: 1px solid rgba(255,80,80,0.3); border-radius: 50px; padding: 10px 18px; color: #ff6b6b; cursor: pointer; }
-    .logout-btn:hover { background: rgba(255,80,80,0.4); }
-    .main-frame { background: #111; border-radius: 30px; padding: 30px; min-height: 400px; }
-    .big-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; margin-bottom: 20px; }
-    .big-menu button { background: #222; border: none; border-radius: 20px; padding: 25px 10px; color: #fff; font-size: 1.1rem; cursor: pointer; }
-    .big-menu button:hover { background: #333; transform: scale(1.03); }
-    .view { display: none; }
-    .view.active { display: block; }
-    .deposit-box { background: #1a1a1a; border-radius: 20px; padding: 25px; max-width: 400px; margin: 20px auto; text-align: center; }
-    .deposit-box label { display: block; margin-bottom: 10px; font-size: 1.1rem; color: #ccc; }
-    .deposit-box input { width: 100%; background: #222; border: 1px solid #444; border-radius: 30px; padding: 14px 20px; color: #fff; font-size: 1.2rem; outline: none; text-align: center; }
-    .deposit-box input:focus { border-color: #2196F3; }
-    .deposit-box .btn-blue { display: inline-block; margin-top: 15px; background: #2196F3; color: #fff; border: none; border-radius: 30px; padding: 14px 40px; font-size: 1.2rem; font-weight: 700; cursor: pointer; text-decoration: none; }
-    .deposit-box .btn-blue:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(33,150,243,0.4); }
-    .deposit-box .btn-blue.disabled { opacity: 0.4; pointer-events: none; }
-    .purchase-item { background: #1e1e1e; border-radius: 15px; padding: 12px 15px; margin: 8px 0; display: flex; justify-content: space-between; }
-    textarea { width: 100%; background: #222; border: 1px solid #333; border-radius: 15px; padding: 15px; color: #fff; resize: vertical; margin: 10px 0; }
-    .btn-orange { background: linear-gradient(135deg, #ff8c00, #ff5722); border: none; border-radius: 30px; padding: 14px 40px; font-weight: 700; cursor: pointer; color: #fff; }
-    .btn-orange:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(255,140,0,0.4); }
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: #111; border-radius: 30px; padding: 30px 40px; max-width: 400px; width: 90%; animation: zoomIn 0.3s ease; }
-    @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-    .modal h2 { margin-bottom: 15px; background: linear-gradient(135deg, #ff8c00, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .modal input { width: 100%; background: #222; border: 1px solid #333; border-radius: 30px; padding: 14px 20px; color: #fff; margin: 8px 0; outline: none; }
-    .modal input:focus { border-color: #ff8c00; }
-    .modal .btn-submit { width: 100%; background: linear-gradient(135deg, #ff8c00, #ff5722); border: none; border-radius: 30px; padding: 15px; font-size: 1.1rem; font-weight: 700; cursor: pointer; color: #fff; margin-top: 10px; }
-    .tabs { display: flex; margin-bottom: 20px; background: #222; border-radius: 30px; overflow: hidden; }
-    .tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; font-weight: 600; }
-    .tab.active { background: linear-gradient(135deg, #ff8c00, #ff5722); color: #fff; }
-    .tab-form { display: none; }
-    .tab-form.active { display: block; }
-    .close-btn { float: right; background: none; border: none; color: #888; font-size: 2rem; cursor: pointer; }
-    .close-btn:hover { color: #fff; }
-    .complaint-box { background: #1e1e1e; border-left: 3px solid #ffd700; padding: 8px; margin: 5px 0; border-radius: 8px; }
-    .admin-panel { display: flex; flex-direction: column; gap: 10px; }
-    .admin-panel button { background: #333; border: none; border-radius: 30px; padding: 15px; color: #fff; font-size: 1.2rem; cursor: pointer; }
-    .admin-panel button:hover { background: #444; }
-    .admin-trigger { position: fixed; bottom: 20px; right: 20px; background: rgba(255,140,0,0.3); border: 2px solid #ff8c00; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1500; font-size: 1.5rem; backdrop-filter: blur(4px); }
-    .admin-trigger:hover { background: rgba(255,140,0,0.6); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой сайт на GitHub Pages</title>
+    <style>
+        /* Обнуляем отступы */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Настройки фона */
+        body {
+            background-image: url('https://yandex.net');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #0c0c0c;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column; /* Размещаем элементы вертикально друг за другом */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Заголовок в самом верху страницы */
+        .top-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        /* Контейнер для контента */
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #b3b3b3;
+            line-height: 1.6;
+        }
+
+        /* Анимированная оранжевая кнопка «Далее» */
+        .btn-next {
+            display: inline-block;
+            padding: 15px 45px;
+            background: linear-gradient(135deg, #ff6a00, #ee0979); /* Красивый оранжево-розовый градиент */
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-radius: 50px; /* Округлая форма */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(238, 9, 121, 0.7);
+            animation: pulse 2s infinite; /* Подключение бесконечной анимации пульсации */
+        }
+
+        /* Эффект при наведении мыши */
+        .btn-next:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 106, 0, 0.4);
+            animation: none; /* Останавливаем пульсацию при наведении */
+        }
+
+        /* Нажатие кнопки */
+        .btn-next:active {
+            transform: scale(0.98);
+        }
+
+        /* Ключевые кадры для анимации пульсации кнопки */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 106, 0, 0.7);
+            }
+            70% {
+                transform: scale(1.03);
+                box-shadow: 0 0 0 15px rgba(255, 106, 0, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 106, 0, 0);
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="rocket-wrapper" id="rocketWrapper"><img src="https://cdn-icons-png.flaticon.com/512/2965/2965358.png" alt="Rocket"></div>
-<div class="promo-side"><p>Промокод на наши товары</p><p style="margin-bottom:20px;">вы получите</p><a href="https://t.me/gduxgift" target="_blank" class="btn-promo">Далее</a></div>
-<div class="app" id="app">
-  <div class="topbar">
-    <div class="menu-icons">
-      <div class="menu-item" onclick="showView('cart')">🛒 Корзина</div>
-      <div class="menu-item" onclick="showView('support')">✉️ Поддержка</div>
-      <div class="menu-item" onclick="showView('balance')">💰 Баланс</div>
-      <div class="menu-item" onclick="showView('shop')">⭐ Магазин</div>
-      <div class="menu-item" onclick="showView('settings')">⚙️ Настройки</div>
+
+    <!-- Заголовок вверху -->
+    <h1 class="top-title">Добро пожаловать</h1>
+
+    <!-- Центральный блок с текстом -->
+    <div class="container">
+        <p>Мой будущий крутой сайт, который я создаю и размещаю с помощью GitHub Pages. Скоро здесь появится больше интересного контента!</p>
     </div>
-    <div class="user-area" id="userArea"></div>
-  </div>
-  <div class="main-frame">
-    <div id="mainMenu" class="view active"><h2 style="text-align:center;margin-bottom:20px;">Добро пожаловать!</h2><div class="big-menu"><button onclick="showView('shop')">🛍️ Магазин</button><button onclick="showView('cart')">🛒 Корзина</button><button onclick="showView('balance')">💰 Баланс</button><button onclick="showView('support')">✉️ Поддержка</button><button onclick="showView('settings')">⚙️ Настройки</button></div></div>
-    <div id="shopView" class="view"><h2 style="margin-bottom:20px;">Магазин звёзд</h2><p style="color:#aaa;text-align:center;">Товары временно недоступны</p><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Вернуться</button></div>
-    <div id="cartView" class="view"><h2 style="margin-bottom:20px;">История покупок</h2><div id="cartList"></div><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button></div>
-    <div id="balanceView" class="view"><h2 style="margin-bottom:10px;">Пополнить баланс</h2><p style="color:#aaa;margin-bottom:20px;">Текущий баланс: <span id="balanceAmount">0.0</span> ₽</p><div class="deposit-box"><label for="depositAmount">Введите сумму (от 10 ₽)</label><input type="number" id="depositAmount" placeholder="Например, 500" min="10" step="1"><button class="btn-blue disabled" id="depositBtn">Пополнить</button></div><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button></div>
-    <div id="supportView" class="view"><h2 style="margin-bottom:20px;">Поддержка</h2><textarea id="complaintText" rows="4" placeholder="Опишите проблему..."></textarea><button class="btn-orange" onclick="sendComplaint()">Отправить</button><br><br><div id="userComplaints"></div><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button></div>
-    <div id="settingsView" class="view"><h2 style="margin-bottom:20px;">Настройки</h2><p style="margin-bottom:10px;">Цвет темы:</p><div><span style="display:inline-block;width:40px;height:40px;border-radius:50%;background:#000;border:2px solid #ff8c00;cursor:pointer;" onclick="setTheme('black')"></span><span style="display:inline-block;width:40px;height:40px;border-radius:50%;background:#fff;border:2px solid #ff8c00;cursor:pointer;margin-left:10px;" onclick="setTheme('white')"></span></div><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button></div>
-  </div>
-</div>
-<div class="modal-overlay" id="authModal"><div class="modal"><span class="close-btn" onclick="closeAuthModal()">&times;</span><h2 style="text-align:center;">Вход / Регистрация</h2><div class="tabs"><div class="tab active" onclick="switchTab('login')">Вход</div><div class="tab" onclick="switchTab('register')">Регистрация</div></div><div id="loginTab" class="tab-form active"><label>Ваш ник (без @)</label><input type="text" id="loginNick" placeholder="username"><label>Пароль</label><input type="password" id="loginPass" placeholder="••••••••"><button class="btn-submit" onclick="loginUser()">Войти</button><p id="loginError" style="color:#ff6b6b;margin-top:10px;"></p></div><div id="registerTab" class="tab-form"><label>Ваш ник (без @)</label><input type="text" id="regNick" placeholder="username"><label>Пароль</label><input type="password" id="regPass" placeholder="••••••••"><label>Повторите пароль</label><input type="password" id="regPass2" placeholder="••••••••"><button class="btn-submit" onclick="registerUser()">Зарегистрироваться</button><p id="regError" style="color:#ff6b6b;margin-top:10px;"></p></div></div></div>
-<div class="modal-overlay" id="waitModal"><div class="modal"><h2 style="text-align:center;">⏳ Ожидание оплаты</h2><p style="text-align:center;margin:20px 0;">Дождитесь подтверждения оплаты</p><p style="text-align:center;color:#aaa;">Занимает около 10-15 минут</p><button class="btn-submit" onclick="closeWaitModal()">OK</button></div></div>
-<div class="modal-overlay" id="adminModal"><div class="modal" style="max-width:500px;"><span class="close-btn" onclick="document.getElementById('adminModal').classList.remove('active')">&times;</span><h2 style="text-align:center;">🔐 Админ-панель</h2><div id="adminContent"><label>Пароль</label><input type="password" id="adminPass" placeholder="Пароль"><button class="btn-submit" onclick="adminLogin()">Войти</button></div><div id="adminPanel" style="display:none;"><div class="admin-panel"><button onclick="showAdminSection('complaints')">✉️ Жалобы (письмо)</button><button onclick="showAdminSection('donations')">✅ Подтвердить донаты (галочка)</button></div><div id="adminComplaints" style="margin-top:20px;display:none;"></div><div id="adminDonations" style="margin-top:20px;display:none;"></div></div></div></div>
-<div class="modal-overlay" id="starModal"><div class="modal"><h2 style="text-align:center;">⭐ Получение звёзд</h2><p style="text-align:center;margin:20px 0;">Напишите <strong>xudex</strong> чтобы получить свои звёзды</p><button class="btn-submit" onclick="closeStarModal()">OK</button></div></div>
-<script>
-let users=JSON.parse(localStorage.getItem('users'))||{};
-let complaints=JSON.parse(localStorage.getItem('complaints'))||[];
-let donations=JSON.parse(localStorage.getItem('donations'))||[];
-let currentUser=localStorage.getItem('currentUser')||null;
-let currentBalance=0;
-let purchaseHistory=[];
-window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('rocketWrapper').style.display='none'},2800)});
-function cleanNick(nick){return nick.trim().toLowerCase().replace(/^@/,'')}
-function checkStarMessage(){if(currentUser&&users[currentUser]&&users[currentUser].starMessage){document.getElementById('starModal').classList.add('active');users[currentUser].starMessage=false;localStorage.setItem('users',JSON.stringify(users))}}
-function autoLogin(){if(currentUser&&users[currentUser]){currentBalance=users[currentUser].balance||0;purchaseHistory=users[currentUser].history||[];updateAfterLogin();checkStarMessage();return true}return false}
-document.addEventListener('DOMContentLoaded',()=>{document.getElementById('app').style.display='block';if(!autoLogin())openAuthModal();const depositInput=document.getElementById('depositAmount');const depositBtn=document.getElementById('depositBtn');depositInput.addEventListener('input',function(){const val=parseFloat(this.value);if(val>=10)depositBtn.classList.remove('disabled');else depositBtn.classList.add('disabled')});depositBtn.addEventListener('click',function(e){if(this.classList.contains('disabled'))return;const amount=parseFloat(depositInput.value);if(amount<10)return;donations.push({user:currentUser,amount:amount,date:new Date().toLocaleString(),confirmed:false});localStorage.setItem('donations',JSON.stringify(donations));document.getElementById('waitModal').classList.add('active');window.open('https://www.donationalerts.com/r/starsgift','_blank')})});
-function openAuthModal(){document.getElementById('authModal').classList.add('active');document.getElementById('loginError').textContent='';document.getElementById('regError').textContent=''}
-function closeAuthModal(){document.getElementById('authModal').classList.remove('active')}
-function switchTab(tab){document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));document.querySelectorAll('.tab-form').forEach(el=>el.classList.remove('active'));if(tab==='login'){document.getElementById('loginTab').classList.add('active');document.querySelector('.tab').classList.add('active')}else{document.getElementById('registerTab').classList.add('active');document.querySelector('.tab:nth-child(2)').classList.add('active')}}
-function registerUser(){const nick=cleanNick(document.getElementById('regNick').value);const pass=document.getElementById('regPass').value;const pass2=document.getElementById('regPass2').value;const err=document.getElementById('regError');if(!nick||!pass){err.textContent='Заполните все поля.';return}if(pass!==pass2){err.textContent='Пароли не совпадают.';return}if(users[nick]){err.textContent='Такой ник уже существует.';return}users[nick]={password:pass,balance:0,history:[],starMessage:false};localStorage.setItem('users',JSON.stringify(users));currentUser=nick;localStorage.setItem('currentUser',currentUser);currentBalance=0;purchaseHistory=[];err.textContent='';closeAuthModal();updateAfterLogin();checkStarMessage()}
-function loginUser(){const nick=cleanNick(document.getElementById('loginNick').value);const pass=document.getElementById('loginPass').value;const err=document.getElementById('loginError');if(!nick||!pass){err.textContent='Заполните все поля.';return}if(!users[nick]){err.textContent='Пользователь не найден.';return}if(users[nick].password!==pass){err.textContent='Неверный пароль.';return}currentUser=nick;localStorage.setItem('currentUser',currentUser);currentBalance=users[nick].balance||0;purchaseHistory=users[nick].history||[];err.textContent='';closeAuthModal();updateAfterLogin();checkStarMessage()}
-function logout(){currentUser=null;localStorage.removeItem('currentUser');location.reload()}
-function updateAfterLogin(){document.getElementById('userArea').innerHTML=`<span style="font-weight:600;">@${currentUser}</span><span class="balance-pill" onclick="showView('balance')">💰 ${currentBalance.toFixed(1)} ₽</span><button class="logout-btn" onclick="logout()">Выйти</button>`;document.getElementById('balanceAmount').textContent=currentBalance.toFixed(1);showView('mainMenu');renderCart();renderUserComplaints()}
-function showView(viewName){if(!currentUser){openAuthModal();return}document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));if(viewName==='mainMenu'){document.getElementById('mainMenu').classList.add('active');checkStarMessage()}else if(viewName==='cart'){document.getElementById('cartView').classList.add('active');renderCart()}else if(viewName==='support'){document.getElementById('supportView').classList.add('active');renderUserComplaints()}else if(viewName==='balance'){document.getElementById('balanceView').classList.add('active');document.getElementById('balanceAmount').textContent=currentBalance.toFixed(1)}else if(viewName==='shop')document.getElementById('shopView').classList.add('active');else if(viewName==='settings')document.getElementById('settingsView').classList.add('active')}
-function renderCart(){const list=document.getElementById('cartList');if(!purchaseHistory||purchaseHistory.length===0){list.innerHTML='<p style="color:#aaa;">Покупок нет.</p>'}else{list.innerHTML=purchaseHistory.map(item=>`<div class="purchase-item"><span>${item.name}</span><span>${item.price} ₽</span></div>`).join('')}}
-function sendComplaint(){const text=document.getElementById('complaintText').value.trim();if(!text){alert('Напишите текст жалобы.');return}complaints.push({user:currentUser,text,date:new Date().toLocaleString(),answer:null});localStorage.setItem('complaints',JSON.stringify(complaints));document.getElementById('complaintText').value='';alert('Жалоба отправлена!');renderUserComplaints()}
-function renderUserComplaints(){const container=document.getElementById('userComplaints');const userComps=complaints.filter(c=>c.user===currentUser);if(userComps.length===0){container.innerHTML='<p style="color:#aaa;">Вы ещё не отправляли жалоб.</p>'}else{container.innerHTML=userComps.map(c=>`<div class="complaint-box"><div>${c.text}</div><small>${c.date}</small>${c.answer?`<div style="margin-top:8px;border-top:1px solid #333;padding-top:8px;color:#8bc34a;">Ответ: ${c.answer}</div>`:''}</div>`).join('')}}
-function closeWaitModal(){document.getElementById('waitModal').classList.remove('active');checkStarMessage()}
-function closeStarModal(){document.getElementById('starModal').classList.remove('active')}
-function openAdminPanel(){document.getElementById('adminModal').classList.add('active');document.getElementById('adminContent').style.display='block';document.getElementById('adminPanel').style.display='none';document.getElementById('adminComplaints').style.display='none';document.getElementById('adminDonations').style.display='none';document.getElementById('adminPass').value=''}
-document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&(e.key==='A'||e.key==='а')){e.preventDefault();openAdminPanel()}});
-function adminLogin(){const pass=document.getElementById('adminPass').value;if(pass!=='xudex'){alert('Неверный пароль');return}document.getElementById('adminContent').style.display='none';document.getElementById('adminPanel').style.display='block';document.getElementById('adminPass').value=''}
-function showAdminSection(section){if(section==='complaints'){document.getElementById('adminComplaints').style.display='block';document.getElementById('adminDonations').style.display='none';const container=document.getElementById('adminComplaints');if(complaints.length===0){container.innerHTML='<p>Жалоб нет</p>'}else{container.innerHTML=complaints.map((c,idx)=>`<div class="complaint-box"><div><b>@${c.user}:</b> ${c.text}</div><small>${c.date}</small>${c.answer?`<div style="color:#8bc34a;">Ответ: ${c.answer}</div>`:`<textarea id="answerInput${idx}" rows="2" placeholder="Ответ..." style="width:100%;margin-top:8px;"></textarea><button class="btn-orange" style="padding:8px 20px;font-size:0.9rem;" onclick="answerComplaint(${idx})">Ответить</button>`}</div>`).join('')}}else{document.getElementById('adminComplaints').style.display='none';document.getElementById('adminDonations').style.display='block';const container=document.getElementById('adminDonations');const pending=donations.filter(d=>!d.confirmed);if(pending.length===0){container.innerHTML='<p>Нет неподтверждённых донатов</p>'}else{container.innerHTML=pending.map((d,idx)=>`<div class="complaint-box"><div><b>@${d.user}</b> — ${d.amount} ₽</div><small>${d.date}</small><button class="btn-orange" style="padding:8px 20px;font-size:0.9rem;margin-top:8px;" onclick="confirmDonation(${idx})">✅ Подтвердить</button></div>`).join('')}}}
-function answerComplaint(idx){const answer=document.getElementById(`answerInput${idx}`).value.trim();if(!answer){alert('Введите ответ');return}complaints[idx].answer=answer;localStorage.setItem('complaints',JSON.stringify(complaints));showAdminSection('complaints')}
-function confirmDonation(idx){const pending=donations.filter(d=>!d.confirmed);const donation=pending[idx];if(!donation)return;donation.confirmed=true;localStorage.setItem('donations',JSON.stringify(donations));if(users[donation.user]){users[donation.user].starMessage=true;localStorage.setItem('users',JSON.stringify(users))}showAdminSection('donations')}
-function setTheme(color){if(color==='white'){document.body.style.background='#fff';document.body.style.color='#111';document.querySelectorAll('.main-frame,.topbar,.modal,.deposit-box,.complaint-box,.purchase-item').forEach(el=>el.style.background='#eee');document.querySelectorAll('.menu-item,.big-menu button,.admin-panel button,.tab').forEach(el=>el.style.background='#ddd')}else{document.body.style.background='#000';document.body.style.color='#fff';document.querySelectorAll('.main-frame,.topbar,.modal,.deposit-box,.complaint-box,.purchase-item').forEach(el=>el.style.background='#111');document.querySelectorAll('.menu-item,.big-menu button,.admin-panel button,.tab').forEach(el=>el.style.background='#222')}}
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⭐ Магазин звёзд Telegram</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: #fff; min-height: 100vh; overflow-x: hidden; }
-    .rocket-wrapper { position: fixed; inset: 0; z-index: 9999; pointer-events: none; display: flex; justify-content: center; align-items: center; }
-    .rocket-wrapper img { width: 300px; animation: launch 2.5s ease-in forwards; filter: drop-shadow(0 0 80px rgba(255,150,0,0.7)); }
-    @keyframes launch { 0% { transform: translateY(0) rotate(-5deg); opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(-120vh) rotate(10deg); opacity: 0; } }
-    .promo-side { position: fixed; left: 20px; top: 50%; transform: translateY(-50%); width: 200px; background: #1a1a1a; border: 2px solid #ff8c00; border-radius: 20px; padding: 20px 15px; text-align: center; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-    .promo-side p { margin-bottom: 15px; font-size: 0.95rem; line-height: 1.4; color: #ddd; }
-    .promo-side .btn-promo { background: linear-gradient(135deg, #ff8c00, #ff5722); border: none; border-radius: 30px; padding: 12px 25px; font-size: 1rem; font-weight: 700; cursor: pointer; color: #fff; text-decoration: none; display: inline-block; }
-    .promo-side .btn-promo:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(255,140,0,0.5); }
-    .app { width: 100%; max-width: 1200px; margin: 20px auto; padding-left: 240px; }
-    @media (max-width: 900px) { .promo-side { display: none; } .app { padding-left: 20px; } }
-    .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: #1a1a1a; border-radius: 30px; padding: 15px 25px; margin-bottom: 25px; }
-    .menu-icons { display: flex; flex-wrap: wrap; gap: 15px; }
-    .menu-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border-radius: 30px; padding: 12px 20px; cursor: pointer; }
-    .menu-item:hover { background: rgba(255,255,255,0.15); transform: translateY(-3px); }
-    .user-area { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-    .balance-pill { background: rgba(0,255,150,0.1); border: 2px solid rgba(0,255,150,0.3); border-radius: 50px; padding: 10px 22px; font-weight: 700; cursor: pointer; }
-    .balance-pill:hover { background: rgba(0,255,150,0.2); }
-    .logout-btn { background: rgba(255,80,80,0.2); border: 1px solid rgba(255,80,80,0.3); border-radius: 50px; padding: 10px 18px; color: #ff6b6b; cursor: pointer; }
-    .logout-btn:hover { background: rgba(255,80,80,0.4); }
-    .main-frame { background: #111; border-radius: 30px; padding: 30px; min-height: 400px; }
-    .big-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; margin-bottom: 20px; }
-    .big-menu button { background: #222; border: none; border-radius: 20px; padding: 25px 10px; color: #fff; font-size: 1.1rem; cursor: pointer; }
-    .big-menu button:hover { background: #333; transform: scale(1.03); }
-    .view { display: none; }
-    .view.active { display: block; }
-    .deposit-box { background: #1a1a1a; border-radius: 20px; padding: 25px; max-width: 400px; margin: 20px auto; text-align: center; }
-    .deposit-box label { display: block; margin-bottom: 10px; font-size: 1.1rem; color: #ccc; }
-    .deposit-box input { width: 100%; background: #222; border: 1px solid #444; border-radius: 30px; padding: 14px 20px; color: #fff; font-size: 1.2rem; outline: none; text-align: center; }
-    .deposit-box input:focus { border-color: #2196F3; }
-    .deposit-box .btn-blue { display: inline-block; margin-top: 15px; background: #2196F3; color: #fff; border: none; border-radius: 30px; padding: 14px 40px; font-size: 1.2rem; font-weight: 700; cursor: pointer; text-decoration: none; }
-    .deposit-box .btn-blue:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(33,150,243,0.4); }
-    .deposit-box .btn-blue.disabled { opacity: 0.4; pointer-events: none; }
-    .purchase-item { background: #1e1e1e; border-radius: 15px; padding: 12px 15px; margin: 8px 0; display: flex; justify-content: space-between; }
-    textarea { width: 100%; background: #222; border: 1px solid #333; border-radius: 15px; padding: 15px; color: #fff; resize: vertical; margin: 10px 0; }
-    .btn-orange { background: linear-gradient(135deg, #ff8c00, #ff5722); border: none; border-radius: 30px; padding: 14px 40px; font-weight: 700; cursor: pointer; color: #fff; }
-    .btn-orange:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(255,140,0,0.4); }
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: #111; border-radius: 30px; padding: 30px 40px; max-width: 400px; width: 90%; animation: zoomIn 0.3s ease; }
-    @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-    .modal h2 { margin-bottom: 15px; background: linear-gradient(135deg, #ff8c00, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .modal input { width: 100%; background: #222; border: 1px solid #333; border-radius: 30px; padding: 14px 20px; color: #fff; margin: 8px 0; outline: none; }
-    .modal input:focus { border-color: #ff8c00; }
-    .modal .btn-submit { width: 100%; background: linear-gradient(135deg, #ff8c00, #ff5722); border: none; border-radius: 30px; padding: 15px; font-size: 1.1rem; font-weight: 700; cursor: pointer; color: #fff; margin-top: 10px; }
-    .tabs { display: flex; margin-bottom: 20px; background: #222; border-radius: 30px; overflow: hidden; }
-    .tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; font-weight: 600; }
-    .tab.active { background: linear-gradient(135deg, #ff8c00, #ff5722); color: #fff; }
-    .tab-form { display: none; }
-    .tab-form.active { display: block; }
-    .close-btn { float: right; background: none; border: none; color: #888; font-size: 2rem; cursor: pointer; }
-    .close-btn:hover { color: #fff; }
-    .complaint-box { background: #1e1e1e; border-left: 3px solid #ffd700; padding: 8px; margin: 5px 0; border-radius: 8px; }
-    .admin-panel { display: flex; flex-direction: column; gap: 10px; }
-    .admin-panel button { background: #333; border: none; border-radius: 30px; padding: 15px; color: #fff; font-size: 1.2rem; cursor: pointer; }
-    .admin-panel button:hover { background: #444; }
-    .admin-trigger { position: fixed; bottom: 20px; right: 20px; background: rgba(255,140,0,0.3); border: 2px solid #ff8c00; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1500; font-size: 1.5rem; backdrop-filter: blur(4px); }
-    .admin-trigger:hover { background: rgba(255,140,0,0.6); }
-  </style>
-</head>
-<body>
-<div class="rocket-wrapper" id="rocketWrapper"><img src="https://cdn-icons-png.flaticon.com/512/2965/2965358.png" alt="Rocket"></div>
-<div class="promo-side"><p>Промокод на наши товары</p><p style="margin-bottom:20px;">вы получите</p><a href="https://t.me/gduxgift" target="_blank" class="btn-promo">Далее</a></div>
-<div class="app" id="app">
-  <div class="topbar">
-    <div class="menu-icons">
-      <div class="menu-item" onclick="showView('cart')">🛒 Корзина</div>
-      <div class="menu-item" onclick="showView('support')">✉️ Поддержка</div>
-      <div class="menu-item" onclick="showView('balance')">💰 Баланс</div>
-      <div class="menu-item" onclick="showView('shop')">⭐ Магазин</div>
-      <div class="menu-item" onclick="showView('settings')">⚙️ Настройки</div>
-    </div>
-    <div class="user-area" id="userArea"></div>
-  </div>
-  <div class="main-frame">
-    <div id="mainMenu" class="view active"><h2 style="text-align:center;margin-bottom:20px;">Добро пожаловать!</h2><div class="big-menu"><button onclick="showView('shop')">🛍️ Магазин</button><button onclick="showView('cart')">🛒 Корзина</button><button onclick="showView('balance')">💰 Баланс</button><button onclick="showView('support')">✉️ Поддержка</button><button onclick="showView('settings')">⚙️ Настройки</button></div></div>
-    <div id="shopView" class="view"><h2 style="margin-bottom:20px;">Магазин звёзд</h2><p style="color:#aaa;text-align:center;">Товары временно недоступны</p><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Вернуться</button></div>
-    <div id="cartView" class="view"><h2 style="margin-bottom:20px;">История покупок</h2><div id="cartList"></div><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button></div>
-    <div id="balanceView" class="view"><h2 style="margin-bottom:10px;">Пополнить баланс</h2><p style="color:#aaa;margin-bottom:20px;">Текущий баланс: <span id="balanceAmount">0.0</span> ₽</p><div class="deposit-box"><label for="depositAmount">Введите сумму (от 10 ₽)</label><input type="number" id="depositAmount" placeholder="Например, 500" min="10" step="1"><button class="btn-blue disabled" id="depositBtn">Пополнить</button></div><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button></div>
-    <div id="supportView" class="view"><h2 style="margin-bottom:20px;">Поддержка</h2><textarea id="complaintText" rows="4" placeholder="Опишите проблему..."></textarea><button class="btn-orange" onclick="sendComplaint()">Отправить</button><br><br><div id="userComplaints"></div><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button></div>
-    <div id="settingsView" class="view"><h2 style="margin-bottom:20px;">Настройки</h2><p style="margin-bottom:10px;">Цвет темы:</p><div><span style="display:inline-block;width:40px;height:40px;border-radius:50%;background:#000;border:2px solid #ff8c00;cursor:pointer;" onclick="setTheme('black')"></span><span style="display:inline-block;width:40px;height:40px;border-radius:50%;background:#fff;border:2px solid #ff8c00;cursor:pointer;margin-left:10px;" onclick="setTheme('white')"></span></div><br><button class="btn-orange" onclick="showView('mainMenu')">⬅ Назад</button></div>
-  </div>
-</div>
-<div class="modal-overlay" id="authModal"><div class="modal"><span class="close-btn" onclick="closeAuthModal()">&times;</span><h2 style="text-align:center;">Вход / Регистрация</h2><div class="tabs"><div class="tab active" onclick="switchTab('login')">Вход</div><div class="tab" onclick="switchTab('register')">Регистрация</div></div><div id="loginTab" class="tab-form active"><label>Ваш ник (без @)</label><input type="text" id="loginNick" placeholder="username"><label>Пароль</label><input type="password" id="loginPass" placeholder="••••••••"><button class="btn-submit" onclick="loginUser()">Войти</button><p id="loginError" style="color:#ff6b6b;margin-top:10px;"></p></div><div id="registerTab" class="tab-form"><label>Ваш ник (без @)</label><input type="text" id="regNick" placeholder="username"><label>Пароль</label><input type="password" id="regPass" placeholder="••••••••"><label>Повторите пароль</label><input type="password" id="regPass2" placeholder="••••••••"><button class="btn-submit" onclick="registerUser()">Зарегистрироваться</button><p id="regError" style="color:#ff6b6b;margin-top:10px;"></p></div></div></div>
-<div class="modal-overlay" id="waitModal"><div class="modal"><h2 style="text-align:center;">⏳ Ожидание оплаты</h2><p style="text-align:center;margin:20px 0;">Дождитесь подтверждения оплаты</p><p style="text-align:center;color:#aaa;">Занимает около 10-15 минут</p><button class="btn-submit" onclick="closeWaitModal()">OK</button></div></div>
-<div class="modal-overlay" id="adminModal"><div class="modal" style="max-width:500px;"><span class="close-btn" onclick="document.getElementById('adminModal').classList.remove('active')">&times;</span><h2 style="text-align:center;">🔐 Админ-панель</h2><div id="adminContent"><label>Пароль</label><input type="password" id="adminPass" placeholder="Пароль"><button class="btn-submit" onclick="adminLogin()">Войти</button></div><div id="adminPanel" style="display:none;"><div class="admin-panel"><button onclick="showAdminSection('complaints')">✉️ Жалобы (письмо)</button><button onclick="showAdminSection('donations')">✅ Подтвердить донаты (галочка)</button></div><div id="adminComplaints" style="margin-top:20px;display:none;"></div><div id="adminDonations" style="margin-top:20px;display:none;"></div></div></div></div>
-<div class="modal-overlay" id="starModal"><div class="modal"><h2 style="text-align:center;">⭐ Получение звёзд</h2><p style="text-align:center;margin:20px 0;">Напишите <strong>xudex</strong> чтобы получить свои звёзды</p><button class="btn-submit" onclick="closeStarModal()">OK</button></div></div>
-<script>
-let users=JSON.parse(localStorage.getItem('users'))||{};
-let complaints=JSON.parse(localStorage.getItem('complaints'))||[];
-let donations=JSON.parse(localStorage.getItem('donations'))||[];
-let currentUser=localStorage.getItem('currentUser')||null;
-let currentBalance=0;
-let purchaseHistory=[];
-window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('rocketWrapper').style.display='none'},2800)});
-function cleanNick(nick){return nick.trim().toLowerCase().replace(/^@/,'')}
-function checkStarMessage(){if(currentUser&&users[currentUser]&&users[currentUser].starMessage){document.getElementById('starModal').classList.add('active');users[currentUser].starMessage=false;localStorage.setItem('users',JSON.stringify(users))}}
-function autoLogin(){if(currentUser&&users[currentUser]){currentBalance=users[currentUser].balance||0;purchaseHistory=users[currentUser].history||[];updateAfterLogin();checkStarMessage();return true}return false}
-document.addEventListener('DOMContentLoaded',()=>{document.getElementById('app').style.display='block';if(!autoLogin())openAuthModal();const depositInput=document.getElementById('depositAmount');const depositBtn=document.getElementById('depositBtn');depositInput.addEventListener('input',function(){const val=parseFloat(this.value);if(val>=10)depositBtn.classList.remove('disabled');else depositBtn.classList.add('disabled')});depositBtn.addEventListener('click',function(e){if(this.classList.contains('disabled'))return;const amount=parseFloat(depositInput.value);if(amount<10)return;donations.push({user:currentUser,amount:amount,date:new Date().toLocaleString(),confirmed:false});localStorage.setItem('donations',JSON.stringify(donations));document.getElementById('waitModal').classList.add('active');window.open('https://www.donationalerts.com/r/starsgift','_blank')})});
-function openAuthModal(){document.getElementById('authModal').classList.add('active');document.getElementById('loginError').textContent='';document.getElementById('regError').textContent=''}
-function closeAuthModal(){document.getElementById('authModal').classList.remove('active')}
-function switchTab(tab){document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));document.querySelectorAll('.tab-form').forEach(el=>el.classList.remove('active'));if(tab==='login'){document.getElementById('loginTab').classList.add('active');document.querySelector('.tab').classList.add('active')}else{document.getElementById('registerTab').classList.add('active');document.querySelector('.tab:nth-child(2)').classList.add('active')}}
-function registerUser(){const nick=cleanNick(document.getElementById('regNick').value);const pass=document.getElementById('regPass').value;const pass2=document.getElementById('regPass2').value;const err=document.getElementById('regError');if(!nick||!pass){err.textContent='Заполните все поля.';return}if(pass!==pass2){err.textContent='Пароли не совпадают.';return}if(users[nick]){err.textContent='Такой ник уже существует.';return}users[nick]={password:pass,balance:0,history:[],starMessage:false};localStorage.setItem('users',JSON.stringify(users));currentUser=nick;localStorage.setItem('currentUser',currentUser);currentBalance=0;purchaseHistory=[];err.textContent='';closeAuthModal();updateAfterLogin();checkStarMessage()}
-function loginUser(){const nick=cleanNick(document.getElementById('loginNick').value);const pass=document.getElementById('loginPass').value;const err=document.getElementById('loginError');if(!nick||!pass){err.textContent='Заполните все поля.';return}if(!users[nick]){err.textContent='Пользователь не найден.';return}if(users[nick].password!==pass){err.textContent='Неверный пароль.';return}currentUser=nick;localStorage.setItem('currentUser',currentUser);currentBalance=users[nick].balance||0;purchaseHistory=users[nick].history||[];err.textContent='';closeAuthModal();updateAfterLogin();checkStarMessage()}
-function logout(){currentUser=null;localStorage.removeItem('currentUser');location.reload()}
-function updateAfterLogin(){document.getElementById('userArea').innerHTML=`<span style="font-weight:600;">@${currentUser}</span><span class="balance-pill" onclick="showView('balance')">💰 ${currentBalance.toFixed(1)} ₽</span><button class="logout-btn" onclick="logout()">Выйти</button>`;document.getElementById('balanceAmount').textContent=currentBalance.toFixed(1);showView('mainMenu');renderCart();renderUserComplaints()}
-function showView(viewName){if(!currentUser){openAuthModal();return}document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));if(viewName==='mainMenu'){document.getElementById('mainMenu').classList.add('active');checkStarMessage()}else if(viewName==='cart'){document.getElementById('cartView').classList.add('active');renderCart()}else if(viewName==='support'){document.getElementById('supportView').classList.add('active');renderUserComplaints()}else if(viewName==='balance'){document.getElementById('balanceView').classList.add('active');document.getElementById('balanceAmount').textContent=currentBalance.toFixed(1)}else if(viewName==='shop')document.getElementById('shopView').classList.add('active');else if(viewName==='settings')document.getElementById('settingsView').classList.add('active')}
-function renderCart(){const list=document.getElementById('cartList');if(!purchaseHistory||purchaseHistory.length===0){list.innerHTML='<p style="color:#aaa;">Покупок нет.</p>'}else{list.innerHTML=purchaseHistory.map(item=>`<div class="purchase-item"><span>${item.name}</span><span>${item.price} ₽</span></div>`).join('')}}
-function sendComplaint(){const text=document.getElementById('complaintText').value.trim();if(!text){alert('Напишите текст жалобы.');return}complaints.push({user:currentUser,text,date:new Date().toLocaleString(),answer:null});localStorage.setItem('complaints',JSON.stringify(complaints));document.getElementById('complaintText').value='';alert('Жалоба отправлена!');renderUserComplaints()}
-function renderUserComplaints(){const container=document.getElementById('userComplaints');const userComps=complaints.filter(c=>c.user===currentUser);if(userComps.length===0){container.innerHTML='<p style="color:#aaa;">Вы ещё не отправляли жалоб.</p>'}else{container.innerHTML=userComps.map(c=>`<div class="complaint-box"><div>${c.text}</div><small>${c.date}</small>${c.answer?`<div style="margin-top:8px;border-top:1px solid #333;padding-top:8px;color:#8bc34a;">Ответ: ${c.answer}</div>`:''}</div>`).join('')}}
-function closeWaitModal(){document.getElementById('waitModal').classList.remove('active');checkStarMessage()}
-function closeStarModal(){document.getElementById('starModal').classList.remove('active')}
-function openAdminPanel(){document.getElementById('adminModal').classList.add('active');document.getElementById('adminContent').style.display='block';document.getElementById('adminPanel').style.display='none';document.getElementById('adminComplaints').style.display='none';document.getElementById('adminDonations').style.display='none';document.getElementById('adminPass').value=''}
-document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&(e.key==='A'||e.key==='а')){e.preventDefault();openAdminPanel()}});
-function adminLogin(){const pass=document.getElementById('adminPass').value;if(pass!=='xudex'){alert('Неверный пароль');return}document.getElementById('adminContent').style.display='none';document.getElementById('adminPanel').style.display='block';document.getElementById('adminPass').value=''}
-function showAdminSection(section){if(section==='complaints'){document.getElementById('adminComplaints').style.display='block';document.getElementById('adminDonations').style.display='none';const container=document.getElementById('adminComplaints');if(complaints.length===0){container.innerHTML='<p>Жалоб нет</p>'}else{container.innerHTML=complaints.map((c,idx)=>`<div class="complaint-box"><div><b>@${c.user}:</b> ${c.text}</div><small>${c.date}</small>${c.answer?`<div style="color:#8bc34a;">Ответ: ${c.answer}</div>`:`<textarea id="answerInput${idx}" rows="2" placeholder="Ответ..." style="width:100%;margin-top:8px;"></textarea><button class="btn-orange" style="padding:8px 20px;font-size:0.9rem;" onclick="answerComplaint(${idx})">Ответить</button>`}</div>`).join('')}}else{document.getElementById('adminComplaints').style.display='none';document.getElementById('adminDonations').style.display='block';const container=document.getElementById('adminDonations');const pending=donations.filter(d=>!d.confirmed);if(pending.length===0){container.innerHTML='<p>Нет неподтверждённых донатов</p>'}else{container.innerHTML=pending.map((d,idx)=>`<div class="complaint-box"><div><b>@${d.user}</b> — ${d.amount} ₽</div><small>${d.date}</small><button class="btn-orange" style="padding:8px 20px;font-size:0.9rem;margin-top:8px;" onclick="confirmDonation(${idx})">✅ Подтвердить</button></div>`).join('')}}}
-function answerComplaint(idx){const answer=document.getElementById(`answerInput${idx}`).value.trim();if(!answer){alert('Введите ответ');return}complaints[idx].answer=answer;localStorage.setItem('complaints',JSON.stringify(complaints));showAdminSection('complaints')}
-function confirmDonation(idx){const pending=donations.filter(d=>!d.confirmed);const donation=pending[idx];if(!donation)return;donation.confirmed=true;localStorage.setItem('donations',JSON.stringify(donations));if(users[donation.user]){users[donation.user].starMessage=true;localStorage.setItem('users',JSON.stringify(users))}showAdminSection('donations')}
-function setTheme(color){if(color==='white'){document.body.style.background='#fff';document.body.style.color='#111';document.querySelectorAll('.main-frame,.topbar,.modal,.deposit-box,.complaint-box,.purchase-item').forEach(el=>el.style.background='#eee');document.querySelectorAll('.menu-item,.big-menu button,.admin-panel button,.tab').forEach(el=>el.style.background='#ddd')}else{document.body.style.background='#000';document.body.style.color='#fff';document.querySelectorAll('.main-frame,.topbar,.modal,.deposit-box,.complaint-box,.purchase-item').forEach(el=>el.style.background='#111');document.querySelectorAll('.menu-item,.big-menu button,.admin-panel button,.tab').forEach(el=>el.style.background='#222')}}
-</script>
+
+    <!-- Анимированная кнопка внизу -->
+    <a href="#" class="btn-next">Далее</a>
+
 </body>
 </html>
