@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>gduxgift</title><style>
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><title>gduxgift</title><style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;font-weight:600;}body{background:#0b0b0b;color:#fff;overflow:hidden;}
 .bg{position:fixed;width:100%;height:100%;background:url('https://yandex.net') center/cover;filter:brightness(0.4);}
 .wrap{position:relative;z-index:2;height:100vh;display:flex;flex-direction:column;padding:20px;align-items:center;}
@@ -6,15 +7,15 @@
 .logo{font-size:26px;background:linear-gradient(45deg,#ff7b00,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .btn{background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.3);color:#fff;padding:10px 20px;border-radius:8px;cursor:pointer;}
 .profile{display:none;background:rgba(255,255,255,0.05);padding:5px 15px;border-radius:20px;border:2px solid rgba(255,255,255,0.2);gap:10px;}
-.avatar,.dash-avatar{width:34px;height:34px;border-radius:50%;background:#ff7b00;display:flex;align-items:center;justify-content:center;font-size:18px;border:1px solid rgba(255,255,255,0.2);}
+.avatar,.dash-avatar { width:34px; height:34px; border-radius:50%; background:#ff7b00; display:flex; align-items:center; justify-content:center; font-size:18px; border:1px solid rgba(255,255,255,0.2); }
 .title{font-size:3rem;margin-top:20px;text-shadow:0 4px 15px #000;}
 .next-btn{position:absolute;bottom:80px;background:linear-gradient(135deg,#ff6a00,#ff8800);color:#fff;border:none;padding:16px 70px;font-size:19px;border-radius:14px;display:none;cursor:pointer;}
 .dashboard-screen{position:relative;z-index:3;padding:30px 20px;display:none;margin:0 auto;}
 .menu-row{background:rgba(15,15,15,0.6);border:2px solid rgba(255,255,255,0.1);padding:15px 25px;border-radius:16px;backdrop-filter:blur(15px);margin-bottom:25px;}
-.nav-menu-bar{display:flex;gap:10px;}.nav-item-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:12px 24px;border-radius:10px;cursor:pointer;}
+.nav-menu-bar { display:flex; gap:10px; }.nav-item-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:12px 24px;border-radius:10px;cursor:pointer;}
 .nav-item-btn:hover,.sales-item:hover{background:rgba(255,123,0,0.15);border-color:#ff7b00;}.dash-body{display:flex;gap:30px;}
-.box,.cart-box{width:260px;background:rgba(15,15,15,0.6);border:2px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px;}
-.cart-box{display:none;flex-direction:column;}.box-title{font-size:18px;color:#ff7b00;text-transform:uppercase;border-bottom:2px solid rgba(255,255,255,0.1);padding-bottom:10px;margin-bottom:15px;text-align:center;}
+.box{width:260px;background:rgba(15,15,15,0.6);border:2px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px;}
+.box-title{font-size:18px;color:#ff7b00;text-transform:uppercase;border-bottom:2px solid rgba(255,255,255,0.1);padding-bottom:10px;margin-bottom:15px;text-align:center;}
 .sales-list{display:flex;flex-direction:column;gap:12px;}.sales-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:10px 15px;border-radius:10px;cursor:pointer;gap:10px;justify-content:flex-start;}
 .game-icon{width:30px;height:30px;background-size:contain;background-repeat:no-repeat;background-position:center;transition:0.3s;}
 .icon-tg{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 24 24' fill='%23229ED9'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z'/></svg>");}
@@ -23,6 +24,8 @@
 .balance-box{display:none;flex-direction:column;background:rgba(15,15,15,0.6);border:2px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px;width:100%;max-width:650px;}
 .bal-amount{font-size:42px;color:#ff7b00;font-weight:800;}.bal-line{border-bottom:2px solid rgba(255,123,0,0.4);margin:15px 0 25px;width:100%;box-shadow:0 0 10px rgba(255,123,0,0.2);}
 .pay-grid{display:flex;flex-wrap:wrap;gap:12px;}.pay-square{width:calc(33.33% - 8px);min-width:120px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.12);padding:20px 10px;text-align:center;border-radius:12px;cursor:pointer;transition:0.2s;}
+/* ТВОЯ НОВАЯ ШИРОКАЯ КОРЗИНА НА ВЕСЬ ЭКРАН */
+.cart-box{display:none;flex-direction:column;background:rgba(15,15,15,0.6);border:2px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px;width:100%;min-height:320px;backdrop-filter:blur(15px);}
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(5px);z-index:100;display:none;justify-content:center;align-items:center;}
 .card{background:#121212;border:2px solid rgba(255,255,255,0.15);padding:25px;border-radius:16px;width:90%;max-width:360px;text-align:center;}
 .input{width:100%;background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.2);padding:12px;border-radius:8px;color:#fff;margin:10px 0;outline:none;}
@@ -50,7 +53,8 @@
                     <div class="sales-item"><div class="game-icon icon-cs"></div><div>Counter-Strike</div></div>
                 </div>
             </div>
-            <div class="cart-box" id="cBox"><div class="box-title">Корзина</div><div style="font-size:14px;color:#aaa;text-align:center;padding:20px 0;">ваших корзин нет.</div></div>
+            <!-- Обновленная корзина под скриншот -->
+            <div class="cart-box" id="cBox"><div class="box-title">Корзина</div><div style="font-size:24px;color:#aaa;text-align:center;padding:60px 0;text-transform:uppercase;letter-spacing:1px;">ваших товаров нет.</div></div>
             <div class="balance-box" id="bBox"><div style="font-size:24px;">Личный счёт</div><div class="bal-amount" id="balDisp">0.0 рублей</div><div class="bal-line"></div><div class="pay-grid" id="grid"></div></div>
         </div>
     </div>
@@ -60,7 +64,7 @@
         </div>
     </div>
 <script>
-    let b=0.0;window.onload=()=>{const u=localStorage.getItem('gUser');if(u)up(JSON.parse(u));[500,700,1000,1500,2000,2500,3000].forEach(p=>{let d=document.createElement('div');d.className='pay-square';d.innerText=p+' рублей';d.onclick=()=>{b+=p;document.getElementById('balDisp').innerText=b.toFixed(1)+' рублей';};document.getElementById('grid').appendChild(d);});};
+    let b=0.0;window.onload=()=>{const u=localStorage.getItem('gUser');if(u)up(JSON.parse(u));.forEach(p=>{let d=document.createElement('div');d.className='pay-square';d.innerText=p+' рублей';d.onclick=()=>{b+=p;document.getElementById('balDisp').innerText=b.toFixed(1)+' рублей';};document.getElementById('grid').appendChild(d);});};
     function m(o){document.getElementById('mod').style.display=o?'flex':'none';}
     function reg(){let t=document.getElementById('tg').value.trim();if(!t||!document.getElementById('em').value||!document.getElementById('ps').value)return alert('Заполните поля!');t=t.startsWith('@')?t:'@'+t;localStorage.setItem('gUser',JSON.stringify({name:t}));m(false);up({name:t});}
     function up(u){document.getElementById('regBtn').style.display='none';document.getElementById('prof').style.display='flex';document.getElementById('pName').innerText=document.getElementById('dName').innerText=u.name;document.getElementById('nextBtn').style.display='block';}
