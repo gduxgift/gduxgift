@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gduxgift</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; font-weight: 800; }
+        /* Аккуратный средний шрифт для всего сайта */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; font-weight: 500; }
         body { width: 100%; height: 100vh; overflow: hidden; background: #0b0b0b; color: #fff; }
         .bg { position: fixed; width: 100%; height: 100%; background: url('https://yandex.net') center/cover; filter: brightness(0.4); z-index: 1; }
         .wrap { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 20px; align-items: center; }
         .header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 40px; }
-        .logo { font-size: 26px; background: linear-gradient(45deg, #ff7b00, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .logo { font-size: 26px; font-weight: 700; background: linear-gradient(45deg, #ff7b00, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
         
-        /* Блок профиля */
         .profile { display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px 15px 5px 5px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.2); }
         
-        /* Исправленная аватарка на чистом SVG коде */
-        .avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #ff7b00; background-color: #ff7b00; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 24 24' fill='%23333'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/></svg>"); background-size: 24px; background-position: center; background-repeat: no-repeat; }
+        /* Круглая аватарка со стильной ракетой */
+        .avatar { width: 34px; height: 34px; border-radius: 50%; background: #ff7b00; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); user-select: none; }
         
         .title { font-size: 3rem; text-align: center; text-shadow: 0 4px 15px rgba(0,0,0,0.8); width: 100%; margin-top: 20px; }
         
-        /* Кнопка Далее приподнята выше */
         .next-btn { position: absolute; bottom: 80px; background: linear-gradient(135deg, #ff6a00, #ff8800); color: #fff; border: none; padding: 16px 70px; font-size: 19px; border-radius: 14px; display: none; cursor: pointer; box-shadow: 0 6px 25px rgba(255,106,0,0.5); }
         
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; display: none; justify-content: center; align-items: center; }
@@ -39,88 +39,7 @@
             <div class="logo">gduxgift</div>
             <button class="btn" id="regBtn" onclick="toggleM(true)">Зарегистрироваться</button>
             <div class="profile" id="prof">
-                <div class="avatar"></div>
-                <div id="pName" style="font-size:15px;"></div>
-            </div>
-        </div>
-        
-        <h1 class="title">Добро пожаловать</h1>
-        
-        <button class="next-btn" id="nextBtn" onclick="alert('Переход!')">Далее</button>
-    </div>
-
-    <div class="modal" id="mod" onclick="if(event.target.id==='mod') toggleM(false)">
-        <div class="card">
-            <h2>Регистрация</h2>
-            <input type="text" id="tg" class="input" placeholder="Telegram @username">
-            <input type="email" id="em" class="input" placeholder="Email">
-            <input type="password" id="ps" class="input" placeholder="Пароль">
-            <button class="sub-btn" onclick="reg()">Создать аккаунт</button>
-        </div>
-    </div>
-
-    <script>
-        window.onload = () => { const u = localStorage.getItem('gUser'); if(u) up(JSON.parse(u)); };
-        function toggleM(o) { document.getElementById('mod').style.display = o ? 'flex' : 'none'; }
-        function reg() {
-            let t = document.getElementById('tg').value.trim();
-            if(!t || !document.getElementById('em').value || !document.getElementById('ps').value) return alert('Заполните поля!');
-            t = t.startsWith('@') ? t : '@' + t;
-            const u = { name: t };
-            localStorage.setItem('gUser', JSON.stringify(u));
-            toggleM(false); up(u);
-        }
-        function up(u) {
-            document.getElementById('regBtn').style.display = 'none';
-            document.getElementById('prof').style.display = 'flex';
-            document.getElementById('pName').innerText = u.name;
-            document.getElementById('nextBtn').style.display = 'block';
-        }
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gduxgift</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; font-weight: 800; }
-        body { width: 100%; height: 100vh; overflow: hidden; background: #0b0b0b; color: #fff; }
-        .bg { position: fixed; width: 100%; height: 100%; background: url('https://yandex.net') center/cover; filter: brightness(0.4); z-index: 1; }
-        .wrap { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 20px; align-items: center; }
-        .header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 40px; }
-        .logo { font-size: 26px; background: linear-gradient(45deg, #ff7b00, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
-        
-        /* Блок профиля */
-        .profile { display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px 15px 5px 5px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.2); }
-        
-        /* Исправленная аватарка на чистом SVG коде */
-        .avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #ff7b00; background-color: #ff7b00; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 24 24' fill='%23333'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/></svg>"); background-size: 24px; background-position: center; background-repeat: no-repeat; }
-        
-        .title { font-size: 3rem; text-align: center; text-shadow: 0 4px 15px rgba(0,0,0,0.8); width: 100%; margin-top: 20px; }
-        
-        /* Кнопка Далее приподнята выше */
-        .next-btn { position: absolute; bottom: 80px; background: linear-gradient(135deg, #ff6a00, #ff8800); color: #fff; border: none; padding: 16px 70px; font-size: 19px; border-radius: 14px; display: none; cursor: pointer; box-shadow: 0 6px 25px rgba(255,106,0,0.5); }
-        
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; display: none; justify-content: center; align-items: center; }
-        .card { background: #121212; border: 2px solid rgba(255,255,255,0.15); padding: 25px; border-radius: 16px; width: 90%; max-width: 360px; }
-        .card h2 { margin-bottom: 15px; text-align: center; font-size: 22px; }
-        .input { width: 100%; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; color: #fff; margin-bottom: 12px; outline: none; }
-        .input:focus { border-color: #ff7b00; }
-        .sub-btn { width: 100%; background: #ff7b00; color: #fff; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; }
-    </style>
-</head>
-<body>
-    <div class="bg"></div>
-    <div class="wrap">
-        <div class="header">
-            <div class="logo">gduxgift</div>
-            <button class="btn" id="regBtn" onclick="toggleM(true)">Зарегистрироваться</button>
-            <div class="profile" id="prof">
-                <div class="avatar"></div>
+                <div class="avatar">🚀</div>
                 <div id="pName" style="font-size:15px;"></div>
             </div>
         </div>
