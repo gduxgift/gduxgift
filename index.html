@@ -1,131 +1,92 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gduxgift</title>
+    <meta charset="UTF-8"><title>gduxgift</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; font-weight: 600; }
-        body { width: 100%; height: 100vh; overflow: hidden; background: #0b0b0b; color: #fff; }
-        .bg { position: fixed; width: 100%; height: 100%; background: url('https://yandex.net') center/cover; filter: brightness(0.4); z-index: 1; }
-        .wrap { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 20px; align-items: center; }
-        .header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 40px; }
+        body { background: #0b0b0b; color: #fff; overflow: hidden; }
+        .bg { position: fixed; width: 100%; height: 100%; background: url('https://yandex.net') center/cover; filter: brightness(0.4); }
+        .wrap { position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; padding: 20px; align-items: center; }
+        .header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px; }
         .logo { font-size: 26px; font-weight: 800; background: linear-gradient(45deg, #ff7b00, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
         .profile { display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px 15px 5px 5px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.2); }
-        .avatar { width: 34px; height: 34px; border-radius: 50%; background: #ff7b00; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); }
-        .title { font-size: 3rem; text-align: center; text-shadow: 0 4px 15px rgba(0,0,0,0.8); width: 100%; margin-top: 20px; }
-        .next-btn { position: absolute; bottom: 80px; background: linear-gradient(135deg, #ff6a00, #ff8800); color: #fff; border: none; padding: 16px 70px; font-size: 19px; border-radius: 14px; display: none; cursor: pointer; box-shadow: 0 6px 25px rgba(255,106,0,0.5); }
-        .dashboard-screen { position: relative; z-index: 3; width: 100%; max-width: 1200px; margin: 0 auto; padding: 30px 20px; display: none; }
-        .menu-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; background: rgba(15, 15, 15, 0.6); border: 2px solid rgba(255, 255, 255, 0.1); padding: 15px 25px; border-radius: 16px; backdrop-filter: blur(15px); margin-bottom: 25px; }
-        .nav-menu-bar { display: flex; gap: 10px; order: 1; }
-        .nav-item-btn { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 12px 24px; font-size: 15px; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+        .avatar, .dash-avatar { width: 34px; height: 34px; border-radius: 50%; background: #ff7b00; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); }
+        .title { font-size: 3rem; margin-top: 20px; text-shadow: 0 4px 15px #000; }
+        .next-btn { position: absolute; bottom: 80px; background: linear-gradient(135deg, #ff6a00, #ff8800); color: #fff; border: none; padding: 16px 70px; font-size: 19px; border-radius: 14px; display: none; cursor: pointer; }
+        .dashboard-screen { position: relative; z-index: 3; width: 100%; max-width: 1200px; padding: 30px 20px; display: none; }
+        .menu-row { display: flex; align-items: center; justify-content: space-between; background: rgba(15,15,15,0.6); border: 2px solid rgba(255,255,255,0.1); padding: 15px 25px; border-radius: 16px; backdrop-filter: blur(15px); margin-bottom: 25px; }
+        .nav-menu-bar { display: flex; gap: 10px; }
+        .nav-item-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 12px 24px; border-radius: 10px; cursor: pointer; }
         .nav-item-btn:hover { background: #ff7b00; border-color: #ff7b00; }
-        .dash-profile { display: flex; align-items: center; gap: 12px; order: 2; }
-        .dash-avatar { width: 42px; height: 42px; border-radius: 50%; background: #ff7b00; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 2px solid rgba(255,255,255,0.2); }
-        .dash-username { font-size: 18px; color: #fff; }
-        .left-captured-box { width: 260px; height: 320px; background: rgba(15, 15, 15, 0.6); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 16px; backdrop-filter: blur(15px); padding: 20px; display: flex; flex-direction: column; }
-        .box-title { font-size: 18px; color: #ff7b00; text-transform: uppercase; border-bottom: 2px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; margin-bottom: 15px; text-align: center; }
+        .dash-profile { display: flex; align-items: center; gap: 12px; }
+        .left-captured-box { width: 260px; background: rgba(15,15,15,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; }
+        .box-title { font-size: 18px; color: #ff7b00; text-transform: uppercase; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; text-align: center; }
         .sales-list { display: flex; flex-direction: column; gap: 12px; }
-        .sales-item { display: flex; align-items: center; gap: 15px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 15px; border-radius: 10px; cursor: pointer; transition: 0.2s; }
-        .sales-item:hover { background: rgba(255, 123, 0, 0.15); border-color: #ff7b00; }
-        .game-icon { width: 30px; height: 30px; background-size: contain; background-position: center; background-repeat: no-repeat; transition: transform 0.4s ease; }
-        
-        /* Анимация только для Telegram (самолетик улетает при наведении) */
-        .sales-item:hover .icon-tg { transform: translate(6px, -6px) scale(1.1); }
-        
-        /* Официальные качественные логотипы */
-        .icon-tg { background-image: url('https://wikimedia.org'); }
-        .icon-roblox { background-image: url('https://wikimedia.org'); filter: invert(1); }
-        .icon-cs { background-image: url('https://wikimedia.org'); }
-        
+        .sales-item { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 15px; border-radius: 10px; cursor: pointer; }
+        .sales-item:hover { background: rgba(255,123,0,0.15); border-color: #ff7b00; }
+        .game-icon { width: 30px; height: 30px; background-size: contain; background-repeat: no-repeat; background-position: center; transition: 0.3s; }
+        .icon-tg { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 24 24' fill='%23229ED9'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z'/></svg>"); }
+        .icon-roblox { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 24 24' fill='white'><path d='M18.5 15.5l-5.7 2-2-5.7 5.7-2 2 5.7zm3.5-13.2L2 8.5l4 13.2 16-6.2L22 2.3z'/></svg>"); }
+        .icon-cs { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 24 24' fill='%23ff7b00'><path d='M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm1 5h-2v4H7v2h4v4h2v-4h4v-2h-4V7z'/></svg>"); }
+        .sales-item:hover .icon-tg { transform: translate(4px, -4px); }
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; display: none; justify-content: center; align-items: center; }
-        .card { background: #121212; border: 2px solid rgba(255,255,255,0.15); padding: 25px; border-radius: 16px; width: 90%; max-width: 360px; }
-        .card h2 { margin-bottom: 15px; text-align: center; font-size: 22px; }
-        .input { width: 100%; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; color: #fff; margin-bottom: 12px; outline: none; }
-        .input:focus { border-color: #ff7b00; }
-        .sub-btn { width: 100%; background: #ff7b00; color: #fff; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .card { background: #121212; border: 2px solid rgba(255,255,255,0.15); padding: 25px; border-radius: 16px; width: 90%; max-width: 360px; text-align: center; }
+        .input { width: 100%; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; color: #fff; margin: 10px 0; outline: none; }
     </style>
 </head>
 <body>
     <div class="bg"></div>
-    <div class="wrap" id="mainWelcomeScreen">
+    <div class="wrap" id="scr1">
         <div class="header">
             <div class="logo">gduxgift</div>
-            <button class="btn" id="regBtn" onclick="toggleM(true)">Зарегистрироваться</button>
-            <div class="profile" id="prof">
-                <div class="avatar">🚀</div>
-                <div id="pName" style="font-size:15px;"></div>
-            </div>
+            <button class="btn" id="regBtn" onclick="m(true)">Зарегистрироваться</button>
+            <div class="profile" id="prof"><div class="avatar">🚀</div><div id="pName"></div></div>
         </div>
         <h1 class="title">Добро пожаловать</h1>
-        <button class="next-btn" id="nextBtn" onclick="openDashboard()">Далее</button>
+        <button class="next-btn" id="nextBtn" onclick="go()">Далее</button>
     </div>
-
-    <div class="dashboard-screen" id="dashboardScreen">
+    <div class="dashboard-screen" id="scr2">
         <div class="menu-row">
             <div class="nav-menu-bar">
-                <button class="nav-item-btn" onclick="alert('Basket is empty')">🛒 Корзина</button>
-                <button class="nav-item-btn" onclick="alert('Opening Store')">🏪 Магазин</button>
-                <button class="nav-item-btn" onclick="alert('Your balance: 0 rub.')">💰 Баланс</button>
-                <button class="nav-item-btn" onclick="alert('Support channel')">🛠️ Поддержка</button>
+                <button class="nav-item-btn">🛒 Корзина</button><button class="nav-item-btn">🏪 Магазин</button><button class="nav-item-btn">💰 Баланс</button><button class="nav-item-btn">🛠️ Поддержка</button>
             </div>
-            <div class="dash-profile">
-                <div class="dash-avatar">🚀</div>
-                <div class="dash-username" id="dashUserText">@username</div>
-            </div>
+            <div class="dash-profile"><div class="dash-avatar">🚀</div><div id="dName"></div></div>
         </div>
         <div class="left-captured-box">
-            <div class="box-title">Sales</div>
+            <div class="box-title">Продажа</div>
             <div class="sales-list">
-                <div class="sales-item" onclick="alert('Telegram')">
-                    <div class="game-icon icon-tg"></div>
-                    <div style="font-size:15px;">Telegram</div>
-                </div>
-                <div class="sales-item" onclick="alert('Roblox')">
-                    <div class="game-icon icon-roblox"></div>
-                    <div style="font-size:15px;">Roblox</div>
-                </div>
-                <div class="sales-item" onclick="alert('Counter-Strike')">
-                    <div class="game-icon icon-cs"></div>
-                    <div style="font-size:15px;">Counter-Strike</div>
-                </div>
+                <div class="sales-item"><div class="game-icon icon-tg"></div><div>Telegram</div></div>
+                <div class="sales-item"><div class="game-icon icon-roblox"></div><div>Roblox</div></div>
+                <div class="sales-item"><div class="game-icon icon-cs"></div><div>Counter-Strike</div></div>
             </div>
         </div>
     </div>
-
-    <div class="modal" id="mod" onclick="if(event.target.id==='mod') toggleM(false)">
+    <div class="modal" id="mod" onclick="if(event.target.id==='mod') m(false)">
         <div class="card">
             <h2>Registration</h2>
             <input type="text" id="tg" class="input" placeholder="Telegram @username">
             <input type="email" id="em" class="input" placeholder="Email">
             <input type="password" id="ps" class="input" placeholder="Пароль">
-            <button class="sub-btn" onclick="reg()">Создать аккаунт</button>
+            <button class="btn" style="background:#ff7b00; width:100%; border:none;" onclick="reg()">Создать аккаунт</button>
         </div>
     </div>
-
     <script>
         window.onload = () => { const u = localStorage.getItem('gUser'); if(u) up(JSON.parse(u)); };
-        function toggleM(o) { document.getElementById('mod').style.display = o ? 'flex' : 'none'; }
+        function m(o) { document.getElementById('mod').style.display = o ? 'flex' : 'none'; }
         function reg() {
             let t = document.getElementById('tg').value.trim();
             if(!t || !document.getElementById('em').value || !document.getElementById('ps').value) return alert('Заполните поля!');
             t = t.startsWith('@') ? t : '@' + t;
-            const u = { name: t };
-            localStorage.setItem('gUser', JSON.stringify(u));
-            toggleM(false); up(u);
+            localStorage.setItem('gUser', JSON.stringify({name: t})); m(false); up({name: t});
         }
         function up(u) {
             document.getElementById('regBtn').style.display = 'none';
             document.getElementById('prof').style.display = 'flex';
-            document.getElementById('pName').innerText = u.name;
+            document.getElementById('pName').innerText = document.getElementById('dName').innerText = u.name;
             document.getElementById('nextBtn').style.display = 'block';
-            document.getElementById('dashUserText').innerText = u.name;
         }
-        function openDashboard() {
-            document.getElementById('mainWelcomeScreen').style.display = 'none';
-            document.getElementById('dashboardScreen').style.display = 'block';
-        }
+        function go() { document.getElementById('scr1').style.display = 'none'; document.getElementById('scr2').style.display = 'block'; }
     </script>
 </body>
 </html>
