@@ -14,14 +14,18 @@
         .avatar, .dash-avatar { width: 34px; height: 34px; border-radius: 50%; background: #ff7b00; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); }
         .title { font-size: 3rem; margin-top: 20px; text-shadow: 0 4px 15px #000; }
         .next-btn { position: absolute; bottom: 80px; background: linear-gradient(135deg, #ff6a00, #ff8800); color: #fff; border: none; padding: 16px 70px; font-size: 19px; border-radius: 14px; display: none; cursor: pointer; }
-        .dashboard-screen { position: relative; z-index: 3; width: 100%; max-width: 1200px; padding: 30px 20px; display: none; }
+        
+        /* Исправленная центровка контента */
+        .dashboard-screen { position: relative; z-index: 3; width: 100%; max-width: 1200px; padding: 30px 10px; display: none; }
         .menu-row { display: flex; align-items: center; justify-content: space-between; background: rgba(15,15,15,0.6); border: 2px solid rgba(255,255,255,0.1); padding: 15px 25px; border-radius: 16px; backdrop-filter: blur(15px); margin-bottom: 25px; }
         .nav-menu-bar { display: flex; gap: 10px; }
         .nav-item-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 12px 24px; border-radius: 10px; cursor: pointer; }
         .nav-item-btn:hover { background: #ff7b00; border-color: #ff7b00; }
         .dash-profile { display: flex; align-items: center; gap: 12px; }
-        .left-captured-box { width: 260px; background: rgba(15,15,15,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; }
-        .box-title { font-size: 18px; color: #ff7b00; text-transform: uppercase; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; text-align: center; }
+        
+        /* Рамка теперь стоит четко под кнопками меню */
+        .left-captured-box { width: 260px; background: rgba(15,15,15,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-left: 10px; }
+        .box-title { font-size: 18px; color: #ff7b00; text-transform: uppercase; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; text-align: center; letter-spacing: 1px; }
         .sales-list { display: flex; flex-direction: column; gap: 12px; }
         .sales-item { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 15px; border-radius: 10px; cursor: pointer; }
         .sales-item:hover { background: rgba(255,123,0,0.15); border-color: #ff7b00; }
