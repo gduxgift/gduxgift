@@ -5,42 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gduxgift</title>
     <style>
-        /* Шрифт везде полужирный (600) для отличной читаемости */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; font-weight: 600; }
         body { width: 100%; height: 100vh; overflow: hidden; background: #0b0b0b; color: #fff; }
         .bg { position: fixed; width: 100%; height: 100%; background: url('https://yandex.net') center/cover; filter: brightness(0.4); z-index: 1; }
         
-        /* Главный экран */
-        .wrap { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 20px; align-items: center; transition: opacity 0.5s ease; }
+        .wrap { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; padding: 20px; align-items: center; }
         .header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 40px; }
         .logo { font-size: 26px; font-weight: 800; background: linear-gradient(45deg, #ff7b00, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        .btn:hover { background: rgba(255,255,255,0.2); }
+        .btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
         
         .profile { display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px 15px 5px 5px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.2); }
-        .avatar { width: 34px; height: 34px; border-radius: 50%; background: #ff7b00; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); user-select: none; }
+        .avatar { width: 34px; height: 34px; border-radius: 50%; background: #ff7b00; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); }
         
         .title { font-size: 3rem; text-align: center; text-shadow: 0 4px 15px rgba(0,0,0,0.8); width: 100%; margin-top: 20px; }
-        .next-btn { position: absolute; bottom: 80px; background: linear-gradient(135deg, #ff6a00, #ff8800); color: #fff; border: none; padding: 16px 70px; font-size: 19px; border-radius: 14px; display: none; cursor: pointer; box-shadow: 0 6px 25px rgba(255,106,0,0.5); transition: 0.2s; }
-        .next-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,106,0,0.7); }
+        .next-btn { position: absolute; bottom: 80px; background: linear-gradient(135deg, #ff6a00, #ff8800); color: #fff; border: none; padding: 16px 70px; font-size: 19px; border-radius: 14px; display: none; cursor: pointer; box-shadow: 0 6px 25px rgba(255,106,0,0.5); }
 
-        /* Внутреннее меню личного кабинета (появляется после кнопки Далее) */
+        /* Внутреннее меню личного кабинета */
         .dashboard-screen { position: relative; z-index: 3; width: 100%; max-width: 1200px; margin: 0 auto; padding: 30px 20px; display: none; animation: fadeIn 0.6s ease forwards; }
         
-        /* Контейнер-рамка, выстраивающий профиль слева и меню справа на одном уровне */
-        .menu-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; background: rgba(15, 15, 15, 0.6); border: 2px solid rgba(255, 255, 255, 0.1); padding: 15px 25px; border-radius: 16px; backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* Верхняя горизонтальная плашка */
+        .menu-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; background: rgba(15, 15, 15, 0.6); border: 2px solid rgba(255, 255, 255, 0.1); padding: 15px 25px; border-radius: 16px; backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 25px; }
         
-        /* Профиль слева на уровне меню */
-        .dash-profile { display: flex; align-items: center; gap: 12px; }
+        .nav-menu-bar { display: flex; gap: 10px; order: 1; }
+        .nav-item-btn { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 12px 24px; font-size: 15px; border-radius: 10px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .nav-item-btn:hover { background: #ff7b00; border-color: #ff7b00; box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3); }
+
+        .dash-profile { display: flex; align-items: center; gap: 12px; order: 2; }
         .dash-avatar { width: 42px; height: 42px; border-radius: 50%; background: #ff7b00; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 2px solid rgba(255,255,255,0.2); }
-        .dash-username { font-size: 18px; color: #fff; letter-spacing: 0.5px; }
+        .dash-username { font-size: 18px; color: #fff; }
 
-        /* Длинная рамка навигации справа */
-        .nav-menu-bar { display: flex; gap: 10px; }
-        .nav-item-btn { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 12px 24px; font-size: 15px; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 8px; }
-        .nav-item-btn:hover { background: #ff7b00; border-color: #ff7b00; box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3); transform: translateY(-1px); }
+        /* ТВОЯ НОВАЯ РАМКА СЛЕВА ВНИЗУ (точно по области захвата) */
+        .left-captured-box {
+            width: 260px;
+            height: 320px;
+            background: rgba(15, 15, 15, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            animation: fadeIn 0.8s ease forwards;
+        }
 
-        /* Модалка регистрации */
+        .box-title {
+            font-size: 16px;
+            color: #ff7b00;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .box-content {
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.4;
+        }
+
+        /* Окно регистрации */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; display: none; justify-content: center; align-items: center; }
         .card { background: #121212; border: 2px solid rgba(255,255,255,0.15); padding: 25px; border-radius: 16px; width: 90%; max-width: 360px; }
         .card h2 { margin-bottom: 15px; text-align: center; font-size: 22px; }
@@ -49,7 +74,7 @@
         .sub-btn { width: 100%; background: #ff7b00; color: #fff; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media(max-width: 768px) { .menu-row { flex-direction: column; align-items: flex-start; } .nav-menu-bar { width: 100%; flex-wrap: wrap; } .nav-item-btn { flex-grow: 1; justify-content: center; } }
+        @media(max-width: 768px) { .menu-row { flex-direction: column-reverse; align-items: flex-start; } .nav-menu-bar { width: 100%; flex-wrap: wrap; } .nav-item-btn { flex-grow: 1; justify-content: center; } }
     </style>
 </head>
 <body>
@@ -66,27 +91,31 @@
                 <div id="pName" style="font-size:15px;"></div>
             </div>
         </div>
-        
         <h1 class="title">Добро пожаловать</h1>
-        
         <button class="next-btn" id="nextBtn" onclick="openDashboard()">Далее</button>
     </div>
 
-    <!-- Внутренний личный кабинет (появляется после клика Далее) -->
+    <!-- Внутренний личный кабинет -->
     <div class="dashboard-screen" id="dashboardScreen">
+        <!-- Верхняя длинная панель -->
         <div class="menu-row">
-            <!-- Профиль пользователя слева -->
-            <div class="dash-profile">
-                <div class="dash-avatar">🚀</div>
-                <div class="dash-username" id="dashUserText">@username</div>
-            </div>
-            
-            <!-- Длинная рамка с вкладками меню справа -->
             <div class="nav-menu-bar">
                 <button class="nav-item-btn" onclick="alert('Корзина пуста')">🛒 Корзина</button>
                 <button class="nav-item-btn" onclick="alert('Открытие магазина')">🏪 Магазин</button>
                 <button class="nav-item-btn" onclick="alert('Ваш баланс: 0 руб.')">💰 Баланс</button>
                 <button class="nav-item-btn" onclick="alert('Связь с поддержкой')">🛠️ Поддержка</button>
+            </div>
+            <div class="dash-profile">
+                <div class="dash-avatar">🚀</div>
+                <div class="dash-username" id="dashUserText">@username</div>
+            </div>
+        </div>
+
+        <!-- Твоя рамка на месте захвата экрана -->
+        <div class="left-captured-box">
+            <div class="box-title">Инфо-панель</div>
+            <div class="box-content">
+                Привет! Это твоя новая зона меню. Сюда можно добавить список категорий, статистику профиля или настройки.
             </div>
         </div>
     </div>
@@ -94,7 +123,7 @@
     <!-- Модалка регистрации -->
     <div class="modal" id="mod" onclick="if(event.target.id==='mod') toggleM(false)">
         <div class="card">
-            <h2>Регистрация</h2>
+            <h2>Registration</h2>
             <input type="text" id="tg" class="input" placeholder="Telegram @username">
             <input type="email" id="em" class="input" placeholder="Email">
             <input type="password" id="ps" class="input" placeholder="Пароль">
@@ -103,14 +132,8 @@
     </div>
 
     <script>
-        // Проверка авторизации при входе
-        window.onload = () => { 
-            const u = localStorage.getItem('gUser'); 
-            if(u) up(JSON.parse(u)); 
-        };
-
+        window.onload = () => { const u = localStorage.getItem('gUser'); if(u) up(JSON.parse(u)); };
         function toggleM(o) { document.getElementById('mod').style.display = o ? 'flex' : 'none'; }
-        
         function reg() {
             let t = document.getElementById('tg').value.trim();
             if(!t || !document.getElementById('em').value || !document.getElementById('ps').value) return alert('Заполните поля!');
@@ -119,21 +142,15 @@
             localStorage.setItem('gUser', JSON.stringify(u));
             toggleM(false); up(u);
         }
-
         function up(u) {
             document.getElementById('regBtn').style.display = 'none';
             document.getElementById('prof').style.display = 'flex';
             document.getElementById('pName').innerText = u.name;
             document.getElementById('nextBtn').style.display = 'block';
-            // Заранее прописываем ник в панели личного кабинета
             document.getElementById('dashUserText').innerText = u.name;
         }
-
-        // Логика перехода по кнопке "Далее"
         function openDashboard() {
-            // Плавно скрываем первый экран приветствия
             document.getElementById('mainWelcomeScreen').style.display = 'none';
-            // Показываем стильную рамку меню с профилем
             document.getElementById('dashboardScreen').style.display = 'block';
         }
     </script>
